@@ -1,0 +1,270 @@
+@import "tailwindcss";
+
+*{
+    margin: 0;
+    padding: 0;
+    font-family: monospace;
+    box-sizing: border-box;
+}
+
+p{
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+}
+
+/*Encabezado de imagen*/
+
+.body-container{
+    background-color: #EDEDEDED;
+    min-height: 100vh;
+}
+
+.presentation{
+    background-image: url('./try3.jpg');
+    background-size: cover;
+    background-position: center bottom;
+    background-repeat: no-repeat;
+    min-height: 50vh;
+    max-width: 100%;
+    margin: auto;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    color: white;
+    text-align: center;
+    position: relative;
+    image-rendering: -webkit-optimize-contrast;
+    image-rendering: crisp-edges;
+
+}
+
+
+.presentation::before{
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #ffffff44;
+    z-index: 1;
+}
+
+.presentation-title{
+    position: relative;
+    z-index: 2;
+    background-color: #00FF0000;
+}
+
+.presentation h1{
+    color: #fff;
+    font-size: 2rem;
+    font-weight: bold;
+    text-shadow: 0.2rem 0.2rem 0px #00000099;
+}
+
+
+/*seccion de contenido 1*/
+.info-content{
+    max-width: 50rem;
+    margin: auto;
+    padding: 1rem;
+    padding-bottom: 2rem;
+}
+
+.info-content p{
+    text-align: justify;
+    font-size: 1rem;
+    line-height: 1.6;
+}
+
+.info-content h2{
+    text-align: center;
+    padding: 2rem;
+    margin: 0;
+    font-size: 2rem;
+    color: #2A5091;
+    font-weight: bold;
+    text-shadow: 0.2rem 0.2rem 0px #00000022;
+}
+
+/*Seccion de contenido 2*/
+
+.info-content-2{
+    background-color: #2A5091;
+    color: #fff;
+    min-height: 50vh;
+    padding: 2rem 1rem;
+    display: flex;
+    place-items: center;
+}
+
+.info-content-blue{
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;    
+}
+
+.blue-grid{
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 3rem;
+    align-items: center;
+}
+
+.blue-text h2 {
+    font-size: 2rem;
+    margin-bottom: 1.5rem;
+    text-align: center;
+    text-shadow:0.2rem 0.2rem 0px #ffffff22;
+}
+
+.blue-text p {
+    font-size: 1rem;
+    line-height: 1.6;
+    text-align: justify;
+}
+
+.blue-img {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.blue-img img {
+    width: 100%;
+    max-width: 25rem;
+    height: auto;
+    border-radius: 2rem;
+    box-shadow: 0 0.5rem 1.5rem #ffffff22;
+    object-fit: cover;
+}
+
+/*seccion de contendio 3*/
+
+.info-content3{
+    color: #000;
+    padding: 4rem 1rem;
+    display: flex;
+    align-items: center;
+    min-height: 50vh;
+}
+
+.info-content-white{
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto; 
+}
+
+.white-grid{
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 3rem;
+    align-items: start;
+}
+
+.white-grid h3{
+    color: #2A5091;
+    padding: 2rem;
+    text-align: center;
+    font-size: 2rem;
+    text-shadow: 0.2rem 0.2rem 0rem #ffffff22;
+}
+
+.white-grid p{
+    font-size: 1.1rem;
+    line-height: 1.6;
+    text-align: justify;
+}
+
+.priority-item {
+    text-align: center;
+    padding: 2rem 1.5rem;
+    background: #f8f9fa;
+    border-radius: 2rem;
+    box-shadow: 0 0.25rem 0.5rem #2A509166;
+}
+
+
+
+@media (max-width: 1024px) {
+    .blue-grid,
+    .white-grid { /* ← CORREGIDO */
+        gap: 2rem;
+    }
+    
+    .presentation h1 {
+        font-size: 1.75rem;
+    }
+    
+    .info-content h2,
+    .blue-text h2 {
+        font-size: 1.75rem;
+    }
+}
+
+/* Tablet Pequeña */
+@media (max-width: 768px) {
+    .blue-grid,
+    .white-grid { /* ← CORREGIDO */
+        grid-template-columns: 1fr;
+        gap: 2rem;
+    }
+    
+    .presentation {
+        min-height: 40vh;
+    }
+    
+    .presentation h1 {
+        font-size: 1.5rem;
+    }
+    
+    .info-content,
+    .info-content-2,
+    .info-content3 {
+        padding: 1.5rem 1rem;
+    }
+    
+    .info-content h2,
+    .blue-text h2 {
+        font-size: 1.5rem;
+        padding: 1rem;
+    }
+    
+    .blue-img img {
+        max-width: 20rem;
+    }
+    
+    .priority-item {
+        padding: 1.5rem 1rem;
+    }
+}
+
+/* Móvil */
+@media (max-width: 480px) {
+    .presentation h1 {
+        font-size: 1.25rem;
+    }
+    
+    .info-content h2,
+    .blue-text h2 {
+        font-size: 1.25rem;
+    }
+    
+    .blue-text p,
+    .priority-item p {
+        font-size: 1rem;
+        line-height: 1.5;
+    }
+    
+    .blue-img img {
+        max-width: 100%;
+        border-radius: 1rem;
+    }
+    
+    .priority-item h3 {
+        font-size: 1.25rem;
+    }
+}
