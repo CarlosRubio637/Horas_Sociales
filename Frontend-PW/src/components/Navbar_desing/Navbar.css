@@ -21,6 +21,9 @@ header{
     padding: 1rem;
     color: #0800A3;
     font-weight: bold;
+    position: fixed;
+    top: 0;
+    z-index: 10000;
 }
 
 .navbar-list{
