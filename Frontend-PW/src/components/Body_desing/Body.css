@@ -1,26 +1,27 @@
-@import "tailwindcss";
 
-*{
+
+/* Reset general de estilos */
+* {
     margin: 0;
     padding: 0;
     font-family: monospace;
     box-sizing: border-box;
 }
 
-p{
+p {
     word-wrap: break-word;
     overflow-wrap: break-word;
 }
 
-/*Encabezado de imagen*/
-
-.body-container{
+/* Estilos generales para el contenedor del body */
+.body-container {
     background-color: #EDEDEDED;
     min-height: 100vh;
 }
 
-.presentation{
-    background-image: url('./try3.jpg');
+/* Encabezado con imagen de fondo */
+.presentation {
+    background-image: url('/try3.jpg');
     background-size: cover;
     background-position: center bottom;
     background-repeat: no-repeat;
@@ -37,11 +38,9 @@ p{
     position: relative;
     image-rendering: -webkit-optimize-contrast;
     image-rendering: crisp-edges;
-
 }
 
-
-.presentation::before{
+.presentation::before {
     content: '';
     position: absolute;
     top: 0;
@@ -52,35 +51,33 @@ p{
     z-index: 1;
 }
 
-.presentation-title{
+.presentation-title {
     position: relative;
     z-index: 2;
-    background-color: #00FF0000;
 }
 
-.presentation h1{
+.presentation h1 {
     color: #fff;
     font-size: 2rem;
     font-weight: bold;
     text-shadow: 0.2rem 0.2rem 0px #00000099;
 }
 
-
-/*seccion de contenido 1*/
-.info-content{
+/* Sección de contenido */
+.info-content {
     max-width: 50rem;
     margin: auto;
     padding: 1rem;
     padding-bottom: 2rem;
 }
 
-.info-content p{
+.info-content p {
     text-align: justify;
     font-size: 1rem;
     line-height: 1.6;
 }
 
-.info-content h2{
+.info-content h2 {
     text-align: center;
     padding: 2rem;
     margin: 0;
@@ -90,9 +87,8 @@ p{
     text-shadow: 0.2rem 0.2rem 0px #00000022;
 }
 
-/*Seccion de contenido 2*/
-
-.info-content-2{
+/* Sección de contenido azul */
+.info-content-2 {
     background-color: #2A5091;
     color: #fff;
     min-height: 50vh;
@@ -101,13 +97,13 @@ p{
     place-items: center;
 }
 
-.info-content-blue{
+.info-content-blue {
     width: 100%;
     max-width: 1200px;
-    margin: 0 auto;    
+    margin: 0 auto;
 }
 
-.blue-grid{
+.blue-grid {
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: 3rem;
@@ -118,7 +114,7 @@ p{
     font-size: 2rem;
     margin-bottom: 1.5rem;
     text-align: center;
-    text-shadow:0.2rem 0.2rem 0px #ffffff22;
+    text-shadow: 0.2rem 0.2rem 0px #ffffff22;
 }
 
 .blue-text p {
@@ -142,9 +138,8 @@ p{
     object-fit: cover;
 }
 
-/*seccion de contendio 3*/
-
-.info-content3{
+/* Sección de contenido blanca */
+.info-content3 {
     color: #000;
     padding: 4rem 1rem;
     display: flex;
@@ -152,20 +147,20 @@ p{
     min-height: 50vh;
 }
 
-.info-content-white{
+.info-content-white {
     width: 100%;
     max-width: 1200px;
-    margin: 0 auto; 
+    margin: 0 auto;
 }
 
-.white-grid{
+.white-grid {
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: 3rem;
     align-items: start;
 }
 
-.white-grid h3{
+.white-grid h3 {
     color: #2A5091;
     padding: 2rem;
     text-align: center;
@@ -173,7 +168,7 @@ p{
     text-shadow: 0.2rem 0.2rem 0rem #ffffff22;
 }
 
-.white-grid p{
+.white-grid p {
     font-size: 1.1rem;
     line-height: 1.6;
     text-align: justify;
@@ -187,83 +182,82 @@ p{
     box-shadow: 0 0.25rem 0.5rem #2A509166;
 }
 
-
-
+/* Media Queries para responsividad */
 @media (max-width: 1024px) {
+
     .blue-grid,
-    .white-grid { /* ← CORREGIDO */
+    .white-grid {
         gap: 2rem;
     }
-    
+
     .presentation h1 {
         font-size: 1.75rem;
     }
-    
+
     .info-content h2,
     .blue-text h2 {
         font-size: 1.75rem;
     }
 }
 
-/* Tablet Pequeña */
 @media (max-width: 768px) {
+
     .blue-grid,
-    .white-grid { /* ← CORREGIDO */
+    .white-grid {
         grid-template-columns: 1fr;
         gap: 2rem;
     }
-    
+
     .presentation {
         min-height: 40vh;
     }
-    
+
     .presentation h1 {
         font-size: 1.5rem;
     }
-    
+
     .info-content,
     .info-content-2,
     .info-content3 {
         padding: 1.5rem 1rem;
     }
-    
+
     .info-content h2,
     .blue-text h2 {
         font-size: 1.5rem;
         padding: 1rem;
     }
-    
+
     .blue-img img {
         max-width: 20rem;
     }
-    
+
     .priority-item {
         padding: 1.5rem 1rem;
     }
 }
 
-/* Móvil */
 @media (max-width: 480px) {
     .presentation h1 {
         font-size: 1.25rem;
     }
-    
+
     .info-content h2,
     .blue-text h2 {
         font-size: 1.25rem;
     }
-    
+
     .blue-text p,
     .priority-item p {
         font-size: 1rem;
         line-height: 1.5;
     }
-    
+
     .blue-img img {
         max-width: 100%;
         border-radius: 1rem;
     }
-    
+
     .priority-item h3 {
         font-size: 1.25rem;
     }
