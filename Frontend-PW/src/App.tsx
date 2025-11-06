@@ -1,14 +1,23 @@
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom"; // Asegúrate de importar React Router
-import HomePage from "./pages/HomePage/Homepage"; // Asegúrate de que la ruta sea correcta
+import { Suspense, lazy } from "react";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+
+const HomePage = lazy(() => import("./pages/HomePage/Homepage"));
+const CSS = lazy(() => import("./pages/CSS_info/Css_info"));
+const Programas = lazy(() => import("./pages/Programas/Programas"));
+const Contacto = lazy(() => import("./pages/Contacto/Contacto"));
 
 function App() {
   return (
-    <Router>
-      <Routes>
-        <Route path="/" element={<HomePage />} />{" "}
-        {/* Ruta para la página de inicio */}
-      </Routes>
-    </Router>
+    <Suspense fallback={<div>Cargando...</div>}>
+      <Router>
+        <Routes>
+          <Route path="/" element={<HomePage />} />
+          <Route path="/css" element={<CSS />} />
+          <Route path="/programas" element={<Programas />} />
+          <Route path="/contacto" element={<Contacto />} />
+        </Routes>
+      </Router>
+    </Suspense>
   );
 }
 

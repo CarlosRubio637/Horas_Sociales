@@ -1,36 +1,31 @@
-/* Reset general para los elementos interactivos */
 * {
     box-sizing: border-box;
     margin: 0;
     padding: 0;
 }
 
-/* Contenedor del header */
 header {
     width: 100%;
 }
 
-/* Estilos del título del navbar */
 .navbar-title {
     background-color: transparent;
     color: #EDEDED;
     margin-left: 0;
 }
 
-/* Barra de navegación principal */
 .main-navbar {
     display: flex;
-    background-color: #0800A3;
+    background-color: #2A5091;
     width: 100%;
     padding: 1rem;
-    color: #0800A3;
+    color: #2A5091;
     font-weight: bold;
     position: fixed;
     top: 0;
     z-index: 10000;
 }
 
-/* Lista de navegación */
 .navbar-list {
     display: flex;
     padding: 0;
@@ -44,7 +39,6 @@ header {
     width: 100%;
 }
 
-/* Logo y título de la barra */
 .navbar-brand {
     display: flex;
     align-items: center;
@@ -53,16 +47,14 @@ header {
     color: #EDEDED;
 }
 
-/* Estilo para los elementos de navegación a la derecha */
 .navbar-item-right {
     display: flex;
     align-items: center;
     gap: 1.5rem;
 }
 
-/* Estilo para cada ítem de la barra */
 .nav-item {
-    color: #0800A3;
+    color: #2A5091;
     background-color: #FFFFFF;
     padding: 0.5rem 1.5rem;
     border-radius: 1rem;
@@ -71,23 +63,20 @@ header {
     cursor: pointer;
 }
 
-/* Efecto al hacer hover en los ítems */
 .nav-item:hover {
     background-color: #E3E3E3;
     color: #6949BE;
 }
 
-/* Estilo para la barra de búsqueda */
 .header-search {
     background-color: #FFFFFF;
     border: transparent;
-    color: #0800A3;
+    color: #2A5091;
     padding: 0.5rem 1rem;
     border-radius: 1rem;
     width: 12.5rem;
 }
 
-/* Estilo para el placeholder de la barra de búsqueda */
 .header-search::placeholder {
     color: #6949BE;
     font-family: sans-serif;
@@ -96,14 +85,11 @@ header {
     border: none;
 }
 
-/* Estilo cuando el input está enfocado */
 .header-search:focus {
     outline: none;
     box-shadow: 0 0 5px rgba(0, 0, 255, 0.5);
-    /* Resalta el input cuando está enfocado */
 }
 
-/* Estilo cuando el ítem de la barra está enfocado */
 .nav-item:focus {
     outline: none;
     background-color: #E3E3E3;

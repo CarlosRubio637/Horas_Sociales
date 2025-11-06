@@ -15,11 +15,9 @@ p {
     overflow-wrap: break-word;
 }
 
-/*Encabezad de la imagen*/
-
+/* Estilos generales para el contenedor del body */
 .body-container {
-    overflow-x: hidden;
-    background-color: #EDEDED;
+    background-color: #EDEDEDED;
     min-height: 100vh;
     width: 100%;
 }
@@ -37,7 +35,7 @@ p {
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    color: white;
+    color: #fff;
     text-align: center;
     position: relative;
     image-rendering: -webkit-optimize-contrast;
@@ -81,6 +79,7 @@ p {
     text-align: justify;
     font-size: 1rem;
     line-height: 1.6;
+    color: black;  
 }
 
 .info-content h2 {

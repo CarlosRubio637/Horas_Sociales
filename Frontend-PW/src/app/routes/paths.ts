@@ -1,6 +1,6 @@
 export const PATHS = {
   HOME: "/",               // Ruta de la página principal
-  QUIENES_SOMOS: "/quienes-somos", 
+  CSS_info: "/css", 
   PROGRAMAS: "/programas", 
   CONTACTO: "/contacto",
 };
