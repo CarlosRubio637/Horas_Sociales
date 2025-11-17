@@ -145,11 +145,11 @@ const HoursForm = () =>{
             <div className="form-warning">
                 <h2 className="form-title">Importante</h2>
                     <p>
-                        Es obligatorio que reportes tú recuento de horas realizadas y las recopiles en la
-                        hoja de horario que se te proporcionara tanto el encargado de la opcion de servicio social
+                        Es obligatorio que reportes tú recuento de horas realizadas, y que sean recopiladas en la
+                        hoja de horario que se te proporcionara el encargado de la opcion de servicio social
                         que has escogido; al igual que es obligatorio que descargues dicha hoja en caso de perdidas.
                         En caso contrario, sin registro de tus horas sociales, no se contaran en tu registro personal
-                        y se dara por hecho como no hechas. 
+                        y se dara por hecho como no realizadas. 
                     </p>
 
                     <p>
@@ -159,8 +159,8 @@ const HoursForm = () =>{
                     </p>
 
                 <ol>
-                    <li><a href="#">Guía de elaboración de reporte final</a></li>
-                    <li><a href="#">Control de asistencia</a></li>
+                    <li><a href="/Guia-informe-final.pdf">Guía de elaboración de reporte final</a></li>
+                    <li><a href="/Control-de-Asistencia.pdf">Control de asistencia</a></li>
                 </ol>
             </div>
 
