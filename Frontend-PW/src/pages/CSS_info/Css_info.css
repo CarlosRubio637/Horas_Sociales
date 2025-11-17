@@ -60,6 +60,7 @@ p {
     margin: 2rem auto;
     font-size: 1rem;
     text-align: justify;
+    line-height: 1.6;
 }
 
 .info-content h2 {

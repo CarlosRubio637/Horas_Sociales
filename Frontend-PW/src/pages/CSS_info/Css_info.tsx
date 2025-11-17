@@ -1,5 +1,6 @@
 import Body from "@/components/Body_desing/Body";
 import './Css_info.css';
+
 const CSS = () => {
   console.log('Esta vain si furula');
   return (
@@ -63,9 +64,6 @@ const CSS = () => {
       </section>
 
       <section className="information-option">
-        <div className="information-content">
-          
-        </div>
       </section>
     </Body>
   );

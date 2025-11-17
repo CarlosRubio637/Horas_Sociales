@@ -162,7 +162,7 @@ p {
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: 3rem;
-    align-items: start;
+    align-items: stretch;
 }
 
 .white-grid h3 {
@@ -181,10 +181,20 @@ p {
 
 .priority-item {
     text-align: center;
-    padding: 2rem 1.5rem;
+    padding: 2rem 2rem;
     background: #f8f9fa;
     border-radius: 2rem;
     box-shadow: 0 0.25rem 0.5rem #2A509166;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.priority-item p{
+    font-size:  1.1rem;
+    line-height: 1.6;
+    flex-grow: 1;
 }
 
 /* Media Queries para responsividad */

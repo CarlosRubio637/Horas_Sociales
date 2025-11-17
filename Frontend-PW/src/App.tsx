@@ -1,4 +1,4 @@
-import { Suspense, lazy } from "react";
+/*import { Suspense, lazy } from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 
 const HomePage = lazy(() => import("./pages/HomePage/Homepage"));
@@ -18,6 +18,19 @@ function App() {
         </Routes>
       </Router>
     </Suspense>
+  );
+}
+
+export default App;
+*/
+
+
+//Testeo de visualizacion del formulario
+import HoursForm from "./components/HorasSocialesForm_desing/HoursForm";
+
+function App (){
+  return (
+    <HoursForm></HoursForm>
   );
 }
 
