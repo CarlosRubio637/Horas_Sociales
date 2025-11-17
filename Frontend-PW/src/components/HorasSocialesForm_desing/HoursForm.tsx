@@ -12,6 +12,7 @@ const HoursForm = () =>{
         phone: '',
         studentId: '',
         motivation: '',
+        socialHour: '',
         acceptedTerms: false
     });
 
@@ -89,6 +90,7 @@ const HoursForm = () =>{
                 phone:'',
                 studentId: '',
                 motivation: '',
+                socialHour: '',
                 acceptedTerms: false
             });
         } catch(error){
@@ -124,6 +126,14 @@ const HoursForm = () =>{
                 <label htmlFor="studentId">Carnet de estudiante:</label>
                 <input type="text" id="studentId" name="studentId" 
                 value={formData.studentId} onChange={handleChange} placeholder="00012345" required/>
+            </div>
+            
+            {/*Aca el backend hara que cuando se seleccione una hora social se auto rellene este campo en el formulario cuando
+            quiera aplicar a la hora social */}
+            <div className="form-group">
+                <label htmlFor="socialHour">Hora social inscrita:</label>
+                <input type="text" id="socialHour" name="socialHour" 
+                value={formData.socialHour} onChange={handleChange} placeholder=" " required/>
             </div>
 
             <div className="form-group">
