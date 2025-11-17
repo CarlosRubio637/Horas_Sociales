@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";  
 import "./Navbar.css";
-import { PATHS } from "@/app/routes/paths";  
+import { PATHS } from "@/app/routes/paths";
 
 interface NavBarProps {
   title?: string;
@@ -21,7 +21,7 @@ function NavBar({
           </div>
           <div className="navbar-item-right">
             <Link to={PATHS.HOME} className="nav-item">Home</Link>
-            <Link to={PATHS.QUIENES_SOMOS} className="nav-item">¿Quiénes Somos?</Link>
+            <Link to={PATHS.CSS_info} className="nav-item">CSS</Link>
             <Link to={PATHS.PROGRAMAS} className="nav-item">Programas de formación</Link>
             <Link to={PATHS.CONTACTO} className="nav-item">Contacto</Link>  
             <div className="search-container">

@@ -1,4 +1,4 @@
-import Body from "../../components/Body_desing/Body"; // Asegúrate de que la ruta sea correcta
+import Body from "../../components/Body_desing/Body";
 
 const HomePage = () => {
   return (
