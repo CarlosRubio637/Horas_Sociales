@@ -1,0 +1,43 @@
+/* Estilos para el Footer */
+.footer-container {
+  background-color: #333333;
+  padding: 2rem;
+  width: 100%;
+  color: white;
+  font-family: monospace;
+  display: flex;
+  flex-direction: column; /* Apilar los elementos en columnas */
+  align-items: center; /* Alinear el contenido al centro */
+  justify-content: center;
+  text-align: center;
+}
+
+/* Estilos para el contenido del footer */
+.footer-content {
+  width: 100%;
+  max-width: 1200px; /* Limitar el tamaño máximo del contenido */
+  margin: 0 auto;
+}
+
+/* Estilo para las filas dentro del footer */
+.footer-row {
+  display: flex;
+  justify-content: space-between; /* Distribuir los elementos con espacio entre ellos */
+  gap: 2rem;
+  font-size: 0.95rem;
+  margin-top: 1rem;
+}
+
+/* Asegurarse de que los textos estén bien distribuidos */
+.footer-row p {
+  margin: 0;
+  color: #EDEDED; /* Color claro para el texto */
+}
+
+/* Responsivo para pantallas pequeñas */
+@media (max-width: 768px) {
+  .footer-row {
+    flex-direction: column; /* Apilar los elementos verticalmente en pantallas pequeñas */
+    gap: 1rem;
+  }
+}
