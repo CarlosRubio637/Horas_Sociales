@@ -6,38 +6,38 @@
   color: white;
   font-family: monospace;
   display: flex;
-  flex-direction: column; /* Apilar los elementos en columnas */
-  align-items: center; /* Alinear el contenido al centro */
+  flex-direction: column; 
+  align-items: center; 
   justify-content: center;
   text-align: center;
 }
 
-/* Estilos para el contenido del footer */
+
 .footer-content {
   width: 100%;
-  max-width: 1200px; /* Limitar el tamaño máximo del contenido */
+  max-width: 1200px; 
   margin: 0 auto;
 }
 
-/* Estilo para las filas dentro del footer */
+
 .footer-row {
   display: flex;
-  justify-content: space-between; /* Distribuir los elementos con espacio entre ellos */
+  justify-content: space-between; 
   gap: 2rem;
   font-size: 0.95rem;
   margin-top: 1rem;
 }
 
-/* Asegurarse de que los textos estén bien distribuidos */
+
 .footer-row p {
   margin: 0;
-  color: #EDEDED; /* Color claro para el texto */
+  color: #EDEDED; /
 }
 
-/* Responsivo para pantallas pequeñas */
+
 @media (max-width: 768px) {
   .footer-row {
-    flex-direction: column; /* Apilar los elementos verticalmente en pantallas pequeñas */
+    flex-direction: column; 
     gap: 1rem;
   }
 }

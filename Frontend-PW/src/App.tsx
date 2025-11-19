@@ -7,17 +7,19 @@ const HomePage = lazy(() => import("./pages/HomePage/Homepage"));
 const CSS = lazy(() => import("./pages/CSS_info/Css_info"));
 const Programas = lazy(() => import("./pages/Programas/Programas"));
 const Contacto = lazy(() => import("./pages/Contacto/Contacto"));
+const HoursForm = lazy(() => import("./components/HorasSocialesForm_desing/HoursForm")); 
 
 function App() {
   return (
     <Suspense fallback={<div>Cargando...</div>}>
       <Router>
-        <Routes>          
+        <Routes>
           <Route element={<Layout />}>
             <Route path="/" element={<HomePage />} />
             <Route path="/css" element={<CSS />} />
             <Route path="/programas" element={<Programas />} />
             <Route path="/contacto" element={<Contacto />} />
+            <Route path="/horas-sociales-form" element={<HoursForm />} /> {/* Ruta para el formulario */}
           </Route>
         </Routes>
       </Router>
