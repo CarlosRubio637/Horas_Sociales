@@ -178,7 +178,7 @@ p {
 /* Diseño de cada opción (checkbox y texto) */
 .checkbox-container label {
   font-size: 1rem;
-  color: #333; /* color del texto */
+  color: #333; 
   padding: 0.6rem;
   background-color: #ffffff;
   border-radius: 10px;
@@ -199,15 +199,15 @@ p {
 
 /* Estilos para cada opción de color */
 .checkbox-container label:nth-child(1) {
-  background-color: #e3f2fd; /* Azul claro */
+  background-color: #e3f2fd; 
 }
 
 .checkbox-container label:nth-child(2) {
-  background-color: #e8f5e9; /* Verde claro */
+  background-color: #e8f5e9; 
 }
 
 .checkbox-container label:nth-child(3) {
-  background-color: #fff3e0; /* Amarillo claro */
+  background-color: #fff3e0; 
 }
 
 /* Estilo del botón para ir al formulario */
@@ -229,9 +229,8 @@ p {
   background-color: #45a049;
 }
 
-/* ... Apartir de aqui es lo del dia miercoles ... */
 
-/* Ajustamos la posición de los elementos */
+
 .information-option {
   background-color: #EDEDED;
   width: 100%;
@@ -240,7 +239,7 @@ p {
   flex-direction: column;
   align-items: center;
   justify-content: flex-start;
-  padding-top: 30px; /* Añadimos espacio superior para el espaciado */
+  padding-top: 30px; 
 }
 
 .checkbox-container {
@@ -263,7 +262,7 @@ p {
   width: 100%;
   max-width: 250px;
   margin: auto;
-  display: block; /* Aseguramos que esté centrado */
+  display: block;
 }
 
 .submit-button:hover {

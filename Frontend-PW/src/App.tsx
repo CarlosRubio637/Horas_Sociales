@@ -19,7 +19,7 @@ function App() {
             <Route path="/css" element={<CSS />} />
             <Route path="/programas" element={<Programas />} />
             <Route path="/contacto" element={<Contacto />} />
-            <Route path="/horas-sociales-form" element={<HoursForm />} /> {/* Ruta para el formulario */}
+            <Route path="/horas-sociales-form" element={<HoursForm />} />
           </Route>
         </Routes>
       </Router>

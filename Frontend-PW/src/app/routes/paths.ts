@@ -1,5 +1,5 @@
 export const PATHS = {
-  HOME: "/",               // Ruta de la página principal
+  HOME: "/",               
   CSS_info: "/css", 
   PROGRAMAS: "/programas", 
   CONTACTO: "/contacto",

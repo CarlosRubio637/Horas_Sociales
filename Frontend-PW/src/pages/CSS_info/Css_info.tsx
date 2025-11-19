@@ -1,29 +1,29 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom"; // Agregamos el hook useNavigate para la redirección
+import { useNavigate } from "react-router-dom"; 
 import Body from "@/components/Body_desing/Body";
 import './Css_info.css';
 
 const CSS = () => {
-  const [selectedOption, setSelectedOption] = useState<string | null>(null); // Para guardar la opción seleccionada
-  const [isButtonExpanded, setIsButtonExpanded] = useState(false); // Controlar si el botón está expandido
-  const navigate = useNavigate(); // Usamos el hook para redirigir a la página de formulario
+  const [selectedOption, setSelectedOption] = useState<string | null>(null); 
+  const [isButtonExpanded, setIsButtonExpanded] = useState(false);
+  const navigate = useNavigate(); 
 
   // Función para manejar el cambio en las checkboxes
   const handleCheckboxChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const value = event.target.value;
-    setSelectedOption(selectedOption === value ? null : value); // Solo permitimos una opción seleccionada a la vez
+    setSelectedOption(selectedOption === value ? null : value); 
   };
 
   // Función para manejar la redirección al formulario
   const handleFormVisibility = () => {
     if (selectedOption) {
-      navigate("/horas-sociales-form"); // Redirige al formulario de horas sociales
+      navigate("/horas-sociales-form"); 
     }
   };
 
   // Función para expandir el botón
   const handleButtonClick = () => {
-    setIsButtonExpanded(!isButtonExpanded); // Alternar el estado del botón
+    setIsButtonExpanded(!isButtonExpanded); 
   };
 
   return (
@@ -95,7 +95,6 @@ const CSS = () => {
         </div>
       </section>
 
-      {/* Aquí comienza la sección de las opciones de servicio social */}
       <section className="information-option">
         {/* Botón expansible */}
         <button
@@ -105,7 +104,6 @@ const CSS = () => {
           Opciones de Servicio Social
         </button>
 
-        {/* Mostrar las opciones solo si el botón está expandido */}
         {isButtonExpanded && (
           <div className="checkbox-container">
             <label>
@@ -149,7 +147,6 @@ const CSS = () => {
           </div>
         )}
 
-        {/* Mostrar el botón de formulario solo si alguna opción está seleccionada */}
         {selectedOption && (
           <button
             className="submit-button"

@@ -1,17 +1,22 @@
-import Footer from "@/components/Footer/Footer"; 
-import Navbar from "@/components/Navbar_desing/Navbar"; 
-import { Outlet } from "react-router-dom";
+import Footer from "@/components/Footer/Footer";
+import Navbar from "@/components/Navbar_desing/Navbar";
+import { Outlet, useLocation } from "react-router-dom";
 
 const Layout = () => {
+  const location = useLocation(); 
+
+  const isFormPage = location.pathname.includes("horas-sociales-form");
+
   return (
     <>
-      <Navbar />
+      {!isFormPage && <Navbar />}
       <main>
-        <Outlet /> 
+        <Outlet />
       </main>
-      <Footer /> 
+      {!isFormPage && <Footer />}
     </>
   );
 };
 
 export default Layout;
+
