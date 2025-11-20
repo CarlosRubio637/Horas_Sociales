@@ -1,0 +1,31 @@
+/* Estilo base para los botones */
+.expanding-button {
+  padding: 0.8rem 2rem;
+  background-color: #2a5091;
+  color: white;
+  font-weight: bold;
+  font-size: 1rem;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  width: 250px; /* tamaño adecuado */
+  margin: 10px auto;
+  display: block;
+}
+
+/* Botón expandido */
+.expanding-button.active {
+  width: 250px;
+}
+
+/* Estilo para las opciones de cada programa */
+.program-details {
+  background-color: #e3f2fd;
+  padding: 10px;
+  border-radius: 8px;
+  margin: 10px 0;
+  max-width: 600px;
+  margin-left: auto;
+  margin-right: auto;
+  color: #2a5091;
+}
