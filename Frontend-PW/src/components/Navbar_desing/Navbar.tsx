@@ -23,7 +23,6 @@ function NavBar({
             <Link to={PATHS.HOME} className="nav-item">Home</Link>
             <Link to={PATHS.CSS_info} className="nav-item">CSS</Link>
             <Link to={PATHS.PROGRAMAS} className="nav-item">Programas de formación</Link>
-            <Link to={PATHS.CONTACTO} className="nav-item">Contacto</Link>  
             <div className="search-container">
               <input
                 type="text"

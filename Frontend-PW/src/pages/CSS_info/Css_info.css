@@ -134,3 +134,137 @@ p {
     width: 100%;
     min-height: 50vh;
 }
+/* Estilo base para el botón */
+.expanding-button {
+  padding: 0.8rem 2rem;
+  background-color: #2a5091; /* color azul */
+  color: white;
+  font-weight: bold;
+  font-size: 1rem;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: width 0.5s ease;
+  width: 150px; /* tamaño inicial */
+  text-align: center;
+  outline: none;
+  margin-bottom: 1rem;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  display: block; /* Asegura que el botón se muestre centrado */
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* El estado expandido */
+.expanding-button.active {
+  width: 250px; /* tamaño expandido */
+  height: auto;
+}
+
+/* Estilo para cuando se pasa el mouse por encima */
+.expanding-button:hover {
+  background-color: #1e3c7f;
+}
+
+/* Estilo para las opciones cuando el botón está expandido */
+.checkbox-container {
+  margin-top: 10px;
+  display: flex;
+  flex-direction: column; /* Asegura que las opciones estén de arriba a abajo */
+  gap: 10px;
+  align-items: center; /* Centra las opciones */
+}
+
+/* Diseño de cada opción (checkbox y texto) */
+.checkbox-container label {
+  font-size: 1rem;
+  color: #333; 
+  padding: 0.6rem;
+  background-color: #ffffff;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  width: 100%;
+  max-width: 300px;
+  margin: auto;
+  text-align: left;
+  padding-left: 10px;
+}
+
+/* Cambiar el color de fondo de las opciones al pasar el mouse */
+.checkbox-container label:hover {
+  background-color: #f0f0f0;
+}
+
+/* Estilos para cada opción de color */
+.checkbox-container label:nth-child(1) {
+  background-color: #e3f2fd; 
+}
+
+.checkbox-container label:nth-child(2) {
+  background-color: #e8f5e9; 
+}
+
+.checkbox-container label:nth-child(3) {
+  background-color: #fff3e0; 
+}
+
+/* Estilo del botón para ir al formulario */
+.submit-button {
+  margin-top: 20px;
+  padding: 0.8rem 2rem;
+  background-color: #14a719;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-weight: bold;
+  width: 100%;
+  max-width: 250px;
+  margin: auto;
+}
+
+.submit-button:hover {
+  background-color: #45a049;
+}
+
+
+
+.information-option {
+  background-color: #EDEDED;
+  width: 100%;
+  min-height: 50vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  padding-top: 30px; 
+}
+
+.checkbox-container {
+  margin-top: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  align-items: center;
+}
+
+.submit-button {
+  margin-top: 20px;
+  padding: 0.8rem 2rem;
+  background-color: #4CAF50;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-weight: bold;
+  width: 100%;
+  max-width: 250px;
+  margin: auto;
+  display: block;
+}
+
+.submit-button:hover {
+  background-color: #45a049;
+}

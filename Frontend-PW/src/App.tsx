@@ -1,20 +1,24 @@
-/*import { Suspense, lazy } from "react";
+import { Suspense, lazy } from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import Layout from "@/app/routes/Layout";  
+
 
 const HomePage = lazy(() => import("./pages/HomePage/Homepage"));
 const CSS = lazy(() => import("./pages/CSS_info/Css_info"));
 const Programas = lazy(() => import("./pages/Programas/Programas"));
-const Contacto = lazy(() => import("./pages/Contacto/Contacto"));
+const HoursForm = lazy(() => import("./components/HorasSocialesForm_desing/HoursForm")); 
 
 function App() {
   return (
     <Suspense fallback={<div>Cargando...</div>}>
       <Router>
         <Routes>
-          <Route path="/" element={<HomePage />} />
-          <Route path="/css" element={<CSS />} />
-          <Route path="/programas" element={<Programas />} />
-          <Route path="/contacto" element={<Contacto />} />
+          <Route element={<Layout />}>
+            <Route path="/" element={<HomePage />} />
+            <Route path="/css" element={<CSS />} />
+            <Route path="/programas" element={<Programas />} />
+            <Route path="/horas-sociales-form" element={<HoursForm />} />
+          </Route>
         </Routes>
       </Router>
     </Suspense>
@@ -22,16 +26,5 @@ function App() {
 }
 
 export default App;
-*/
 
 
-//Testeo de visualizacion del formulario
-import HoursForm from "./components/HorasSocialesForm_desing/HoursForm";
-
-function App (){
-  return (
-    <HoursForm></HoursForm>
-  );
-}
-
-export default App;
