@@ -66,12 +66,13 @@ p {
     margin-top: 0.5rem;
     margin-bottom: 1.5rem;
     font-size: 1.8rem;
+    text-align: center;
 }
 
 .info__steps {
     display: inline-block;
     margin: auto;
-    color: #000;
+    color: #000000;
 }
 
 
@@ -117,6 +118,8 @@ p {
     display: inline-block;
     margin: 0 auto;
     padding-left: 1.5rem;
+    font-weight: bolder;
+    color: fff;
 }
 
 .rule__steps li {
@@ -339,4 +342,282 @@ p {
 
 .add-option-btn:hover {
     background-color: #45a049;
+}
+
+/*Media Queries*/
+@media (max-width: 64rem) {
+    .presentation-container {
+        min-height: 40vh;
+    }
+    
+    .title {
+        font-size: 1.8rem;
+    }
+    
+    .info-content {
+        max-width: 90%;
+        margin: 1.5rem auto;
+    }
+    
+    .info-content h2 {
+        font-size: 1.6rem;
+    }
+    
+    .rule-content {
+        min-height: 40vh;
+        padding: 1.5rem 1rem;
+    }
+    
+    .rule__title {
+        padding: 1.5rem;
+    }
+    
+    .rule-desing {
+        min-width: auto;
+        width: 95%;
+    }
+    
+    .rule-content p,
+    .rule__steps li {
+        max-width: 90%;
+    }
+    
+    .expanding-button {
+        width: 8.75rem;
+        padding: 0.7rem 1.8rem;
+    }
+    
+    .expanding-button.active {
+        width: 14rem;
+    }
+    
+    .checkbox-container label {
+        max-width: 16rem;
+    }
+}
+
+/* Tablets pequeñas y móviles grandes (576px - 768px) */
+@media (max-width: 48rem) {
+    .presentation-container {
+        min-height: 35vh;
+    }
+    
+    .title {
+        font-size: 1.6rem;
+        text-shadow: 0.1rem 0.1rem 0px #00000099;
+    }
+    
+    .info-content {
+        max-width: 95%;
+        margin: 1rem auto;
+        font-size: 0.9rem;
+    }
+    
+    .info-content h2 {
+        font-size: 1.4rem;
+        margin-bottom: 1rem;
+    }
+    
+    .rule-content {
+        min-height: 35vh;
+        padding: 1rem 0.8rem;
+        font-size: 0.9rem;
+    }
+    
+    .rule__title {
+        padding: 1rem;
+    }
+    
+    .rule-content p,
+    .rule__steps li {
+        max-width: 95%;
+        font-size: 0.9rem;
+    }
+    
+    .information-option {
+        padding: 1.5rem 0;
+        min-height: 40vh;
+    }
+    
+    .expanding-button {
+        width: 8rem;
+        padding: 0.6rem 1.5rem;
+        font-size: 0.9rem;
+    }
+    
+    .expanding-button.active {
+        width: 12rem;
+    }
+    
+    .checkbox-container label {
+        max-width: 14rem;
+        font-size: 0.9rem;
+        padding: 0.5rem;
+    }
+    
+    .add-option-container {
+        gap: 0.8rem;
+    }
+    
+    .add-option-container input {
+        width: 70%;
+        max-width: 16rem;
+    }
+    
+    .add-option-container textarea {
+        width: 90%;
+        max-width: 22rem;
+    }
+}
+
+/* Móviles (375px - 576px) */
+@media (max-width: 36rem) {
+    .presentation-container {
+        min-height: 30vh;
+    }
+    
+    .title {
+        font-size: 1.4rem;
+    }
+    
+    .info-content {
+        max-width: 100%;
+        margin: 0.8rem auto;
+        padding: 0 0.8rem;
+        font-size: 0.85rem;
+    }
+    
+    .info-content h2 {
+        font-size: 1.2rem;
+        margin-bottom: 0.8rem;
+    }
+    
+    .rule-content {
+        min-height: 30vh;
+        padding: 0.8rem 0.5rem;
+        font-size: 0.85rem;
+    }
+    
+    .rule__title {
+        padding: 0.8rem;
+    }
+    
+    .rule-content p,
+    .rule__steps li {
+        max-width: 100%;
+        font-size: 0.85rem;
+        margin-bottom: 1rem;
+    }
+    
+    .rule__steps {
+        padding-left: 1rem;
+    }
+    
+    .information-option {
+        padding: 1rem 0;
+        min-height: 35vh;
+    }
+    
+    .expanding-button {
+        width: 7rem;
+        padding: 0.5rem 1.2rem;
+        font-size: 0.85rem;
+        margin-bottom: 0.8rem;
+    }
+    
+    .expanding-button.active {
+        width: 10rem;
+    }
+    
+    .checkbox-container {
+        gap: 0.5rem;
+    }
+    
+    .checkbox-container label {
+        max-width: 12rem;
+        font-size: 0.85rem;
+        padding: 0.4rem 0.5rem;
+    }
+    
+    .checkbox-container input {
+        width: 1rem;
+        margin-right: 0.5rem;
+    }
+    
+    .add-option-container {
+        flex-direction: column;
+        gap: 0.5rem;
+    }
+    
+    .add-option-container input {
+        width: 90%;
+        max-width: 14rem;
+    }
+    
+    .add-option-container textarea {
+        width: 95%;
+        max-width: 18rem;
+    }
+    
+    .submit-button {
+        max-width: 12rem;
+        padding: 0.7rem 1.5rem;
+        font-size: 0.9rem;
+    }
+}
+
+/* Móviles muy pequeños (hasta 375px) */
+@media (max-width: 23.4375rem) {
+    .presentation-container {
+        min-height: 25vh;
+    }
+    
+    .title {
+        font-size: 1.2rem;
+    }
+    
+    .info-content {
+        font-size: 0.8rem;
+        padding: 0 0.5rem;
+    }
+    
+    .info-content h2 {
+        font-size: 1.1rem;
+    }
+    
+    .rule-content {
+        min-height: 25vh;
+        font-size: 0.8rem;
+    }
+    
+    .rule-content p,
+    .rule__steps li {
+        font-size: 0.8rem;
+    }
+    
+    .expanding-button {
+        width: 6rem;
+        padding: 0.4rem 1rem;
+        font-size: 0.8rem;
+    }
+    
+    .expanding-button.active {
+        width: 8rem;
+    }
+    
+    .checkbox-container label {
+        max-width: 10rem;
+        font-size: 0.8rem;
+    }
+    
+    .add-option-container input,
+    .add-option-container textarea {
+        max-width: 12rem;
+    }
+    
+    .submit-button {
+        max-width: 10rem;
+        padding: 0.6rem 1.2rem;
+        font-size: 0.85rem;
+    }
 }

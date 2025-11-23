@@ -1,4 +1,9 @@
-.presentation-title{
+.programas-presentation-container {
+  width: 100%;
+  overflow: hidden;
+}
+
+.programas-presentation-title {
     background-image: url('/css_intento2.jpg');
     background-size: cover;
     background-position: center bottom;
@@ -11,14 +16,15 @@
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    color: #fff;
+    color: #ededed;
+    text-shadow: 0.2rem 0.2rem 0px #00000099;
     text-align: center;
     position: relative;
     image-rendering: -webkit-optimize-contrast;
     image-rendering: crisp-edges;
 }
 
-.presentation-title::before{
+.programas-presentation-title::before {
     content: '';
     position: absolute;
     top: 0;
@@ -29,36 +35,41 @@
     z-index: 1;
 }
 
-/* Estilo base para los botones */
-.expanding-button {
+.programas-expanding-button {
   padding: 0.8rem 2rem;
   background-color: #2a5091;
-  color: white;
+  color: #ededed;
   font-weight: bold;
   font-size: 1rem;
-  border: none;
-  border-radius: 10px;
+  border: 0.1rem solid #ededed;
+  border-radius: 1rem;
   cursor: pointer;
-  width: 250px; /* tamaño adecuado */
-  margin: 10px auto;
+  width: 250px;
+  margin: 1rem auto;
   display: block;
+  transition: all 0.3s ease;
 }
 
-.title{
+.programas-expanding-button:hover{
+  background-color: #1a3a71;
+  transform: translate(-2px);
+}
+
+.programas-title {
     color: #fff;
     font-size: 2rem;
     font-weight: bold;
     text-shadow: 0.2rem 0.2rem 0px #00000099;
+    position: relative;
+    z-index: 2;
 }
 
-/* Botón expandido */
-.expanding-button.active {
+.programas-expanding-button.active {
   width: 250px;
 }
 
-/* Estilo para las opciones de cada programa */
-.program-details {
-  background-color: #e3f2fd;
+.programas-program-details {
+  background-color: #ededed;
   padding: 10px;
   border-radius: 8px;
   margin: 10px 0;
@@ -68,6 +79,145 @@
   color: #2a5091;
 }
 
-.information-box{
+.programas-information-box {
   background-color: #2a5091;
+  padding: 0;
+}
+
+.programas-info-content {
+  padding: 2rem;
+  text-align: center;
+  background-color: #ededed;
+  margin: 0;
+}
+
+.programas-info-content h2 {
+  color: #2a5091;
+  margin-bottom: 1rem;
+}
+
+.programas-information-option {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 2rem 1rem;
+  padding: 2rem 1rem;
+}
+
+/*Media Queries*/
+
+@media (max-width: 1024px) {
+  .programas-presentation-title {
+    min-height: 40vh;
+  }
+  
+  .programas-title {
+    font-size: 1.8rem;
+  }
+  
+  .programas-expanding-button {
+    width: 220px;
+    padding: 0.7rem 1.8rem;
+  }
+  
+  .programas-program-details {
+    max-width: 90%;
+    margin: 10px auto;
+  }
+}
+
+/* Tablets pequeñas y móviles grandes (576px - 768px) */
+@media (max-width: 768px) {
+  .programas-presentation-title {
+    min-height: 35vh;
+  }
+  
+  .programas-title {
+    font-size: 1.6rem;
+  }
+  
+  .programas-info-content {
+    padding: 1.5rem;
+  }
+  
+  .programas-info-content h2 {
+    font-size: 1.4rem;
+  }
+  
+  .programas-expanding-button {
+    width: 200px;
+    padding: 0.6rem 1.5rem;
+    font-size: 0.9rem;
+  }
+  
+  .programas-information-option {
+    padding: 1.5rem 0.8rem;
+  }
+  
+  .programas-program-details {
+    padding: 15px;
+    max-width: 95%;
+  }
+}
+
+/* Móviles (375px - 576px) */
+@media (max-width: 576px) {
+  .programas-presentation-title {
+    min-height: 30vh;
+  }
+  
+  .programas-title {
+    font-size: 1.4rem;
+    text-shadow: 0.1rem 0.1rem 0px #00000099;
+  }
+  
+  .programas-info-content {
+    padding: 1rem;
+  }
+  
+  .programas-info-content h2 {
+    font-size: 1.2rem;
+    margin-bottom: 0.8rem;
+  }
+  
+  .programas-expanding-button {
+    width: 180px;
+    padding: 0.5rem 1.2rem;
+    font-size: 0.85rem;
+    margin: 8px auto;
+  }
+  
+  .programas-information-option {
+    padding: 1rem 0.5rem;
+  }
+  
+  .programas-program-details {
+    padding: 12px;
+    font-size: 0.9rem;
+  }
+  
+  .programas-program-details p {
+    margin-bottom: 0.8rem;
+  }
+}
+
+/* Móviles muy pequeños (hasta 375px) */
+@media (max-width: 375px) {
+  .programas-presentation-title {
+    min-height: 25vh;
+  }
+  
+  .programas-title {
+    font-size: 1.2rem;
+  }
+  
+  .programas-expanding-button {
+    width: 160px;
+    padding: 0.4rem 1rem;
+    font-size: 0.8rem;
+  }
+  
+  .programas-program-details {
+    padding: 10px;
+    font-size: 0.85rem;
+  }
 }

@@ -19,27 +19,27 @@ const Programas = () => {
 
   return (
     <Body>
-      <section className="presentation-container">
-        <div className="presentation-title">
-          <h1 className="title">Programas de Formación</h1>
+      <section className="programas-presentation-container">
+        <div className="programas-presentation-title">
+          <h1 className="programas-title">Programas de Formación</h1>
         </div>
       </section>
 
-      <section className="info-content">
+      <section className="programas-info-content">
         <h2>¿Qué programas de formación tenemos?</h2>
       </section>
 
-<div className="information-box">
-        <section className="information-option">
+      <div className="programas-information-box">
+        <section className="programas-information-option">
           {/* Botón y expansión para Refuerzo Academico */}
           <button
-            className="expanding-button"
+            className="programas-expanding-button"
             onClick={() => toggleProgram("RefuerzoAcademico")}
           >
             Círculos de Estudio
           </button>
           {isProgramExpanded.RefuerzoAcademico && (
-            <div className="program-details">
+            <div className="programas-program-details">
               <p>Objetivo general:</p>
               <p>Brindar apoyo académico a estudiantes de secundaria y universidad que presentan dificultades en asignaturas clave de sus estudios, contribuyendo a mejorar su desempeño académico y motivación para seguir adelante con sus estudios.</p>
 
@@ -52,13 +52,13 @@ const Programas = () => {
 
           {/* Botón y expansión para Programa Joaquín López y López */}
           <button
-            className="expanding-button"
+            className="programas-expanding-button"
             onClick={() => toggleProgram("Voluntariado")}
           >
             Programa Joaquín López y López
           </button>
           {isProgramExpanded.Voluntariado && (
-            <div className="program-details">
+            <div className="programas-program-details">
               <p>Objetivo general:</p>
               <p> Fomentar el compromiso social de los estudiantes universitarios a través de su participación en proyectos comunitarios que buscan atender las necesidades más urgentes de los sectores menos favorecidos de la comunidad.</p>
 
