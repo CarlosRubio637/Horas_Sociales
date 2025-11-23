@@ -68,7 +68,6 @@ function NavBar({
             <Link to={PATHS.HOME} className="nav-item">Home</Link>
             <Link to={PATHS.CSS_info} className="nav-item">CSS</Link>
             <Link to={PATHS.PROGRAMAS} className="nav-item">Programas de formación</Link> 
-            {/* OPCIÓN ESPECIAL SOLO PARA ADMIN - va a la misma página CSS pero con permisos */}
             {isLoggedIn && usuario?.rol === 'administrador' && (
               <Link to={PATHS.CSS_info} className="nav-item admin-option">
                 👑 Admin CSS
