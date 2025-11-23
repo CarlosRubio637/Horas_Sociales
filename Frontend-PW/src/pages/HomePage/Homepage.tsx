@@ -1,15 +1,16 @@
 import Body from "../../components/Body_desing/Body";
+import "./HomePage.css"; 
 
 const HomePage = () => {
   return (
     <Body>
-      <section className="presentation">
-        <div className="presentation-title">
+      <section className="homepage-presentation">
+        <div className="homepage-presentation-title">
           <h1>Centro de Servicio Social UCA</h1>
         </div>
       </section>
 
-      <section className="info-content">
+      <section className="homepage-info-content">
         <h2>Nuestra Historia</h2>
         <p>
           El Centro de Servicio Social (CSS) de la UCA nació en 1973 para
@@ -27,10 +28,10 @@ const HomePage = () => {
         </p>
       </section>
 
-      <section className="info-content-2">
-        <div className="info-content-blue">
-          <div className="blue-grid">
-            <div className="blue-text">
+      <section className="homepage-info-content-2">
+        <div className="homepage-info-content-blue">
+          <div className="homepage-blue-grid">
+            <div className="homepage-blue-text">
               <h2>¿Quiénes somos?</h2>
               <p>
                 El Centro de Servicio Social de la UCA promueve la solidaridad y
@@ -43,17 +44,17 @@ const HomePage = () => {
               </p>
             </div>
 
-            <div className="blue-img">
+            <div className="homepage-blue-img">
               <img src="./servicio_social.jpg" alt="Servicio Social UCA" />
             </div>
           </div>
         </div>
       </section>
 
-      <section className="info-content3">
-        <div className="info-content-white">
-          <div className="white-grid">
-            <div className="priority-item">
+      <section className="homepage-info-content3">
+        <div className="homepage-info-content-white">
+          <div className="homepage-white-grid">
+            <div className="homepage-priority-item">
               <h3>Misión</h3>
               <p>
                 Velar por la realización de un servicio social estudiantil,
@@ -63,7 +64,7 @@ const HomePage = () => {
                 universitaria.
               </p>
             </div>
-            <div className="priority-item">
+            <div className="homepage-priority-item">
               <h3>Visión</h3>
               <p>
                 Ser una instancia modelo reconocida en la promoción y
