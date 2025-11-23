@@ -12,7 +12,7 @@ const CSS = () => {
     "Opción 3"
   ]);
   const [newOption, setNewOption] = useState<string>(""); // Para capturar nuevas opciones
-  const isAdmin: boolean = true; // Simulamos el rol de administrador
+  const isAdmin: boolean = false; // Simulamos el rol de administrador
   const navigate = useNavigate();
 
   // Función para manejar el cambio en las checkboxes
