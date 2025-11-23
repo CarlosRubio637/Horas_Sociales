@@ -322,3 +322,31 @@ p {
   max-width: 300px; /* Ancho máximo para la caja de agregar opción */
   margin-bottom: 20px; /* Espacio de separación */
 }
+
+/* Estilos para el cuadro de descripción */
+.add-option-container textarea {
+    width: 80%; /* Ancho del campo de texto */
+    padding: 0.8rem 1rem; /* Relleno dentro del cuadro */
+    font-size: 1rem; /* Tamaño de la fuente */
+    border-radius: 10px; /* Bordes redondeados */
+    border: 1px solid #ccc; /* Borde gris */
+    margin-top: 10px; /* Espacio superior */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Sombra para dar profundidad */
+    resize: vertical; /* Permite cambiar el tamaño solo en dirección vertical */
+}
+
+/* Estilo para el botón Agregar opción */
+.add-option-btn {
+    padding: 0.8rem 1.5rem;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    font-weight: bold;
+    margin-top: 10px;
+}
+
+.add-option-btn:hover {
+    background-color: #45a049;
+}
