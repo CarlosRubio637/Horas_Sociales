@@ -11,37 +11,35 @@ const CSS = () => {
     {title: "Opción 2", description: "Descripción de la opción 2"},
     {title: "Opción 3", description: "Descripción de la opción 3"},
   ]);
-  const [newOptionTitle, setNewOptionTitle] = useState<string>(""); // Para capturar el título de la nueva opción
-  const [newOptionDescription, setNewOptionDescription] = useState<string>(""); // Para capturar la descripción de la nueva opción
-  const isAdmin: boolean = true; // Simulamos el rol de administrador
+  
+  const [newOptionTitle, setNewOptionTitle] = useState<string>(""); 
+  const [newOptionDescription, setNewOptionDescription] = useState<string>(""); 
+  const isAdmin: boolean = true; 
   const navigate = useNavigate();
 
-  // Función para manejar el cambio en las checkboxes
   const handleCheckboxChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const value = event.target.value;
     setSelectedOption(selectedOption === value ? null : value); 
   };
 
-  // Función para expandir el botón
   const handleButtonClick = () => {
     setIsButtonExpanded(!isButtonExpanded); 
   };
 
-  // Función para agregar una nueva opción
   const handleAddOption = () => {
     if (newOptionTitle && newOptionDescription) {
       setOptions([...options, { title: newOptionTitle, description: newOptionDescription }]);
-      setNewOptionTitle(""); // Limpiar el campo de texto después de agregar
-      setNewOptionDescription(""); // Limpiar el campo de descripción después de agregar
+      setNewOptionTitle(""); 
+      setNewOptionDescription(""); 
     }
   };
 
-  // Función para eliminar una opción
+
   const handleRemoveOption = (title: string) => {
     setOptions(options.filter((opt) => opt.title !== title));
   };
 
-  // Función para redirigir al formulario
+
   const handleRedirect = () => {
     navigate("/horas-sociales-form");
   };
@@ -116,7 +114,6 @@ const CSS = () => {
       </section>
 
       <section className="information-option">
-        {/* Botón expansible */}
         <button
           className={`expanding-button ${isButtonExpanded ? "active" : ""}`}
           onClick={handleButtonClick}
@@ -124,7 +121,6 @@ const CSS = () => {
           Opciones de Servicio Social
         </button>
 
-        {/* Mostrar las opciones solo si el botón está expandido */}
         {isButtonExpanded && (
           <div className="checkbox-container">
             {options.map((option, index) => (
@@ -140,7 +136,7 @@ const CSS = () => {
                   <p>{option.description}</p>
                 </label>
 
-                {/* Solo el admin puede eliminar opciones */}
+
                 {isAdmin && (
                   <button
                     onClick={() => handleRemoveOption(option.title)}
