@@ -10,8 +10,7 @@ p {
     overflow-wrap: break-word;
 }
 
-/*Baner de contenido*/
-.presentation-container{
+.presentation-container {
     background-image: url('/css_intento2.jpg');
     background-size: cover;
     background-position: center bottom;
@@ -31,7 +30,7 @@ p {
     image-rendering: crisp-edges;
 }
 
-.presentation-container::before{
+.presentation-container::before {
     content: '';
     position: absolute;
     top: 0;
@@ -47,15 +46,14 @@ p {
     z-index: 2;
 }
 
-.title{
+.title {
     color: #fff;
     font-size: 2rem;
     font-weight: bold;
     text-shadow: 0.2rem 0.2rem 0px #00000099;
 }
 
-/*Seccion de contenido*/
-.info-content{
+.info-content {
     max-width: 50rem;
     margin: 2rem auto;
     font-size: 1rem;
@@ -70,14 +68,14 @@ p {
     font-size: 1.8rem;
 }
 
-.info__steps{
+.info__steps {
     display: inline-block;
     margin: auto;
     color: #000;
 }
 
-/*reglamento*/
-.rule-content{
+
+.rule-content {
     background-color: #2A5091;
     color: #fff;
     min-height: 50vh;
@@ -96,7 +94,7 @@ p {
     padding: 2rem;
 }
 
-.rule-desing{
+.rule-desing {
     width: 100%;
     min-width: 50rem;
     display: flex;
@@ -105,7 +103,7 @@ p {
     align-items: center;
 }
 
-.rule-content p{
+.rule-content p {
     text-align: justify;
     text-align-last: center;
     line-height: 1.6;
@@ -114,157 +112,200 @@ p {
     max-width: 45rem;
 }
 
-.rule__steps{
+.rule__steps {
     text-align: left;
     display: inline-block;
     margin: 0 auto;
     padding-left: 1.5rem;
 }
 
-.rule__steps li{
+.rule__steps li {
     margin-bottom: 1.5rem;
     line-height: 1.6;
     text-align: justify;
     max-width: 45rem;
 }
 
-/*Opciones de servicio social*/
-.information-option{
+.information-option {
     background-color: #EDEDED;
     width: 100%;
     min-height: 50vh;
+    padding: 2rem 0;
 }
-/* Estilo base para el botón */
+
 .expanding-button {
-  padding: 0.8rem 2rem;
-  background-color: #2a5091; /* color azul */
-  color: white;
-  font-weight: bold;
-  font-size: 1rem;
-  border: none;
-  border-radius: 10px;
-  cursor: pointer;
-  transition: width 0.5s ease;
-  width: 150px; /* tamaño inicial */
-  text-align: center;
-  outline: none;
-  margin-bottom: 1rem;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-  display: block; /* Asegura que el botón se muestre centrado */
-  margin-left: auto;
-  margin-right: auto;
+    padding: 0.8rem 2rem;
+    background-color: #2a5091;
+    color: white;
+    font-weight: bold;
+    font-size: 1rem;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: width 0.5s ease;
+    width: 150px; 
+    text-align: center;
+    outline: none;
+    margin-bottom: 1rem;
+    box-shadow: 0 4px 8px #00000033;
+    display: block; 
+    margin-left: auto;
+    margin-right: auto;
 }
 
-/* El estado expandido */
+
 .expanding-button.active {
-  width: 250px; /* tamaño expandido */
-  height: auto;
+    width: 250px;
+    height: auto;
 }
 
-/* Estilo para cuando se pasa el mouse por encima */
 .expanding-button:hover {
-  background-color: #1e3c7f;
+    background-color: #1e3c7f;
 }
 
-/* Estilo para las opciones cuando el botón está expandido */
 .checkbox-container {
-  margin-top: 10px;
-  display: flex;
-  flex-direction: column; /* Asegura que las opciones estén de arriba a abajo */
-  gap: 10px;
-  align-items: center; /* Centra las opciones */
+    margin-top: 10px;
+    display: flex;
+    flex-direction: column; 
+    gap: 10px;
+    align-items: center; 
 }
 
-/* Diseño de cada opción (checkbox y texto) */
 .checkbox-container label {
-  font-size: 1rem;
-  color: #333; 
-  padding: 0.6rem;
-  background-color: #ffffff;
-  border-radius: 10px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  cursor: pointer;
-  transition: background-color 0.3s ease;
-  width: 100%;
-  max-width: 300px;
-  margin: auto;
-  text-align: left;
-  padding-left: 10px;
+    font-size: 1rem;
+    color: #333;
+    padding: 0.6rem;
+    background-color: #ffffff;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    width: 100%;
+    max-width: 300px;
+    margin: auto;
+    text-align: left;
+    padding-left: 10px;
+    word-wrap: break-word; 
+    white-space: normal; 
 }
 
-/* Cambiar el color de fondo de las opciones al pasar el mouse */
+
 .checkbox-container label:hover {
-  background-color: #f0f0f0;
+    background-color: #f0f0f0;
 }
 
-/* Estilos para cada opción de color */
 .checkbox-container label:nth-child(1) {
-  background-color: #e3f2fd; 
+    background-color: #e3f2fd; 
 }
 
 .checkbox-container label:nth-child(2) {
-  background-color: #e8f5e9; 
+    background-color: #e8f5e9; 
 }
 
 .checkbox-container label:nth-child(3) {
-  background-color: #fff3e0; 
+    background-color: #fff3e0; 
 }
 
-/* Estilo del botón para ir al formulario */
+
 .submit-button {
-  margin-top: 20px;
-  padding: 0.8rem 2rem;
-  background-color: #14a719;
-  color: white;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-  font-weight: bold;
-  width: 100%;
-  max-width: 250px;
-  margin: auto;
+    margin-top: 20px;
+    padding: 0.8rem 2rem;
+    background-color: #14a719;
+    color: white;
+    border: none;
+    border-radius: 0.3rem;
+    cursor: pointer;
+    font-weight: bold;
+    width: 100%;
+    max-width: 15.6rem;
+    margin: auto;
 }
 
 .submit-button:hover {
-  background-color: #45a049;
+    background-color: #45a049;
 }
 
-
-
-.information-option {
-  background-color: #EDEDED;
-  width: 100%;
-  min-height: 50vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: flex-start;
-  padding-top: 30px; 
+.submit-button:disabled {
+    background-color: #ddd;
 }
 
-.checkbox-container {
-  margin-top: 20px;
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-  align-items: center;
+.add-option-container {
+    display: flex;
+    justify-content: center;
+    gap:1rem;
+    align-items: center;
+}
+
+.add-option-container input {
+    padding: 0.8rem 1rem;
+    font-size: 1rem;
+    border-radius: 1rem;
+    border: 1px solid #ccc;
+    width: 60%;
+}
+
+.add-option-container button {
+    padding: 0.8rem 1.5rem;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 1rem;
+    cursor: pointer;
+}
+
+.add-option-container button:hover {
+    background-color: #45a049;
+}
+
+.submit-button-container {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    padding-top: 1rem;
 }
 
 .submit-button {
-  margin-top: 20px;
-  padding: 0.8rem 2rem;
-  background-color: #4CAF50;
-  color: white;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-  font-weight: bold;
-  width: 100%;
-  max-width: 250px;
-  margin: auto;
-  display: block;
+    margin-top: 1rem;
 }
 
-.submit-button:hover {
-  background-color: #45a049;
+
+.checkbox-container label {
+    font-size: 1rem;
+    color: #333;
+    padding: 0.6rem;
+    background-color: #ffffff;
+    border-radius: 1rem;
+    box-shadow: 0 4px 8px #0000001A;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    
+
+    width: 100%;
+    max-width: 18rem; 
+    min-width: 12.5rem; 
+    margin: auto;
+    text-align: left;
+    padding-left: 1rem;
+    word-wrap: break-word; 
+    white-space: normal; 
+    overflow-wrap: break-word; 
+    display: block; 
+}
+
+
+.checkbox-container input {
+    width: 2rem;
+    height: auto;
+    display: inline-block; 
+    margin-right: 1rem;
+}
+
+.add-option-container input {
+    padding: 0.8rem 1rem;
+    font-size: 1rem;
+    border-radius: 10px;
+    border: 1px solid #ccc;
+    width: 100%; 
+    max-width: 300px; 
+    margin-bottom: 20px; 
 }
