@@ -1,6 +1,7 @@
 import { useState } from "react";
 import Body from "@/components/Body_desing/Body";
 import './Css_info.css';
+import { useNavigate } from "react-router-dom";
 
 const CSS = () => {
   const [selectedOption, setSelectedOption] = useState<string | null>(null); 
@@ -12,6 +13,7 @@ const CSS = () => {
   ]);
   const [newOption, setNewOption] = useState<string>(""); // Para capturar nuevas opciones
   const isAdmin: boolean = true; // Simulamos el rol de administrador
+  const navigate = useNavigate();
 
   // Función para manejar el cambio en las checkboxes
   const handleCheckboxChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -35,6 +37,11 @@ const CSS = () => {
   // Función para eliminar una opción
   const handleRemoveOption = (option: string) => {
     setOptions(options.filter((opt) => opt !== option));
+  };
+
+  // Función para redirigir al formulario
+  const handleRedirect = () => {
+    navigate("/horas-sociales-form");
   };
 
   return (
@@ -119,46 +126,49 @@ const CSS = () => {
         {isButtonExpanded && (
           <div className="checkbox-container">
             {options.map((option, index) => (
-              <label key={index}>
-                <input
-                  type="checkbox"
-                  value={option}
-                  checked={selectedOption === option}
-                  onChange={handleCheckboxChange}
-                />
-                {option}
+              <div className="checkbox-item" key={index}>
+                <label>
+                  <input
+                    type="checkbox"
+                    value={option}
+                    checked={selectedOption === option}
+                    onChange={handleCheckboxChange}
+                  />
+                  {option}
+                </label>
                 {/* Solo el admin puede eliminar opciones */}
                 {isAdmin && (
                   <button
                     onClick={() => handleRemoveOption(option)}
-                    style={{ marginLeft: "10px", backgroundColor: "red", color: "white" }}
+                    className="remove-option-btn"
                   >
                     Eliminar
                   </button>
                 )}
-              </label>
+              </div>
             ))}
             {isAdmin && (
-              <div>
+              <div className="add-option-container">
                 <input
                   type="text"
                   value={newOption}
                   onChange={(e) => setNewOption(e.target.value)}
                   placeholder="Agregar nueva opción"
                 />
-                <button onClick={handleAddOption}>Agregar opción</button>
+                <button className="add-option-btn" onClick={handleAddOption}>
+                  Agregar opción
+                </button>
               </div>
             )}
           </div>
         )}
 
         {selectedOption && (
-          <button
-            className="submit-button"
-            onClick={() => console.log("Ir al formulario")}
-          >
-            Ir al formulario
-          </button>
+          <div className="submit-button-container">
+            <button className="submit-button" onClick={handleRedirect}>
+              Ir al formulario
+            </button>
+          </div>
         )}
       </section>
     </Body>

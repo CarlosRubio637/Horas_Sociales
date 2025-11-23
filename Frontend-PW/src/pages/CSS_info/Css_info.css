@@ -1,4 +1,3 @@
-/* General Reset */
 * {
     margin: 0;
     padding: 0;
@@ -11,7 +10,7 @@ p {
     overflow-wrap: break-word;
 }
 
-/* Banner de contenido */
+/*Banner de contenido*/
 .presentation-container {
     background-image: url('/css_intento2.jpg');
     background-size: cover;
@@ -26,6 +25,7 @@ p {
     justify-content: center;
     align-items: center;
     color: #fff;
+    text-align: center;
     position: relative;
     image-rendering: -webkit-optimize-contrast;
     image-rendering: crisp-edges;
@@ -54,7 +54,7 @@ p {
     text-shadow: 0.2rem 0.2rem 0px #00000099;
 }
 
-/* Sección de contenido */
+/*Seccion de contenido*/
 .info-content {
     max-width: 50rem;
     margin: 2rem auto;
@@ -76,13 +76,14 @@ p {
     color: #000;
 }
 
-/* Reglamentos */
+/*Reglamento*/
 .rule-content {
     background-color: #2A5091;
     color: #fff;
     min-height: 50vh;
     padding: 2rem 1rem;
     display: flex;
+    display: inline-block;
     width: 100%;
     place-items: center;
     font-size: 1rem;
@@ -106,6 +107,7 @@ p {
 
 .rule-content p {
     text-align: justify;
+    text-align-last: center;
     line-height: 1.6;
     margin-bottom: 1.5rem;
     width: 100%;
@@ -126,16 +128,12 @@ p {
     max-width: 45rem;
 }
 
-/* Opciones de servicio social */
+/*Opciones de servicio social*/
 .information-option {
     background-color: #EDEDED;
     width: 100%;
     min-height: 50vh;
-    padding-top: 30px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: flex-start;
+    padding: 2rem 0; /* Aumentar espacio superior e inferior */
 }
 
 /* Estilo base para el botón */
@@ -154,14 +152,14 @@ p {
     outline: none;
     margin-bottom: 1rem;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-    display: block;
+    display: block; /* Asegura que el botón se muestre centrado */
     margin-left: auto;
     margin-right: auto;
 }
 
 /* El estado expandido */
 .expanding-button.active {
-    width: 250px;
+    width: 250px; /* tamaño expandido */
     height: auto;
 }
 
@@ -172,12 +170,11 @@ p {
 
 /* Estilo para las opciones cuando el botón está expandido */
 .checkbox-container {
-    margin-top: 20px;
+    margin-top: 10px;
     display: flex;
-    flex-direction: column;
+    flex-direction: column; /* Asegura que las opciones estén de arriba a abajo */
     gap: 10px;
-    align-items: center;
-    padding: 10px;
+    align-items: center; /* Centra las opciones */
 }
 
 /* Diseño de cada opción (checkbox y texto) */
@@ -195,8 +192,8 @@ p {
     margin: auto;
     text-align: left;
     padding-left: 10px;
-    display: flex;
-    justify-content: space-between;
+    word-wrap: break-word; /* Hace que el texto largo se ajuste dentro de la caja */
+    white-space: normal; /* Permite que el texto se rompa y pase a la siguiente línea */
 }
 
 /* Cambiar el color de fondo de las opciones al pasar el mouse */
@@ -206,51 +203,18 @@ p {
 
 /* Estilos para cada opción de color */
 .checkbox-container label:nth-child(1) {
-    background-color: #e3f2fd;
+    background-color: #e3f2fd; /* Azul claro */
 }
 
 .checkbox-container label:nth-child(2) {
-    background-color: #e8f5e9;
+    background-color: #e8f5e9; /* Verde claro */
 }
 
 .checkbox-container label:nth-child(3) {
-    background-color: #fff3e0;
+    background-color: #fff3e0; /* Amarillo claro */
 }
 
-/* Estilo para el botón de eliminar */
-.delete-button {
-    background-color: red;
-    color: white;
-    border: none;
-    padding: 5px 10px;
-    border-radius: 5px;
-    cursor: pointer;
-}
-
-/* Estilo para el campo de texto para agregar nueva opción */
-.add-option-container {
-    margin-top: 15px;
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-    align-items: center;
-    width: 100%;
-    max-width: 350px;
-}
-
-/* Estilo para el botón de agregar */
-.add-option-button {
-    background-color: #2a5091;
-    color: white;
-    border: none;
-    padding: 10px 20px;
-    border-radius: 5px;
-    cursor: pointer;
-    width: 100%;
-    max-width: 250px;
-}
-
-/* Estilo para el botón para ir al formulario */
+/* Estilo del botón para ir al formulario */
 .submit-button {
     margin-top: 20px;
     padding: 0.8rem 2rem;
@@ -269,3 +233,92 @@ p {
     background-color: #45a049;
 }
 
+.submit-button:disabled {
+    background-color: #ddd;
+}
+
+/* Estilo para el botón de "Agregar opción" */
+.add-option-container {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    align-items: center;
+}
+
+.add-option-container input {
+    padding: 0.8rem 1rem;
+    font-size: 1rem;
+    border-radius: 10px;
+    border: 1px solid #ccc;
+    width: 60%;
+}
+
+.add-option-container button {
+    padding: 0.8rem 1.5rem;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+}
+
+.add-option-container button:hover {
+    background-color: #45a049;
+}
+
+/* Alinear el botón "Ir al formulario" */
+.submit-button-container {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    padding-top: 20px;
+}
+
+.submit-button {
+    margin-top: 20px;
+}
+
+/* Diseño de cada opción (checkbox y texto) */
+.checkbox-container label {
+  font-size: 1rem;
+  color: #333;
+  padding: 0.6rem;
+  background-color: #ffffff;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  
+  /* Limitar el tamaño de la caja (ancho máximo) */
+  width: 100%;
+  max-width: 300px; /* Límite de ancho máximo */
+  min-width: 200px; /* Límite mínimo si es necesario */
+  margin: auto;
+  text-align: left;
+  padding-left: 10px;
+  
+  /* Hacer que el texto se pase a la siguiente línea y no se desborde */
+  word-wrap: break-word; /* Para evitar que el texto se desborde */
+  white-space: normal; /* Permite que el texto se ajuste a la caja */
+  overflow-wrap: break-word; /* Asegura que el texto largo se ajuste correctamente */
+  display: block; /* Se asegura de que las etiquetas ocupen toda la línea */
+}
+
+/* Hacer que el texto de las opciones no se salga de la caja */
+.checkbox-container input {
+  width: 20px; /* Ancho fijo para el checkbox */
+  height: auto;
+  display: inline-block; /* Hacer que se acomode al lado del texto */
+  margin-right: 10px; /* Separar ligeramente la caja de la opción */
+}
+
+/* Estilo de la caja de texto para agregar una nueva opción */
+.add-option-container input {
+  padding: 0.8rem 1rem;
+  font-size: 1rem;
+  border-radius: 10px;
+  border: 1px solid #ccc;
+  width: 100%; /* Volver al tamaño completo */
+  max-width: 300px; /* Ancho máximo para la caja de agregar opción */
+  margin-bottom: 20px; /* Espacio de separación */
+}
