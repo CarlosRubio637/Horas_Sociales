@@ -270,42 +270,73 @@ p {
 
 
 .checkbox-container label {
-    font-size: 1rem;
-    color: #333;
-    padding: 0.6rem;
-    background-color: #ffffff;
-    border-radius: 1rem;
-    box-shadow: 0 4px 8px #0000001A;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-    
-
-    width: 100%;
-    max-width: 18rem; 
-    min-width: 12.5rem; 
-    margin: auto;
-    text-align: left;
-    padding-left: 1rem;
-    word-wrap: break-word; 
-    white-space: normal; 
-    overflow-wrap: break-word; 
-    display: block; 
+  font-size: 1rem;
+  color: #333;
+  padding: 0.6rem;
+  background-color: #ffffff;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  
+  /* Limitar el tamaño de la caja (ancho máximo) */
+  width: 100%;
+  max-width: 300px;
+  min-width: 200px; 
+  margin: auto;
+  text-align: left;
+  padding-left: 10px;
+  
+  /* Hacer que el texto se pase a la siguiente línea y no se desborde */
+  word-wrap: break-word; 
+  white-space: normal; 
+  overflow-wrap: break-word; 
+  display: block; 
 }
 
-
+/* Hacer que el texto de las opciones no se salga de la caja */
 .checkbox-container input {
-    width: 2rem;
-    height: auto;
-    display: inline-block; 
-    margin-right: 1rem;
+  width: 20px; 
+  height: auto;
+  display: inline-block; 
+  margin-right: 10px; 
+
 }
 
 .add-option-container input {
-    padding: 0.8rem 1rem;
-    font-size: 1rem;
+  padding: 0.8rem 1rem;
+  font-size: 1rem;
+  border-radius: 10px;
+  border: 1px solid #ccc;
+  width: 100%; 
+  max-width: 300px; 
+  margin-bottom: 20px; 
+}
+
+/* Estilos para el cuadro de descripción */
+.add-option-container textarea {
+    width: 80%; 
+    padding: 0.8rem 1rem; 
+    font-size: 1rem; 
+    border-radius: 10px; 
+    border: 1px solid #ccc; 
+    margin-top: 10px; 
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); 
+    resize: vertical; 
+}
+
+/* Estilo para el botón Agregar opción */
+.add-option-btn {
+    padding: 0.8rem 1.5rem;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
     border-radius: 10px;
-    border: 1px solid #ccc;
-    width: 100%; 
-    max-width: 300px; 
-    margin-bottom: 20px; 
+    cursor: pointer;
+    font-weight: bold;
+    margin-top: 10px;
+}
+
+.add-option-btn:hover {
+    background-color: #45a049;
 }

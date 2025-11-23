@@ -6,40 +6,40 @@ import { useNavigate } from "react-router-dom";
 const CSS = () => {
   const [selectedOption, setSelectedOption] = useState<string | null>(null); 
   const [isButtonExpanded, setIsButtonExpanded] = useState(false);
-  const [options, setOptions] = useState<string[]>([
-    "Opción 1", 
-    "Opción 2", 
-    "Opción 3"
+  const [options, setOptions] = useState<{title: string, description: string}[]>([
+    {title: "Opción 1", description: "Descripción de la opción 1"},
+    {title: "Opción 2", description: "Descripción de la opción 2"},
+    {title: "Opción 3", description: "Descripción de la opción 3"},
   ]);
-  const [newOption, setNewOption] = useState<string>(""); // Para capturar nuevas opciones
-  const isAdmin: boolean = false; 
+  
+  const [newOptionTitle, setNewOptionTitle] = useState<string>(""); 
+  const [newOptionDescription, setNewOptionDescription] = useState<string>(""); 
+  const isAdmin: boolean = true; 
   const navigate = useNavigate();
 
-  // Función para manejar el cambio en las checkboxes
   const handleCheckboxChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const value = event.target.value;
     setSelectedOption(selectedOption === value ? null : value); 
   };
 
-  // Función para expandir el botón
   const handleButtonClick = () => {
     setIsButtonExpanded(!isButtonExpanded); 
   };
 
-  // Función para agregar una nueva opción
   const handleAddOption = () => {
-    if (newOption && !options.includes(newOption)) {
-      setOptions([...options, newOption]);
-      setNewOption(""); // Limpiar el campo de texto después de agregar
+    if (newOptionTitle && newOptionDescription) {
+      setOptions([...options, { title: newOptionTitle, description: newOptionDescription }]);
+      setNewOptionTitle(""); 
+      setNewOptionDescription(""); 
     }
   };
 
-  // Función para eliminar una opción
-  const handleRemoveOption = (option: string) => {
-    setOptions(options.filter((opt) => opt !== option));
+
+  const handleRemoveOption = (title: string) => {
+    setOptions(options.filter((opt) => opt.title !== title));
   };
 
-  // Función para redirigir al formulario
+
   const handleRedirect = () => {
     navigate("/horas-sociales-form");
   };
@@ -114,7 +114,6 @@ const CSS = () => {
       </section>
 
       <section className="information-option">
-        {/* Botón expansible */}
         <button
           className={`expanding-button ${isButtonExpanded ? "active" : ""}`}
           onClick={handleButtonClick}
@@ -122,7 +121,6 @@ const CSS = () => {
           Opciones de Servicio Social
         </button>
 
-        {/* Mostrar las opciones solo si el botón está expandido */}
         {isButtonExpanded && (
           <div className="checkbox-container">
             {options.map((option, index) => (
@@ -130,16 +128,18 @@ const CSS = () => {
                 <label>
                   <input
                     type="checkbox"
-                    value={option}
-                    checked={selectedOption === option}
+                    value={option.title}
+                    checked={selectedOption === option.title}
                     onChange={handleCheckboxChange}
                   />
-                  {option}
+                  <strong>{option.title}</strong>
+                  <p>{option.description}</p>
                 </label>
-                {/* Solo el admin puede eliminar opciones */}
+
+
                 {isAdmin && (
                   <button
-                    onClick={() => handleRemoveOption(option)}
+                    onClick={() => handleRemoveOption(option.title)}
                     className="remove-option-btn"
                   >
                     Eliminar
@@ -147,14 +147,24 @@ const CSS = () => {
                 )}
               </div>
             ))}
+
+            {/* Solo el admin puede agregar nuevas opciones */}
             {isAdmin && (
               <div className="add-option-container">
-                <input
-                  type="text"
-                  value={newOption}
-                  onChange={(e) => setNewOption(e.target.value)}
-                  placeholder="Agregar nueva opción"
-                />
+                <div className="add-option-item">
+                  <input
+                    type="text"
+                    value={newOptionTitle}
+                    onChange={(e) => setNewOptionTitle(e.target.value)}
+                    placeholder="Agregar nuevo título de opción"
+                  />
+                  <textarea
+                    value={newOptionDescription}
+                    onChange={(e) => setNewOptionDescription(e.target.value)}
+                    placeholder="Agregar descripción"
+                    rows={3}
+                  />
+                </div>
                 <button className="add-option-btn" onClick={handleAddOption}>
                   Agregar opción
                 </button>
