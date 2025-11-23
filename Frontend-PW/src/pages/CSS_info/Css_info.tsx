@@ -1,12 +1,19 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom"; 
 import Body from "@/components/Body_desing/Body";
 import './Css_info.css';
+import { useNavigate } from "react-router-dom";
 
 const CSS = () => {
   const [selectedOption, setSelectedOption] = useState<string | null>(null); 
   const [isButtonExpanded, setIsButtonExpanded] = useState(false);
-  const navigate = useNavigate(); 
+  const [options, setOptions] = useState<string[]>([
+    "Opción 1", 
+    "Opción 2", 
+    "Opción 3"
+  ]);
+  const [newOption, setNewOption] = useState<string>(""); // Para capturar nuevas opciones
+  const isAdmin: boolean = false; // Simulamos el rol de administrador
+  const navigate = useNavigate();
 
   // Función para manejar el cambio en las checkboxes
   const handleCheckboxChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -14,16 +21,27 @@ const CSS = () => {
     setSelectedOption(selectedOption === value ? null : value); 
   };
 
-  // Función para manejar la redirección al formulario
-  const handleFormVisibility = () => {
-    if (selectedOption) {
-      navigate("/horas-sociales-form"); 
-    }
-  };
-
   // Función para expandir el botón
   const handleButtonClick = () => {
     setIsButtonExpanded(!isButtonExpanded); 
+  };
+
+  // Función para agregar una nueva opción
+  const handleAddOption = () => {
+    if (newOption && !options.includes(newOption)) {
+      setOptions([...options, newOption]);
+      setNewOption(""); // Limpiar el campo de texto después de agregar
+    }
+  };
+
+  // Función para eliminar una opción
+  const handleRemoveOption = (option: string) => {
+    setOptions(options.filter((opt) => opt !== option));
+  };
+
+  // Función para redirigir al formulario
+  const handleRedirect = () => {
+    navigate("/horas-sociales-form");
   };
 
   return (
@@ -104,56 +122,53 @@ const CSS = () => {
           Opciones de Servicio Social
         </button>
 
+        {/* Mostrar las opciones solo si el botón está expandido */}
         {isButtonExpanded && (
           <div className="checkbox-container">
-            <label>
-              <input
-                type="checkbox"
-                value="Opción 1"
-                checked={selectedOption === "Opción 1"}
-                onChange={handleCheckboxChange}
-              />
-              -SEGURIDAD-
-              
-              Se busca alguien que trabaje de 12:00 am a 6:00 am en el área de seguridad de Freddy's fazbear pizza de lunes a viernes por una semana.
-              Se tomara como horas sociales completas al llevar la jornada completa durante el preiodo establecido, de estar interesado ponerse en contacto con la administración.
-            </label>
-            <label>
-              <input
-                type="checkbox"
-                value="Opción 2"
-                checked={selectedOption === "Opción 2"}
-                onChange={handleCheckboxChange}
-              />
-              -LEVANTA CON NOSOTROS EL FUTURO- 
-
-              Ayuda a construir viviendas para familias de bajos recursos los fines de semana por un mes, las jornadaz seran de 12 horas desde las 8:00 am a las 8:00 pm con transporte incluido desde la universidad hasta el lugar del trabajo.
-              Se incluye tambien una merienda ligera durante el descanso y el el equipo de seguridad necesario para realizar las labores, contacta con nosotros para mas informacion a travez de administracion.
-            </label>
-            <label>
-              <input
-                type="checkbox"
-                value="Opción 3"
-                checked={selectedOption === "Opción 3"}
-                onChange={handleCheckboxChange}
-              />
-              -ENSEÑA ROBÓTICA, INSPIRA EL FUTURO-
-
-              ¡Sé parte de la formación de la próxima generación de ingenieros! Únete como profesor de robótica en una escuela local, donde podrás enseñar a los jóvenes conceptos fundamentales sobre robótica y programación.
-              Las sesiones serán de 4 horas cada fin de semana durante un mes, desde las 9:00 a.m. hasta la 1:00 p.m..
-              Además, contarás con todo el material necesario (kits de robótica, computadoras, etc.) para realizar las actividades. También se proporcionará apoyo logístico para el transporte si es necesario.
-              Si estás interesado, por favor contacta con la administración para más detalles.
-            </label>
+            {options.map((option, index) => (
+              <div className="checkbox-item" key={index}>
+                <label>
+                  <input
+                    type="checkbox"
+                    value={option}
+                    checked={selectedOption === option}
+                    onChange={handleCheckboxChange}
+                  />
+                  {option}
+                </label>
+                {/* Solo el admin puede eliminar opciones */}
+                {isAdmin && (
+                  <button
+                    onClick={() => handleRemoveOption(option)}
+                    className="remove-option-btn"
+                  >
+                    Eliminar
+                  </button>
+                )}
+              </div>
+            ))}
+            {isAdmin && (
+              <div className="add-option-container">
+                <input
+                  type="text"
+                  value={newOption}
+                  onChange={(e) => setNewOption(e.target.value)}
+                  placeholder="Agregar nueva opción"
+                />
+                <button className="add-option-btn" onClick={handleAddOption}>
+                  Agregar opción
+                </button>
+              </div>
+            )}
           </div>
         )}
 
         {selectedOption && (
-          <button
-            className="submit-button"
-            onClick={handleFormVisibility}
-          >
-            Ir al formulario
-          </button>
+          <div className="submit-button-container">
+            <button className="submit-button" onClick={handleRedirect}>
+              Ir al formulario
+            </button>
+          </div>
         )}
       </section>
     </Body>
