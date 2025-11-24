@@ -1,22 +1,27 @@
 import Aplicacion from "../models/Aplicacion.js";
 import Proyecto from "../models/Proyecto.js";
+import Usuario from "../models/Usuario.js"; // Importar el modelo de Usuario
 
 export const createAplicacion = async (req, res) => {
   try {
     const {
-      phone,      
-      studentId,  // Ahora va al perfil de Usuario
-      motivation, // Se queda en Aplicación
+      phone,
+      motivation, 
       socialHour, // ID del Proyecto
       acceptedTerms
     } = req.body;
 
-    const estudianteId = req.usuario.id;
+    const estudianteId = req.usuario.id; // ID del usuario logueado (del token)
+
+    const usuario = await Usuario.findById(estudianteId);
+    
+    if (!usuario) {
+        return res.status(404).json({ msg: "Usuario no encontrado." });
+    }
 
     // VALIDACIONES
-
     if (!socialHour) {
-      return res.status(400).json({ msg: "Debe seleccionar un proyecto (Social Hour)." });
+      return res.status(400).json({ msg: "Debe seleccionar un proyecto." });
     }
 
     const proyecto = await Proyecto.findById(socialHour);
@@ -37,18 +42,15 @@ export const createAplicacion = async (req, res) => {
       return res.status(400).json({ msg: "Ya has enviado una aplicación para este proyecto." });
     }
 
-    // ACTUALIZAR PERFIL DEL USUARIO (Carnet y Teléfono)
-    
+    // ACTUALIZAR PERFIL DEL USUARIO (Solo teléfono si cambió)
     const datosActualizarUsuario = {};
-    if (studentId) datosActualizarUsuario.carnet = studentId;
-    if (phone) datosActualizarUsuario.telefono = phone;
+    if (phone && phone !== usuario.telefono) datosActualizarUsuario.telefono = phone;
 
     if (Object.keys(datosActualizarUsuario).length > 0) {
       await Usuario.findByIdAndUpdate(estudianteId, datosActualizarUsuario);
     }
 
     // CREAR LA APLICACIÓN
-    
     const nuevaAplicacion = new Aplicacion({
       proyecto: socialHour,
       estudiante: estudianteId,
@@ -66,9 +68,8 @@ export const createAplicacion = async (req, res) => {
   } catch (error) {
     console.error("Error en createAplicacion:", error);
     
-    // Manejo de errores de duplicados
     if (error.code === 11000) {
-       return res.status(400).json({ msg: "Error: El carnet ingresado ya pertenece a otro usuario." });
+       return res.status(400).json({ msg: "Error: Ya existe una aplicación para este proyecto." });
     }
 
     res.status(500).json({ msg: "Hubo un error al procesar tu aplicación." });
@@ -79,7 +80,7 @@ export const getAplicacionesPorProyecto = async (req, res) => {
   try {
     const { id } = req.params;
     const aplicaciones = await Aplicacion.find({ proyecto: id })
-      .populate("estudiante", "nombre correo")
+      .populate("estudiante", "nombre correo carnet") 
       .populate("proyecto", "titulo");
 
     res.status(200).json(aplicaciones);
