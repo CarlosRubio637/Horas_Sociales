@@ -1,47 +1,189 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Body from "@/components/Body_desing/Body";
 import './Css_info.css';
 import { useNavigate } from "react-router-dom";
 
+// Interfaces para los tipos de datos que vienen del backend
+interface Institution {
+  _id: string;
+  nombre: string;
+}
+
+interface Project {
+  _id: string;
+  titulo: string;
+  descripcion: string;
+  institucion: Institution; 
+  activo: boolean;
+}
+
 const CSS = () => {
-  const [selectedOption, setSelectedOption] = useState<string | null>(null); 
-  const [isButtonExpanded, setIsButtonExpanded] = useState(false);
-  const [options, setOptions] = useState<{title: string, description: string}[]>([
-    {title: "Opción 1", description: "Descripción de la opción 1"},
-    {title: "Opción 2", description: "Descripción de la opción 2"},
-    {title: "Opción 3", description: "Descripción de la opción 3"},
-  ]);
-  
-  const [newOptionTitle, setNewOptionTitle] = useState<string>(""); 
-  const [newOptionDescription, setNewOptionDescription] = useState<string>(""); 
-  const isAdmin: boolean = true; 
   const navigate = useNavigate();
+  
+  // Estados de Datos
+  const [projects, setProjects] = useState<Project[]>([]);
+  const [institutions, setInstitutions] = useState<Institution[]>([]);
+  const [loading, setLoading] = useState(true);
 
-  const handleCheckboxChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const value = event.target.value;
-    setSelectedOption(selectedOption === value ? null : value); 
-  };
+  // Estados de Interfaz
+  const [selectedProjectId, setSelectedProjectId] = useState<string | null>(null);
+  const [isButtonExpanded, setIsButtonExpanded] = useState(false);
+  const [isAdmin, setIsAdmin] = useState(false);
+  const [token, setToken] = useState<string | null>(null);
 
-  const handleButtonClick = () => {
-    setIsButtonExpanded(!isButtonExpanded); 
-  };
+  // Estados del Formulario (Crear/Editar)
+  const [isEditing, setIsEditing] = useState(false);
+  const [editId, setEditId] = useState<string | null>(null);
+  
+  const [formTitle, setFormTitle] = useState("");
+  const [formDescription, setFormDescription] = useState("");
+  const [formInstitutionId, setFormInstitutionId] = useState("");
 
-  const handleAddOption = () => {
-    if (newOptionTitle && newOptionDescription) {
-      setOptions([...options, { title: newOptionTitle, description: newOptionDescription }]);
-      setNewOptionTitle(""); 
-      setNewOptionDescription(""); 
+  useEffect(() => {
+    const storedUser = localStorage.getItem('usuario');
+    const storedToken = localStorage.getItem('token');
+    
+    if (storedUser && storedToken) {
+      const user = JSON.parse(storedUser);
+      if (user.rol === 'admin' || user.rol === 'administrador') {
+        setIsAdmin(true);
+        setToken(storedToken);
+        fetchInstitutions(storedToken); 
+      }
+    }
+
+    fetchProjects();
+  }, []);
+
+  const fetchProjects = async () => {
+    try {
+      const response = await fetch("http://localhost:4000/api/proyectos");
+      if (response.ok) {
+        const data = await response.json();
+        setProjects(data);
+      }
+    } catch (error) {
+      console.error("Error cargando proyectos:", error);
+    } finally {
+      setLoading(false);
     }
   };
 
-
-  const handleRemoveOption = (title: string) => {
-    setOptions(options.filter((opt) => opt.title !== title));
+  const fetchInstitutions = async (authToken: string) => {
+    try {
+      const response = await fetch("http://localhost:4000/api/instituciones", {
+        headers: {
+          'Authorization': `Bearer ${authToken}`
+        }
+      });
+      if (response.ok) {
+        const data = await response.json();
+        setInstitutions(data);
+      }
+    } catch (error) {
+      console.error("Error cargando instituciones:", error);
+    }
   };
 
+  const handleCheckboxChange = (projectId: string) => {
+    setSelectedProjectId(selectedProjectId === projectId ? null : projectId);
+  };
+
+  const handleButtonClick = () => {
+    setIsButtonExpanded(!isButtonExpanded);
+  };
+
+  const handleSaveProject = async () => {
+    if (!formTitle || !formDescription || !formInstitutionId || !token) {
+      alert("Por favor completa todos los campos, incluyendo la institución.");
+      return;
+    }
+
+    try {
+      const url = isEditing 
+        ? `http://localhost:4000/api/proyectos/${editId}`
+        : "http://localhost:4000/api/proyectos";
+      
+      const method = isEditing ? "PUT" : "POST";
+
+      const response = await fetch(url, {
+        method: method,
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
+        },
+        body: JSON.stringify({
+          titulo: formTitle,
+          descripcion: formDescription,
+          institucionId: formInstitutionId
+        })
+      });
+
+      if (response.ok) {
+        alert(isEditing ? "Proyecto actualizado" : "Proyecto creado exitosamente");
+        setFormTitle("");
+        setFormDescription("");
+        setFormInstitutionId("");
+        setIsEditing(false);
+        setEditId(null);
+        fetchProjects();
+      } else {
+        const errData = await response.json();
+        alert(`Error: ${errData.msg}`);
+      }
+    } catch (error) {
+      console.error("Error al guardar:", error);
+      alert("Error de conexión");
+    }
+  };
+
+  const handleRemoveOption = async (id: string) => {
+    if (!confirm("¿Estás seguro de eliminar esta opción?")) return;
+    if (!token) return;
+
+    try {
+      const response = await fetch(`http://localhost:4000/api/proyectos/${id}`, {
+        method: "DELETE",
+        headers: {
+          'Authorization': `Bearer ${token}`
+        }
+      });
+
+      if (response.ok) {
+        fetchProjects(); 
+      } else {
+        alert("Error al eliminar el proyecto");
+      }
+    } catch (error) {
+      console.error("Error eliminando:", error);
+    }
+  };
+
+  const handleEditClick = (project: Project) => {
+    setFormTitle(project.titulo);
+    setFormDescription(project.descripcion);
+    setFormInstitutionId(project.institucion?._id || "");
+    setIsEditing(true);
+    setEditId(project._id);
+    if (!isButtonExpanded) setIsButtonExpanded(true);
+  };
+
+  const handleCancelEdit = () => {
+    setIsEditing(false);
+    setEditId(null);
+    setFormTitle("");
+    setFormDescription("");
+    setFormInstitutionId("");
+  };
 
   const handleRedirect = () => {
-    navigate("/horas-sociales-form");
+    const selectedProject = projects.find(p => p._id === selectedProjectId);
+    navigate("/horas-sociales-form", { 
+      state: { 
+        projectTitle: selectedProject?.titulo,
+        projectId: selectedProjectId 
+      } 
+    });
   };
 
   return (
@@ -74,40 +216,17 @@ const CSS = () => {
         <h2 className="rule__title">Reglamento y requisitos</h2>
         <div className="rule-desing">
           <p>
-            Requisitos Clave para Realizar el Servicio Social Estudiantil (UCA) El
-            Servicio Social es un requisito obligatorio y previo para iniciar el
-            proceso de graduación en la Universidad, de acuerdo con la Ley de
-            Educación Superior. Los aspectos clave que todo estudiante debe seguir
-            son:
+            Requisitos Clave para Realizar el Servicio Social Estudiantil (UCA)...
           </p>
-
           <ol className="rule__steps">
             <li>
-              Horas Requeridas
-              <br />
-              La cantidad de horas de servicio social a acumular varía según el nivel de la carrera:
-              <br />
-              Estudiantes de Nivel Técnico: Deben acumular 150 horas de servicio social.
-              <br />
-              Estudiantes de Ingeniería, Arquitectura y Licenciatura: Deben acumular 600 horas de servicio social.
+              <strong>Horas Requeridas:</strong> Estudiantes de Nivel Técnico: 150 horas. Ingeniería/Licenciatura: 600 horas.
             </li>
             <li>
-              Obligaciones del Estudiante
-              <br />
-              Para la correcta prestación del Servicio Social, el estudiante tiene las siguientes obligaciones:
-              <br />
-              Oportunidad: Prestar el servicio social antes de iniciar el proceso de graduación.
-              <br />
-              Información: Informarse oportunamente sobre las posibilidades y modalidades para realizar el servicio social.
-              <br />
-              Reporte: El reporte de horas efectuadas debe ser acompañado de la hoja de control de asistencia.
+              <strong>Obligaciones:</strong> Prestar el servicio antes de graduarse e informarse oportunamente.
             </li>
             <li>
-              Disposiciones Generales
-              <br />
-              El Servicio Social puede ser interno (en proyectos de la UCA) o externo (en instituciones de la sociedad civil, gubernamentales, etc.).
-              <br />
-              El estudiante tiene derecho a elegir o proponer la modalidad del servicio social que desea realizar, siempre que cumpla con los requisitos.
+              <strong>Disposiciones:</strong> Puede ser interno o externo.
             </li>
           </ol>
         </div>
@@ -118,62 +237,103 @@ const CSS = () => {
           className={`expanding-button ${isButtonExpanded ? "active" : ""}`}
           onClick={handleButtonClick}
         >
-          Opciones de Servicio Social
+          {loading ? "Cargando opciones..." : "Opciones de Servicio Social"}
         </button>
 
         {isButtonExpanded && (
           <div className="checkbox-container">
-            {options.map((option, index) => (
-              <div className="checkbox-item" key={index}>
+            {projects.length === 0 && <p>No hay proyectos activos disponibles por el momento.</p>}
+            
+            {projects.map((project) => (
+              <div className={`checkbox-item ${isAdmin ? 'admin-view' : ''}`} key={project._id}>
                 <label>
                   <input
                     type="checkbox"
-                    value={option.title}
-                    checked={selectedOption === option.title}
-                    onChange={handleCheckboxChange}
+                    value={project._id}
+                    checked={selectedProjectId === project._id}
+                    onChange={() => handleCheckboxChange(project._id)}
                   />
-                  <strong>{option.title}</strong>
-                  <p>{option.description}</p>
+                  <strong>{project.titulo}</strong>
+                  <span style={{ display: "block", fontSize: "0.8rem", color: "#666", marginBottom: "5px" }}>
+                    {project.institucion?.nombre}
+                  </span>
+                  <p>{project.descripcion}</p>
                 </label>
 
-
                 {isAdmin && (
-                  <button
-                    onClick={() => handleRemoveOption(option.title)}
-                    className="remove-option-btn"
-                  >
-                    Eliminar
-                  </button>
+                  <div className="admin-actions-group">
+                    <button
+                      className="action-btn edit"
+                      onClick={() => handleEditClick(project)}
+                    >
+                      Editar
+                    </button>
+                    <button
+                      className="action-btn delete"
+                      onClick={() => handleRemoveOption(project._id)}
+                    >
+                      Eliminar
+                    </button>
+                  </div>
                 )}
               </div>
             ))}
 
-            {/* Solo el admin puede agregar nuevas opciones */}
+            {/* Funciones de Admin */}
             {isAdmin && (
-              <div className="add-option-container">
-                <div className="add-option-item">
-                  <input
-                    type="text"
-                    value={newOptionTitle}
-                    onChange={(e) => setNewOptionTitle(e.target.value)}
-                    placeholder="Agregar nuevo título de opción"
-                  />
-                  <textarea
-                    value={newOptionDescription}
-                    onChange={(e) => setNewOptionDescription(e.target.value)}
-                    placeholder="Agregar descripción"
-                    rows={3}
-                  />
+              <div className="admin-panel-container">
+                <h3 className="admin-form-title">
+                  {isEditing ? "Editar Proyecto" : "Agregar Nuevo Proyecto"}
+                </h3>
+                
+                <textarea
+                  className="admin-input"
+                  value={formTitle}
+                  onChange={(e) => setFormTitle(e.target.value)}
+                  placeholder="Título del Proyecto"
+                />
+                
+                <select 
+                  className="admin-select"
+                  value={formInstitutionId}
+                  onChange={(e) => setFormInstitutionId(e.target.value)}
+                >
+                  <option value="">-- Seleccione una Institución --</option>
+                  {institutions.map((inst) => (
+                    <option key={inst._id} value={inst._id}>
+                      {inst.nombre}
+                    </option>
+                  ))}
+                </select>
+
+                <textarea
+                  className="admin-textarea"
+                  value={formDescription}
+                  onChange={(e) => setFormDescription(e.target.value)}
+                  placeholder="Descripción del proyecto"
+                  rows={3}
+                />
+                
+                <div className="admin-form-actions">
+                  <button className="add-option-btn" onClick={handleSaveProject}>
+                    {isEditing ? "Actualizar" : "Publicar"}
+                  </button>
+                  
+                  {isEditing && (
+                    <button 
+                      className="cancel-option-btn"
+                      onClick={handleCancelEdit}
+                    >
+                      Cancelar
+                    </button>
+                  )}
                 </div>
-                <button className="add-option-btn" onClick={handleAddOption}>
-                  Agregar opción
-                </button>
               </div>
             )}
           </div>
         )}
 
-        {selectedOption && (
+        {selectedProjectId && (
           <div className="submit-button-container">
             <button className="submit-button" onClick={handleRedirect}>
               Ir al formulario

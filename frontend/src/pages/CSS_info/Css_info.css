@@ -174,6 +174,18 @@ p {
     align-items: center; 
 }
 
+.checkbox-item {
+    position: relative;
+    width: 100%;
+    max-width: 300px;
+    margin: auto;
+    transition: padding-bottom 0.3s ease;
+}
+
+.checkbox-item.admin-view {
+    padding-bottom: 10px;
+}
+
 .checkbox-container label {
     font-size: 1rem;
     color: #333;
@@ -184,31 +196,161 @@ p {
     cursor: pointer;
     transition: background-color 0.3s ease;
     width: 100%;
-    max-width: 300px;
-    margin: auto;
+    display: block;
     text-align: left;
     padding-left: 10px;
     word-wrap: break-word; 
     white-space: normal; 
 }
 
-
 .checkbox-container label:hover {
     background-color: #f0f0f0;
 }
 
-.checkbox-container label:nth-child(1) {
+.checkbox-container .checkbox-item:nth-child(1) label {
     background-color: #e3f2fd; 
 }
 
-.checkbox-container label:nth-child(2) {
+.checkbox-container .checkbox-item:nth-child(2) label {
     background-color: #e8f5e9; 
 }
 
-.checkbox-container label:nth-child(3) {
+.checkbox-container .checkbox-item:nth-child(3) label {
     background-color: #fff3e0; 
 }
 
+.checkbox-container input {
+    width: 20px; 
+    height: auto;
+    display: inline-block; 
+    margin-right: 10px; 
+}
+
+/* Estilos de admin */
+
+.admin-actions-group {
+    display: flex;
+    gap: 10px;
+    margin-top: 5px;
+    justify-content: flex-end;
+    padding-right: 5px;
+}
+
+.action-btn {
+    padding: 5px 12px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 0.85rem;
+    font-weight: bold;
+    transition: transform 0.2s, background-color 0.2s;
+}
+
+.action-btn:hover {
+    transform: translateY(-2px);
+}
+
+.action-btn.edit {
+    background-color: #ffc107;
+    color: #000;
+}
+
+.action-btn.edit:hover {
+    background-color: #e0a800;
+}
+
+.action-btn.delete {
+    background-color: #dc3545;
+    color: #fff;
+}
+
+.action-btn.delete:hover {
+    background-color: #c82333;
+}
+
+/* Formulario de Admin */
+.admin-panel-container {
+    display: flex;
+    flex-direction: column;
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 15px;
+    margin-top: 30px;
+    border: 2px dashed #2A5091;
+    width: 100%;
+    max-width: 500px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+}
+
+.admin-form-title {
+    color: #2A5091;
+    margin-bottom: 15px;
+    text-align: center;
+    font-size: 1.3rem;
+}
+
+.admin-input, 
+.admin-select, 
+.admin-textarea {
+    width: 100%;
+    padding: 10px 15px;
+    margin-bottom: 15px;
+    border-radius: 10px;
+    border: 1px solid #ccc;
+    font-size: 1rem;
+    font-family: inherit;
+    transition: border-color 0.3s;
+}
+
+.admin-input:focus, 
+.admin-select:focus, 
+.admin-textarea:focus {
+    outline: none;
+    border-color: #2A5091;
+}
+
+.admin-form-actions {
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+}
+
+.add-option-btn {
+    padding: 0.8rem 1.5rem;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    font-weight: bold;
+    flex: 1;
+}
+
+.add-option-btn:hover {
+    background-color: #45a049;
+}
+
+.cancel-option-btn {
+    padding: 0.8rem 1.5rem;
+    background-color: #6c757d;
+    color: white;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    font-weight: bold;
+    flex: 1;
+}
+
+.cancel-option-btn:hover {
+    background-color: #5a6268;
+}
+
+.submit-button-container {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    padding-top: 1rem;
+}
 
 .submit-button {
     margin-top: 20px;
@@ -225,122 +367,6 @@ p {
 }
 
 .submit-button:hover {
-    background-color: #45a049;
-}
-
-.submit-button:disabled {
-    background-color: #ddd;
-}
-
-.add-option-container {
-    display: flex;
-    justify-content: center;
-    gap:1rem;
-    align-items: center;
-}
-
-.add-option-container input {
-    padding: 0.8rem 1rem;
-    font-size: 1rem;
-    border-radius: 1rem;
-    border: 1px solid #ccc;
-    width: 60%;
-}
-
-.add-option-container button {
-    padding: 0.8rem 1.5rem;
-    background-color: #4CAF50;
-    color: white;
-    border: none;
-    border-radius: 1rem;
-    cursor: pointer;
-}
-
-.add-option-container button:hover {
-    background-color: #45a049;
-}
-
-.submit-button-container {
-    display: flex;
-    justify-content: center;
-    width: 100%;
-    padding-top: 1rem;
-}
-
-.submit-button {
-    margin-top: 1rem;
-}
-
-
-.checkbox-container label {
-  font-size: 1rem;
-  color: #333;
-  padding: 0.6rem;
-  background-color: #ffffff;
-  border-radius: 10px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  cursor: pointer;
-  transition: background-color 0.3s ease;
-  
-  /* Limitar el tamaño de la caja (ancho máximo) */
-  width: 100%;
-  max-width: 300px;
-  min-width: 200px; 
-  margin: auto;
-  text-align: left;
-  padding-left: 10px;
-  
-  /* Hacer que el texto se pase a la siguiente línea y no se desborde */
-  word-wrap: break-word; 
-  white-space: normal; 
-  overflow-wrap: break-word; 
-  display: block; 
-}
-
-/* Hacer que el texto de las opciones no se salga de la caja */
-.checkbox-container input {
-  width: 20px; 
-  height: auto;
-  display: inline-block; 
-  margin-right: 10px; 
-
-}
-
-.add-option-container input {
-  padding: 0.8rem 1rem;
-  font-size: 1rem;
-  border-radius: 10px;
-  border: 1px solid #ccc;
-  width: 100%; 
-  max-width: 300px; 
-  margin-bottom: 20px; 
-}
-
-/* Estilos para el cuadro de descripción */
-.add-option-container textarea {
-    width: 80%; 
-    padding: 0.8rem 1rem; 
-    font-size: 1rem; 
-    border-radius: 10px; 
-    border: 1px solid #ccc; 
-    margin-top: 10px; 
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); 
-    resize: vertical; 
-}
-
-/* Estilo para el botón Agregar opción */
-.add-option-btn {
-    padding: 0.8rem 1.5rem;
-    background-color: #4CAF50;
-    color: white;
-    border: none;
-    border-radius: 10px;
-    cursor: pointer;
-    font-weight: bold;
-    margin-top: 10px;
-}
-
-.add-option-btn:hover {
     background-color: #45a049;
 }
 
