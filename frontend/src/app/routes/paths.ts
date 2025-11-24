@@ -3,5 +3,5 @@ export const PATHS = {
   CSS_info: "/css", 
   PROGRAMAS: "/programas", 
   CONTACTO: "/contacto",
-  MIS_SOLICITUDES: "/mis-solicitudes",
+  PANEL: "/panel",
 };

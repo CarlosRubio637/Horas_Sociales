@@ -7,11 +7,13 @@ const Layout = () => {
 
   const isFormPage = location.pathname.includes("horas-sociales-form");
 
+  const isPanel = location.pathname.includes("panel")
+
   return (
     <>
       {!isFormPage && <Navbar />}
       <main>
-        <Outlet />
+        {!isPanel && <Outlet />}
       </main>
       {!isFormPage && <Footer />}
     </>
