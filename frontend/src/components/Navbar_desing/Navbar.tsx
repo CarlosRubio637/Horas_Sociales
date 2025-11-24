@@ -15,11 +15,6 @@ interface Usuario {
   rol: string;
 }
 
-interface NavBarProps {
-  title?: string;
-  logoUrl?: string;
-}
-
 function NavBar({ title = "Servicio Social UCA", logoUrl = "/buho.png" }: NavBarProps) {
   
   // --- ESTADOS ---
@@ -75,6 +70,10 @@ function NavBar({ title = "Servicio Social UCA", logoUrl = "/buho.png" }: NavBar
         
         setCorreo('');
         setPassword('');
+
+        // Emitir evento para avisar a otros componentes
+        window.dispatchEvent(new Event("auth-change"));
+
       } else {
         setErrorMsg(data.msg || 'Credenciales incorrectas');
       }
