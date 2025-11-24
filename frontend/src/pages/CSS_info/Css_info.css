@@ -460,68 +460,6 @@ p {
     color: #3c66ad;
 }
 
-/* Badges de Estado */
-.status-badge {
-    padding: 5px 10px;
-    border-radius: 20px;
-    font-size: 0.85rem;
-    font-weight: bold;
-    text-transform: capitalize;
-    display: inline-block;
-}
-
-.status-badge.pendiente {
-    background-color: #fff3cd;
-    color: #856404;
-}
-
-.status-badge.aprobada {
-    background-color: #d4edda;
-    color: #155724;
-}
-
-.status-badge.rechazada {
-    background-color: #f8d7da;
-    color: #721c24;
-}
-
-/* Botones de Acción en la Tabla */
-.action-buttons-cell {
-    gap: 8px;
-    align-items: center;
-    height: 100%;
-}
-
-.approve-btn {
-    background-color: #28a745;
-    color: white;
-    border: none;
-    padding: 5px 10px;
-    border-radius: 5px;
-    cursor: pointer;
-    font-size: 0.9rem;
-    transition: background 0.2s;
-}
-
-.approve-btn:hover {
-    background-color: #218838;
-}
-
-.reject-btn {
-    background-color: #dc3545;
-    color: white;
-    border: none;
-    padding: 5px 10px;
-    border-radius: 5px;
-    cursor: pointer;
-    font-size: 0.9rem;
-    transition: background 0.2s;
-}
-
-.reject-btn:hover {
-    background-color: #c82333;
-}
-
 .view-applications-btn {
     padding: 5px 10px;
     background-color: #17a2b8; /* Color Info */
