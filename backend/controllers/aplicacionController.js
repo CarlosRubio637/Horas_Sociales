@@ -81,7 +81,8 @@ export const getAplicacionesPorProyecto = async (req, res) => {
     const { id } = req.params;
     const aplicaciones = await Aplicacion.find({ proyecto: id })
       .populate("estudiante", "nombre correo carnet") 
-      .populate("proyecto", "titulo");
+      .populate("proyecto", "titulo")
+      .populate("motivacion");
 
     res.status(200).json(aplicaciones);
   } catch (error) {
