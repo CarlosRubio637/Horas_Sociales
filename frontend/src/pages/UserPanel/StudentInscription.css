@@ -1,0 +1,81 @@
+.inscription-container {
+    width: 100%;
+    max-width: 1000px;
+    margin: 0 auto;
+    margin-top: 10px;
+}
+
+.inscription-title {
+    color: #2A5091;
+    margin-bottom: 20px;
+    font-size: 2rem;
+    border-bottom: 2px solid #2A5091;
+    padding-bottom: 10px;
+    text-align: center;
+}
+
+.project-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 20px;
+}
+
+.project-card {
+    background: white;
+    border-radius: 10px;
+    padding: 20px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    transition: transform 0.2s, box-shadow 0.2s;
+    display: flex;
+    flex-direction: column;
+}
+
+.project-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 5px 15px rgba(0,0,0,0.15);
+}
+
+.project-card-title {
+    color: #2A5091;
+    margin: 0 0 10px 0;
+    font-size: 1.2rem;
+}
+
+.project-card-inst {
+    font-size: 0.9rem;
+    color: #666;
+    font-weight: bold;
+    margin-bottom: 10px;
+    display: block;
+}
+
+.project-card-desc {
+    font-size: 0.95rem;
+    color: #444;
+    line-height: 1.5;
+    margin-bottom: 15px;
+    flex-grow: 1; /* Empuja el botón hacia abajo */
+}
+
+.inscription-btn {
+    background-color: #28a745;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-weight: bold;
+    width: 100%;
+    transition: background-color 0.2s;
+}
+
+.inscription-btn:hover {
+    background-color: #218838;
+}
+
+.loading-text {
+    text-align: center;
+    padding: 20px;
+    color: #666;
+    font-style: italic;
+}

@@ -1,0 +1,290 @@
+.admin-manager-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    font-family: monospace;
+    margin-top: 10px;
+}
+
+.admin-header {
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 30px;
+    border-bottom: 2px solid #2A5091;
+    padding-bottom: 15px;
+    text-align: center;
+}
+
+.admin-title {
+    color: #2A5091;
+    font-size: 2rem;
+    text-align: center;
+}
+
+/* Formulario de Agregar/Editar */
+.admin-form-panel {
+    background-color: white;
+    padding: 25px;
+    border-radius: 10px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    margin-bottom: 30px;
+    border: 1px solid #e0e0e0;
+}
+
+.admin-form-subtitle {
+    color: #2A5091;
+    margin-top: 0;
+    margin-bottom: 20px;
+    font-size: 1.2rem;
+}
+
+.form-row {
+    display: flex;
+    gap: 15px;
+    margin-bottom: 15px;
+}
+
+.admin-input, 
+.admin-select, 
+.admin-textarea {
+    width: 100%;
+    padding: 10px 15px;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+    font-size: 1rem;
+    font-family: inherit;
+    transition: border-color 0.3s;
+
+}
+
+.admin-input:focus, 
+.admin-select:focus, 
+.admin-textarea:focus {
+    outline: none;
+    border-color: #2A5091;
+}
+
+.admin-actions-row {
+    display: flex;
+    gap: 10px;
+    margin-top: 10px;
+}
+
+.save-btn {
+    background-color: #28a745;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: bold;
+    flex: 1;
+}
+
+.save-btn:hover {
+    background-color: #218838;
+}
+
+.cancel-btn {
+    background-color: #6c757d;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+.cancel-btn:hover {
+    background-color: #5a6268;
+}
+
+/* Lista de Proyectos */
+.projects-list {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.project-item {
+    background-color: white;
+    border-radius: 10px;
+    padding: 20px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    transition: transform 0.2s;
+}
+
+.project-item:hover {
+    transform: translateX(5px);
+}
+
+.project-info {
+    flex: 1;
+    padding-right: 20px;
+}
+
+.project-item-title {
+    color: #333;
+    margin: 0 0 5px 0;
+    font-size: 1.1rem;
+}
+
+.project-item-inst {
+    display: block;
+    font-size: 0.85rem;
+    color: #666;
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+
+.project-item-desc {
+    font-size: 0.9rem;
+    color: #555;
+    margin: 0;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 600px;
+}
+
+.item-actions {
+    display: flex;
+    gap: 8px;
+}
+
+.icon-btn {
+    padding: 8px 12px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 0.9rem;
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    transition: background 0.2s;
+}
+
+.icon-btn.view {
+    background-color: #17a2b8;
+    color: white;
+}
+.icon-btn.view:hover { background-color: #138496; }
+
+.icon-btn.edit {
+    background-color: #ffc107;
+    color: #000;
+}
+.icon-btn.edit:hover { background-color: #e0a800; }
+
+.icon-btn.delete {
+    background-color: #dc3545;
+    color: white;
+}
+.icon-btn.delete:hover { background-color: #c82333; }
+
+/* --- MODAL (Reutilizado y mejorado) --- */
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 10000;
+}
+
+.modal-content {
+    background-color: white;
+    border-radius: 10px;
+    width: 90%;
+    max-width: 900px;
+    max-height: 90vh;
+    display: flex;
+    flex-direction: column;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+}
+
+.modal-header {
+    padding: 15px 20px;
+    background-color: #2A5091;
+    color: white;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-radius: 10px 10px 0 0;
+}
+
+.modal-body {
+    padding: 20px;
+    overflow-y: auto;
+}
+
+.close-btn {
+    background: none;
+    border: none;
+    color: white;
+    font-size: 1.5rem;
+    cursor: pointer;
+}
+
+/* Tabla del Modal */
+.apps-table {
+    width: 100%;
+    border-collapse: collapse;
+    color: #141414;
+}
+
+.apps-table th, .apps-table td {
+    padding: 10px;
+    text-align: center;
+    border-bottom: 1px solid #eee;
+}
+
+.apps-table th {
+    background-color: #f8f9fa;
+    color: #2A5091;
+}
+
+.status-pill {
+    padding: 4px 10px;
+    border-radius: 15px;
+    font-size: 0.8rem;
+    font-weight: bold;
+    text-transform: uppercase;
+}
+
+.status-pill.pendiente { background-color: #fff3cd; color: #856404; }
+.status-pill.aprobada { background-color: #d4edda; color: #155724; }
+.status-pill.rechazada { background-color: #f8d7da; color: #721c24; }
+
+.modal-actions {
+    gap: 5px;
+}
+
+.mini-btn {
+    padding: 10px 14px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    color: white;
+    font-weight:bolder;
+    margin-right: 4px;
+    margin-left: 4px;
+}
+
+.mini-btn.approve { background-color: #28a745; }
+.mini-btn.reject { background-color: #dc3545; }
+
+@media (max-width: 768px) {
+    .form-row { flex-direction: column; gap: 10px; }
+    .project-item { flex-direction: column; align-items: flex-start; }
+    .project-info { padding-right: 0; margin-bottom: 15px; }
+    .item-actions { width: 100%; justify-content: space-between; }
+    .icon-btn { flex: 1; justify-content: center; }
+}
