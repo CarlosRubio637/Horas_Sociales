@@ -98,15 +98,9 @@ function NavBar({ title = "Servicio Social UCA", logoUrl = "/buho.png" }: NavBar
             <Link to={PATHS.CSS_info} className="nav-item">CSS</Link>
             <Link to={PATHS.PROGRAMAS} className="nav-item">Programas de formación</Link> 
             
-            {isLoggedIn && (usuario?.rol === 'administrador' || usuario?.rol === 'admin') && (
-              <Link to={PATHS.CSS_info} className="nav-item admin-option">
-                👑 Admin CSS
-              </Link>
-            )}
-            
-            {isLoggedIn && (usuario?.rol === 'usuario' || usuario?.rol === 'estudiante') && (
-              <Link to={PATHS.MIS_SOLICITUDES} className="nav-item">
-                Mis Solicitudes
+            {isLoggedIn && (
+              <Link to={PATHS.PANEL} className="nav-item admin-option" style={{backgroundColor: '#b5f0ffff', color: '#2A5091'}}>
+                Panel de Usuario
               </Link>
             )}
           </div>
