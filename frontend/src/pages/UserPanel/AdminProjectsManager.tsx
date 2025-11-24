@@ -29,25 +29,24 @@ interface Application {
 }
 
 const AdminProjectsManager = () => {
-  // --- Estados de Datos ---
+  // Estados de Datos
   const [projects, setProjects] = useState<Project[]>([]);
   const [institutions, setInstitutions] = useState<Institution[]>([]);
   const [token, setToken] = useState<string | null>(null);
 
-  // --- Estados de Formulario ---
+  // Estados de Formulario
   const [isEditing, setIsEditing] = useState(false);
   const [editId, setEditId] = useState<string | null>(null);
   const [formTitle, setFormTitle] = useState("");
   const [formDescription, setFormDescription] = useState("");
   const [formInstitutionId, setFormInstitutionId] = useState("");
 
-  // --- Estados de Modal de Inscritos ---
+  // Estados de Modal de Inscritos
   const [showModal, setShowModal] = useState(false);
   const [currentApps, setCurrentApps] = useState<Application[]>([]);
   const [currentProjectTitle, setCurrentProjectTitle] = useState("");
   const [loadingApps, setLoadingApps] = useState(false);
 
-  // --- Inicialización ---
   useEffect(() => {
     const storedToken = localStorage.getItem('token');
     if (storedToken) {
@@ -57,7 +56,7 @@ const AdminProjectsManager = () => {
     }
   }, []);
 
-  // --- Funciones API ---
+  // API
   const fetchProjects = async () => {
     try {
       const res = await fetch("http://localhost:4000/api/proyectos");
@@ -84,7 +83,6 @@ const AdminProjectsManager = () => {
     }
   };
 
-  // --- CRUD Proyectos ---
   const handleSaveProject = async () => {
     if (!formTitle || !formDescription || !formInstitutionId || !token) {
       alert("Por favor completa todos los campos.");
@@ -140,14 +138,13 @@ const AdminProjectsManager = () => {
     }
   };
 
-  // --- Gestión del Formulario ---
+  // Formulario
   const handleEditClick = (project: Project) => {
     setFormTitle(project.titulo);
     setFormDescription(project.descripcion);
     setFormInstitutionId(project.institucion?._id || "");
     setIsEditing(true);
     setEditId(project._id);
-    // Scroll hacia arriba suavemente para ver el formulario
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
@@ -159,7 +156,7 @@ const AdminProjectsManager = () => {
     setEditId(null);
   };
 
-  // --- Modal de Inscritos ---
+  // Modal de inscritos
   const handleViewApps = async (projectId: string, projectTitle: string) => {
     if (!token) return;
     setLoadingApps(true);
@@ -216,7 +213,6 @@ const AdminProjectsManager = () => {
         <h2 className="admin-title">Gestión de Proyectos</h2>
       </div>
 
-      {/* Panel de Formulario */}
       <div className="admin-form-panel">
         <h3 className="admin-form-subtitle">
           {isEditing ? "Editar Proyecto" : "Crear Nuevo Proyecto"}
@@ -261,7 +257,7 @@ const AdminProjectsManager = () => {
         </div>
       </div>
 
-      {/* Lista de Proyectos */}
+      {/* Lista de proyectos */}
       <div className="projects-list">
         {projects.map(p => (
           <div key={p._id} className="project-item">
@@ -297,7 +293,7 @@ const AdminProjectsManager = () => {
         ))}
       </div>
 
-      {/* Modal de Inscritos */}
+      {/* Modal*/}
       {showModal && (
         <div className="modal-overlay">
           <div className="modal-content">

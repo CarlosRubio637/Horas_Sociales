@@ -26,10 +26,6 @@ const HoursForm = () => {
     acceptedTerms: false,
   });
 
-  // Estado local para guardar el carnet (solo para mostrarlo en el PDF si es necesario)
-  // No será editable ni se enviará en el formulario
-  const [userCarnet, setUserCarnet] = useState("");
-
   const [errors, setErrors] = useState({
     acceptTerms: "",
     phone: "",
@@ -48,11 +44,6 @@ const HoursForm = () => {
 
       if (response.ok) {
         const userData = await response.json();
-
-        // Guardamos el carnet para uso interno (PDF)
-        if (userData.carnet) {
-          setUserCarnet(userData.carnet);
-        }
 
         setFormData(prev => ({
           ...prev,
@@ -81,13 +72,13 @@ const HoursForm = () => {
 
     if (user.rol !== "usuario" && user.rol !== "estudiante") {
       alert("Solo los estudiantes pueden aplicar a horas sociales.");
-      navigate("/");
+      navigate("/panel");
       return;
     }
 
     if (!state?.projectId) {
-      alert("Por favor selecciona un proyecto primero desde la sección CSS.");
-      navigate("/css");
+      alert("Por favor selecciona un proyecto primero desde tu panel de usuario.");
+      navigate("/panel/inscribir-proyecto");
       return;
     }
 
@@ -156,7 +147,6 @@ const HoursForm = () => {
         },
         body: JSON.stringify({
           phone: formData.phone,
-          // studentId: formData.studentId, <--- YA NO LO ENVIAMOS
           motivation: formData.motivation,
           socialHour: formData.projectId,
           acceptedTerms: formData.acceptedTerms,
@@ -169,7 +159,7 @@ const HoursForm = () => {
         console.log("Aplicación creada:", data);
         await generatePDF();
         alert("¡Aplicación enviada exitosamente!");
-        navigate("/css");
+        navigate("/panel");
 
       } else {
         setErrors(prev => ({ ...prev, general: data.msg || "Error al procesar la solicitud" }));
@@ -221,12 +211,11 @@ const HoursForm = () => {
       pdf.setFontSize(10);
       pdf.text(
         `Generado el: ${new Date().toLocaleString()}`,
-        10,
+        15,
         pdfHeight - 10
       );
 
-      // Usamos userCarnet para el nombre del archivo si existe
-      pdf.save(`comprobante-${userCarnet || 'inscripcion'}.pdf`);
+      pdf.save(`comprobante-inscripcion'}.pdf`);
 
     } catch (error) {
       console.error("Error al generar PDF:", error);

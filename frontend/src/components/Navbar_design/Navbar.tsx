@@ -16,8 +16,7 @@ interface Usuario {
 }
 
 function NavBar({ title = "Servicio Social UCA", logoUrl = "/buho.png" }: NavBarProps) {
-  
-  // --- ESTADOS ---
+
   const [showLogin, setShowLogin] = useState(false);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [usuario, setUsuario] = useState<Usuario | null>(null);

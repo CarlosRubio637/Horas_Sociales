@@ -3,7 +3,6 @@ import { Link, useNavigate } from "react-router-dom";
 
 import "./MyApplications.css";
 
-// Interfaz basada en lo que devuelve tu backend (getMisAplicaciones)
 interface Application {
   _id: string;
   proyecto: {
@@ -12,7 +11,7 @@ interface Application {
     descripcion: string;
   };
   estado: 'Pendiente' | 'Aprobada' | 'Rechazada';
-  fechaSumision: string; // El backend devuelve fecha ISO
+  fechaSumision: string;
 }
 
 const MyApplications = () => {
@@ -25,9 +24,8 @@ const MyApplications = () => {
     const token = localStorage.getItem("token");
     const user = localStorage.getItem("usuario");
 
-    // 1. Verificar autenticación básica
     if (!token || !user) {
-      navigate("/"); // Si no hay sesión, al home
+      navigate("/"); // Si no hay sesión, mandar al home
       return;
     }
 

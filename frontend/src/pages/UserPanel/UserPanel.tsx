@@ -59,7 +59,7 @@ const UserPanel = () => {
              Inicio
           </Link>
 
-          {/* Opciones de ESTUDIANTE */}
+          {/* Opciones de estudiante */}
           {!isAdmin && (
             <>
               <Link 
@@ -79,7 +79,7 @@ const UserPanel = () => {
             </>
           )}
 
-          {/* Opciones de ADMIN */}
+          {/* Opciones de administrador */}
           {isAdmin && (
             <>
               <Link 
@@ -96,7 +96,6 @@ const UserPanel = () => {
 
       {/* Contenido Principal */}
       <main className="panel-content">
-        {/* Si estamos en la raíz del panel, mostramos bienvenida */}
         {location.pathname === '/panel' && (
           <div className="panel-welcome">
             <h1>Bienvenido a tu Panel, {user.nombre.split(' ')[0]}</h1>
@@ -105,7 +104,6 @@ const UserPanel = () => {
           </div>
         )}
         
-        {/* Aquí se renderizan las sub-rutas */}
         <Outlet />
       </main>
     </div>

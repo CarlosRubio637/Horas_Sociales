@@ -54,7 +54,7 @@
     color: #444;
     line-height: 1.5;
     margin-bottom: 15px;
-    flex-grow: 1; /* Empuja el botón hacia abajo */
+    flex-grow: 1;
 }
 
 .inscription-btn {

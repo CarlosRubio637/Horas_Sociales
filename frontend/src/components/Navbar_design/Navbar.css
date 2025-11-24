@@ -149,7 +149,7 @@ header {
     font-weight: 500;
 }
 
-/* Modal de Login */
+/* Modal de login */
 .login-overlay {
     position: fixed;
     top: 0;
@@ -379,7 +379,6 @@ header {
     transform: translateY(-1px);
 }
 
-/* Botón cuando ya está logueado (icono) */
 .nav-user-button {
     border: none;
     background: #ffffff;

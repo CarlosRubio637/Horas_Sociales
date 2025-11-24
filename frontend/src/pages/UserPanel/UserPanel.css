@@ -6,7 +6,7 @@
   margin-top: 70px;
 }
 
-/* Sidebar (Menú Lateral) */
+/* Sidebar */
 .panel-sidebar {
   width: 250px;
   background-color: #2A5091;
@@ -65,14 +65,12 @@
   font-weight: bold;
 }
 
-/* Contenido Principal del Panel */
+/* Panel */
 .panel-content {
   flex: 1;
   padding: 30px;
   background-color: #f4f6f9;
-  /* Eliminamos overflow-y: auto para que use el scroll principal de la página */
-  /* Esto permite que el footer se empuje hacia abajo naturalmente */
-  min-width: 0; /* Evita desbordamientos en flex items */
+  min-width: 0;
 }
 
 .panel-welcome {
@@ -92,13 +90,12 @@
   margin-bottom: 15px;
 }
 
-/* Hamburger Menu para Móviles */
 .mobile-menu-toggle {
   display: none;
   position: fixed;
-  bottom: 20px; /* Lo movemos abajo a la derecha para que no estorbe arriba */
+  bottom: 20px;
   right: 20px;
-  z-index: 1000; /* Por encima de todo */
+  z-index: 1000;
   background-color: #2A5091;
   color: white;
   border: none;
@@ -117,7 +114,7 @@
 /* Responsive */
 @media (max-width: 768px) {
   .panel-container {
-    display: block; /* En móvil cambiamos a bloque simple */
+    display: block;
   }
 
   .panel-sidebar {
@@ -138,7 +135,7 @@
   }
 
   .mobile-menu-toggle {
-    display: flex; /* Solo visible en móvil */
+    display: flex;
   }
 
   .panel-content {
@@ -147,7 +144,6 @@
   }
 }
 
-/* Ocultar el botón en escritorio */
 @media (min-width: 769px) {
   .mobile-menu-toggle {
     display: none !important;

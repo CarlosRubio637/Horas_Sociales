@@ -185,7 +185,7 @@
 }
 .icon-btn.delete:hover { background-color: #c82333; }
 
-/* --- MODAL (Reutilizado y mejorado) --- */
+/* Modal */
 .modal-overlay {
     position: fixed;
     top: 0;
@@ -233,7 +233,7 @@
     cursor: pointer;
 }
 
-/* Tabla del Modal */
+/* Tabla del modal */
 .apps-table {
     width: 100%;
     border-collapse: collapse;

@@ -24,7 +24,7 @@
     gap: 1.5rem;
 }
 
-/* Contenedor principal del formulario para espaciado */
+/* Contenedor principal del formulario */
 .form-content-wrapper {
     padding: 10px;
 }
@@ -50,13 +50,12 @@
     background-color: #EDEDED;
 }
 
-/* Estilos específicos para inputs de solo lectura */
+/* Read only input */
 .read-only-input {
     background-color: #e0e0e0 !important;
     cursor: not-allowed;
 }
 
-/* Estilo específico para el input de proyecto seleccionado */
 .project-selected-input {
     background-color: #e0e0e0 !important;
     cursor: not-allowed;
@@ -77,7 +76,7 @@ textarea::placeholder, input::placeholder {
     min-height: 6.25rem;
 }
 
-/* Mensajes de error y alertas */
+/* Mensajes de error */
 .error-banner {
     background-color: #ffebee;
     color: #c62828;

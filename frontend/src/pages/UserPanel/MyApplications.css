@@ -22,13 +22,13 @@
     border-radius: 10px;
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
     overflow: hidden;
-    overflow-x: auto; /* Para scroll en móviles */
+    overflow-x: auto;
 }
 
 .apps-table {
     width: 100%;
     border-collapse: collapse;
-    min-width: 600px; /* Ancho mínimo para evitar deformaciones */
+    min-width: 600px;
 }
 
 .apps-table th,
@@ -66,7 +66,6 @@
     white-space: wrap;
 }
 
-/* Badges de Estado (Reutilizando estilo consistente) */
 .status-badge {
     padding: 0.4rem 0.8rem;
     border-radius: 2rem;
@@ -96,7 +95,6 @@
     border: 1px solid #f5c6cb;
 }
 
-/* Mensajes de estado */
 .loading-message,
 .error-message-box,
 .no-data-message {
@@ -143,6 +141,6 @@
     }
 
     .project-desc-cell {
-        display: none; /* Ocultar descripción en móviles para ahorrar espacio */
+        display: none;
     }
 }
