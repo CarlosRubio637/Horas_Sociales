@@ -15,66 +15,97 @@ interface Usuario {
   rol: string;
 }
 
-function NavBar({
-  title = "Servicio Social UCA",
-  logoUrl = "/buho.png",
-}: NavBarProps) {
+interface NavBarProps {
+  title?: string;
+  logoUrl?: string;
+}
+
+function NavBar({ title = "Servicio Social UCA", logoUrl = "/buho.png" }: NavBarProps) {
   
+  // --- ESTADOS ---
   const [showLogin, setShowLogin] = useState(false);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [usuario, setUsuario] = useState<Usuario | null>(null);
 
-  useEffect(() =>{
+  const [correo, setCorreo] = useState('');
+  const [password, setPassword] = useState('');
+  const [errorMsg, setErrorMsg] = useState('');
+
+  useEffect(() => {
     const userData = localStorage.getItem('usuario');
-    if(userData) {
+    const token = localStorage.getItem('token');
+    
+    if (userData && token) {
       setIsLoggedIn(true);
       setUsuario(JSON.parse(userData));
     }
   }, []);
 
-  //Simulacion del login - Borrar despues del testeo
-  const handleLoginSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-
-    const userSimulado : Usuario = {
-      id: "1",
-      nombre: "Administrador UCA",
-      correo: "admin@uca.edu.sv",
-      rol: "administrador" //AL testear, cambiar el rol a usuario para probar
-    };
-
-    setUsuario(userSimulado);
-    setIsLoggedIn(true);
-    localStorage.setItem('usuario', JSON.stringify(userSimulado));
-    setShowLogin(false);
-  };
-  
   const handleLogout = () => {
     setIsLoggedIn(false);
     setUsuario(null);
     localStorage.removeItem('usuario');
+    localStorage.removeItem('token'); 
+    window.location.reload(); 
   };
 
+  const handleLoginSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setErrorMsg('');
+
+    try {
+      const response = await fetch('http://localhost:4000/api/usuarios/login', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ 
+            correo: correo,       
+            contraseña: password  
+        })
+      });
+
+      const data = await response.json();
+
+      if (response.ok) {
+        localStorage.setItem('token', data.token);
+        localStorage.setItem('usuario', JSON.stringify(data.usuario));
+        
+        setUsuario(data.usuario);
+        setIsLoggedIn(true);
+        setShowLogin(false); // Cierra el modal
+        
+        setCorreo('');
+        setPassword('');
+      } else {
+        setErrorMsg(data.msg || 'Credenciales incorrectas');
+      }
+    } catch (error) {
+      console.error(error);
+      setErrorMsg('Error de conexión');
+    }
+  };
 
   return (
     <header className="header">
       <nav className="main-navbar">
         <div className="navbar-container">
+          
           <div className="navbar-brand">
             <img className="navbar-logo" src={logoUrl} alt={`Logo ${title}`} />
             <h3 className="navbar-title">{title}</h3>
           </div>
+          
           <div className="navbar-nav">
             <Link to={PATHS.HOME} className="nav-item">Home</Link>
             <Link to={PATHS.CSS_info} className="nav-item">CSS</Link>
             <Link to={PATHS.PROGRAMAS} className="nav-item">Programas de formación</Link> 
-            {/* OPCIÓN ESPECIAL SOLO PARA ADMIN - va a la misma página CSS pero con permisos */}
-            {isLoggedIn && usuario?.rol === 'administrador' && (
+            
+            {isLoggedIn && (usuario?.rol === 'administrador' || usuario?.rol === 'admin') && (
               <Link to={PATHS.CSS_info} className="nav-item admin-option">
                 👑 Admin CSS
               </Link>
             )}
           </div>
+
           <div className="navbar-actions">
             <div className="search-container">
               <input
@@ -83,6 +114,7 @@ function NavBar({
                 placeholder="Buscar..."
               />
             </div>
+            
             <div className="auth-section">
               {!isLoggedIn ? (
                 <button 
@@ -95,9 +127,8 @@ function NavBar({
                 <div className="user-menu">
                   <span className="user-greeting">
                     Hola, {usuario?.nombre}
-                    {usuario?.rol === 'administrador' && ' 👑'}
+                    {(usuario?.rol === 'administrador' || usuario?.rol === 'admin') && ' 👑'}
                   </span>
-                  {/* ✅ CORREGIDO: usa handleLogout en lugar de setIsLoggedIn(false) */}
                   <button className="nav-item logout-btn" onClick={handleLogout}>
                     Logout
                   </button>
@@ -107,11 +138,19 @@ function NavBar({
           </div>
         </div>
       </nav>
+
       {showLogin && (
         <div className="login-overlay">
           <div className="login-modal">
             <div className="login-content">
               <h3 className="login-title">Iniciar Sesión</h3>
+              
+              {errorMsg && (
+                <div style={{ color: 'red', marginBottom: '1rem', textAlign: 'center', fontSize: '0.9rem' }}>
+                  {errorMsg}
+                </div>
+              )}
+
               <form className="login-form" onSubmit={handleLoginSubmit}>
                 <div className="form-group">
                   <input
@@ -119,6 +158,8 @@ function NavBar({
                     placeholder="Correo electrónico"
                     className="login-input"
                     required
+                    value={correo}
+                    onChange={(e) => setCorreo(e.target.value)}
                   />
                 </div>
                 <div className="form-group">
@@ -127,8 +168,11 @@ function NavBar({
                     placeholder="Contraseña"
                     className="login-input"
                     required
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
                   />
                 </div>
+                
                 <div className="form-actions">
                   <button type="submit" className="btn-login">
                     Ingresar
@@ -140,12 +184,6 @@ function NavBar({
                   >
                     Cancelar
                   </button>
-                </div>
-                
-                {/* Info de prueba */}
-                <div className="login-info">
-                  <p>Para probar: usa cualquier correo y contraseña</p>
-                  <p>Por defecto entrará como <strong>administrador</strong></p>
                 </div>
               </form>
             </div>
