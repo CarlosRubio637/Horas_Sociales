@@ -1,6 +1,7 @@
 import Aplicacion from "../models/Aplicacion.js";
 import Proyecto from "../models/Proyecto.js";
 import Usuario from "../models/Usuario.js"; // Importar el modelo de Usuario
+import { agregarFilaAplicacion } from "../service/googleSheetsService.js";
 
 export const createAplicacion = async (req, res) => {
   try {
@@ -59,6 +60,26 @@ export const createAplicacion = async (req, res) => {
     });
 
     await nuevaAplicacion.save();
+
+    //se usaran los servicios de google 
+    const aplicacionPopulada = await Aplicacion.findById(nuevaAplicacion._id)
+      .populate("estudiante", "nombre correo")
+      .populate("proyecto", "titulo");
+
+    try {
+      await agregarFilaAplicacion({
+        id: aplicacionPopulada._id.toString(),
+        nombreEstudiante: aplicacionPopulada.estudiante.nombre,
+        correoEstudiante: aplicacionPopulada.estudiante.correo,
+        tituloProyecto: aplicacionPopulada.proyecto.titulo,
+        estado: aplicacionPopulada.estado,
+        fechaSumision: aplicacionPopulada.createdAt.toISOString(),
+        carnetEstudiante: aplicacionPopulada.estudiante.carnet
+      });
+    } catch (sheetsError) {
+      console.error("Error al registrar en Google Sheets:", sheetsError.message);
+    }
+
 
     res.status(201).json({
       msg: "Aplicación enviada exitosamente.",
