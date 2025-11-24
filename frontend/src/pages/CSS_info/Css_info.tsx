@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import Body from "@/components/Body_desing/Body";
 import './Css_info.css';
 import { useNavigate } from "react-router-dom";
@@ -13,13 +13,13 @@ interface Project {
   _id: string;
   titulo: string;
   descripcion: string;
-  institucion: Institution; 
+  institucion: Institution;
   activo: boolean;
 }
 
 const CSS = () => {
   const navigate = useNavigate();
-  
+
   // Estados de Datos
   const [projects, setProjects] = useState<Project[]>([]);
   const [institutions, setInstitutions] = useState<Institution[]>([]);
@@ -34,41 +34,12 @@ const CSS = () => {
   // Estados del Formulario (Crear/Editar)
   const [isEditing, setIsEditing] = useState(false);
   const [editId, setEditId] = useState<string | null>(null);
-  
+
   const [formTitle, setFormTitle] = useState("");
   const [formDescription, setFormDescription] = useState("");
   const [formInstitutionId, setFormInstitutionId] = useState("");
 
-  useEffect(() => {
-    const storedUser = localStorage.getItem('usuario');
-    const storedToken = localStorage.getItem('token');
-    
-    if (storedUser && storedToken) {
-      const user = JSON.parse(storedUser);
-      if (user.rol === 'admin' || user.rol === 'administrador') {
-        setIsAdmin(true);
-        setToken(storedToken);
-        fetchInstitutions(storedToken); 
-      }
-    }
-
-    fetchProjects();
-  }, []);
-
-  const fetchProjects = async () => {
-    try {
-      const response = await fetch("http://localhost:4000/api/proyectos");
-      if (response.ok) {
-        const data = await response.json();
-        setProjects(data);
-      }
-    } catch (error) {
-      console.error("Error cargando proyectos:", error);
-    } finally {
-      setLoading(false);
-    }
-  };
-
+  // Funciones de API
   const fetchInstitutions = async (authToken: string) => {
     try {
       const response = await fetch("http://localhost:4000/api/instituciones", {
@@ -85,6 +56,62 @@ const CSS = () => {
     }
   };
 
+  const fetchProjects = async () => {
+    try {
+      const response = await fetch("http://localhost:4000/api/proyectos");
+      if (response.ok) {
+        const data = await response.json();
+        setProjects(data);
+      }
+    } catch (error) {
+      console.error("Error cargando proyectos:", error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  // Función centralizada para verificar rol y cargar datos de admin
+  const checkAuth = useCallback(() => {
+    const storedUser = localStorage.getItem('usuario');
+    const storedToken = localStorage.getItem('token');
+
+    if (storedUser && storedToken) {
+      const user = JSON.parse(storedUser);
+      if (user.rol === 'admin' || user.rol === 'administrador') {
+        setIsAdmin(true);
+        setToken(storedToken);
+        // Si acabamos de loguearnos como admin, cargamos las instituciones
+        fetchInstitutions(storedToken);
+      } else {
+        // Es usuario normal
+        setIsAdmin(false);
+        setToken(storedToken);
+      }
+    } else {
+      // No hay sesión
+      setIsAdmin(false);
+      setToken(null);
+    }
+  }, []);
+
+  // Listener de Eventos
+  useEffect(() => {
+    fetchProjects();
+    checkAuth();
+
+    // Escuchar evento de login desde el Navbar
+    const handleAuthChange = () => {
+      console.log("Evento auth-change detectado en CSS Info");
+      checkAuth(); // Re-evaluar permisos
+    };
+
+    window.addEventListener("auth-change", handleAuthChange);
+
+    return () => {
+      window.removeEventListener("auth-change", handleAuthChange);
+    };
+  }, [checkAuth]);
+
   const handleCheckboxChange = (projectId: string) => {
     setSelectedProjectId(selectedProjectId === projectId ? null : projectId);
   };
@@ -100,10 +127,10 @@ const CSS = () => {
     }
 
     try {
-      const url = isEditing 
+      const url = isEditing
         ? `http://localhost:4000/api/proyectos/${editId}`
         : "http://localhost:4000/api/proyectos";
-      
+
       const method = isEditing ? "PUT" : "POST";
 
       const response = await fetch(url, {
@@ -150,7 +177,7 @@ const CSS = () => {
       });
 
       if (response.ok) {
-        fetchProjects(); 
+        fetchProjects();
       } else {
         alert("Error al eliminar el proyecto");
       }
@@ -178,11 +205,11 @@ const CSS = () => {
 
   const handleRedirect = () => {
     const selectedProject = projects.find(p => p._id === selectedProjectId);
-    navigate("/horas-sociales-form", { 
-      state: { 
+    navigate("/horas-sociales-form", {
+      state: {
         projectTitle: selectedProject?.titulo,
-        projectId: selectedProjectId 
-      } 
+        projectId: selectedProjectId
+      }
     });
   };
 
@@ -243,16 +270,18 @@ const CSS = () => {
         {isButtonExpanded && (
           <div className="checkbox-container">
             {projects.length === 0 && <p>No hay proyectos activos disponibles por el momento.</p>}
-            
+
             {projects.map((project) => (
               <div className={`checkbox-item ${isAdmin ? 'admin-view' : ''}`} key={project._id}>
                 <label>
-                  <input
-                    type="checkbox"
-                    value={project._id}
-                    checked={selectedProjectId === project._id}
-                    onChange={() => handleCheckboxChange(project._id)}
-                  />
+                  {!isAdmin && (
+                    <input
+                      type="checkbox"
+                      value={project._id}
+                      checked={selectedProjectId === project._id}
+                      onChange={() => handleCheckboxChange(project._id)}
+                    />
+                  )}
                   <strong>{project.titulo}</strong>
                   <span style={{ display: "block", fontSize: "0.8rem", color: "#666", marginBottom: "5px" }}>
                     {project.institucion?.nombre}
@@ -285,15 +314,15 @@ const CSS = () => {
                 <h3 className="admin-form-title">
                   {isEditing ? "Editar Proyecto" : "Agregar Nuevo Proyecto"}
                 </h3>
-                
+
                 <textarea
                   className="admin-input"
                   value={formTitle}
                   onChange={(e) => setFormTitle(e.target.value)}
                   placeholder="Título del Proyecto"
                 />
-                
-                <select 
+
+                <select
                   className="admin-select"
                   value={formInstitutionId}
                   onChange={(e) => setFormInstitutionId(e.target.value)}
@@ -313,14 +342,14 @@ const CSS = () => {
                   placeholder="Descripción del proyecto"
                   rows={3}
                 />
-                
+
                 <div className="admin-form-actions">
                   <button className="add-option-btn" onClick={handleSaveProject}>
                     {isEditing ? "Actualizar" : "Publicar"}
                   </button>
-                  
+
                   {isEditing && (
-                    <button 
+                    <button
                       className="cancel-option-btn"
                       onClick={handleCancelEdit}
                     >
