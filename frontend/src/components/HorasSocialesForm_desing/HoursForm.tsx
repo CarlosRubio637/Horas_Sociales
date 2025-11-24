@@ -1,24 +1,87 @@
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
 import html2canvas from "html2canvas";
 import jsPDF from "jspdf";
 import "./HoursForm.css";
 
+// Definimos la interfaz para el estado que viene de la navegación
+interface LocationState {
+  projectTitle?: string;
+  projectId?: string;
+}
+
 const HoursForm = () => {
+  const location = useLocation();
+  const navigate = useNavigate();
+  const state = location.state as LocationState; // Obtenemos el estado
+
+  // Estados para datos del usuario y token
+  const [token, setToken] = useState<string | null>(null);
+  // userRole se usa indirectamente en el useEffect para validación, aunque no se renderiza
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const [userRole, setUserRole] = useState<string | null>(null);
+
   const [formData, setFormData] = useState({
     name: "",
     email: "",
     phone: "",
     studentId: "",
     motivation: "",
-    socialHour: "",
+    socialHour: "", // Este será el título para mostrar
+    projectId: "",  // Este será el ID para enviar al backend
     acceptedTerms: false,
   });
 
   const [errors, setErrors] = useState({
     acceptTerms: "",
+    phone: "",
+    general: ""
   });
 
   const formRef = useRef<HTMLDivElement>(null);
+
+  // EFECTO 1: Validar Acceso y Cargar Datos Iniciales
+  useEffect(() => {
+    const storedToken = localStorage.getItem("token");
+    const storedUser = localStorage.getItem("usuario");
+
+    // 1. Verificar si está logueado
+    if (!storedToken || !storedUser) {
+      alert("Debes iniciar sesión para acceder a este formulario.");
+      navigate("/"); // Redirigir al home
+      return;
+    }
+
+    const user = JSON.parse(storedUser);
+    setToken(storedToken);
+    setUserRole(user.rol);
+
+    // 2. Verificar Rol (Solo estudiantes pueden aplicar)
+    if (user.rol !== "usuario" && user.rol !== "estudiante") {
+      alert("Solo los estudiantes pueden aplicar a horas sociales.");
+      navigate("/");
+      return;
+    }
+
+    // 3. Verificar si se seleccionó un proyecto desde la página anterior
+    if (!state?.projectId) {
+      alert("Por favor selecciona un proyecto primero desde la sección CSS.");
+      navigate("/css");
+      return;
+    }
+
+    // 4. Pre-llenar datos del formulario
+    setFormData(prev => ({
+      ...prev,
+      name: user.nombre || "",
+      email: user.correo || "",
+      studentId: user.carnet || "", // Asumiendo que el objeto usuario tiene 'carnet'
+      phone: user.telefono || "",   // Asumiendo que tiene 'telefono'
+      socialHour: state.projectTitle || "Proyecto Seleccionado",
+      projectId: state.projectId || ""
+    }));
+
+  }, [navigate, state]);
 
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
@@ -37,26 +100,40 @@ const HoursForm = () => {
       }
     } else {
       setFormData((prev) => ({ ...prev, [name]: value }));
+
+      // Limpiar error de teléfono al escribir
+      if (name === "phone") setErrors(prev => ({ ...prev, phone: "" }));
     }
+  };
+
+  // Validación simple de teléfono (formato 0000-0000 o 8 dígitos)
+  const validatePhone = (phone: string) => {
+    const phoneRegex = /^\d{4}-?\d{4}$/;
+    return phoneRegex.test(phone);
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    setErrors({ acceptTerms: "", phone: "", general: "" });
 
+    // Validaciones Frontend
     if (!formData.acceptedTerms) {
-      setErrors({ acceptTerms: "Debes aceptar los términos y condiciones." });
+      setErrors(prev => ({ ...prev, acceptTerms: "Debes aceptar los términos y condiciones." }));
       return;
     }
 
-    const token = localStorage.getItem("token");
+    if (!validatePhone(formData.phone)) {
+      setErrors(prev => ({ ...prev, phone: "Ingresa un teléfono válido (ej: 7777-7777)" }));
+      return;
+    }
+
     if (!token) {
-      alert("Error: No estás autenticado. Por favor inicia sesión.");
+      alert("Error de sesión. Por favor inicia sesión nuevamente.");
       return;
     }
 
     try {
-      // 3. Petición al Backend
-
+      // Petición al Backend
       const response = await fetch("http://localhost:4000/api/aplicaciones", {
         method: "POST",
         headers: {
@@ -64,12 +141,13 @@ const HoursForm = () => {
           Authorization: `Bearer ${token}`,
         },
         body: JSON.stringify({
-          name: formData.name,
-          email: formData.email,
-          phone: formData.phone, // Va a actualizar al Usuario
-          studentId: formData.studentId, // Va a actualizar al Usuario (carnet)
+          // Datos para actualizar perfil de usuario (si el backend lo soporta así)
+          phone: formData.phone,
+          studentId: formData.studentId,
+
+          // Datos de la aplicación
           motivation: formData.motivation,
-          socialHour: formData.socialHour,
+          socialHour: formData.projectId, // Enviamos el ID real del proyecto
           acceptedTerms: formData.acceptedTerms,
         }),
       });
@@ -79,19 +157,20 @@ const HoursForm = () => {
       if (response.ok) {
         // ÉXITO
         console.log("Aplicación creada:", data);
+
+        // Generar el comprobante PDF
+        await generatePDF();
+
         alert("¡Aplicación enviada exitosamente!");
+        navigate("/css"); // Redirigir al usuario después del éxito
 
-        generatePDF();
-
-        setFormData({ ...formData, motivation: "", acceptedTerms: false });
       } else {
-        console.error("Error backend:", data.msg);
-        alert(`Error: ${data.msg}`);
+        // Error del backend (ej: ya aplicaste, proyecto lleno, etc.)
+        setErrors(prev => ({ ...prev, general: data.msg || "Error al procesar la solicitud" }));
       }
     } catch (error) {
-      // ERROR DE RED
       console.error("Error de red:", error);
-      alert("No se pudo conectar con el servidor.");
+      setErrors(prev => ({ ...prev, general: "No se pudo conectar con el servidor." }));
     }
   };
 
@@ -99,11 +178,19 @@ const HoursForm = () => {
     if (!formRef.current) return;
 
     try {
+      // Ocultar botones temporalmente para el PDF
+      const buttons = formRef.current.querySelectorAll('button');
+      buttons.forEach(btn => btn.style.display = 'none');
+
       const canvas = await html2canvas(formRef.current, {
         scale: 2,
         useCORS: true,
         logging: false,
+        backgroundColor: "#ffffff" // Fondo blanco para el PDF
       });
+
+      // Restaurar botones
+      buttons.forEach(btn => btn.style.display = '');
 
       const pdf = new jsPDF("p", "mm", "a4");
       const imgData = canvas.toDataURL("image/png");
@@ -114,7 +201,9 @@ const HoursForm = () => {
       const imgHeight = canvas.height;
       const ratio = Math.min(pdfWidth / imgWidth, pdfHeight / imgHeight);
       const imgX = (pdfWidth - imgWidth * ratio) / 2;
-      const imgY = 30;
+      const imgY = 20;
+
+      pdf.text("Comprobante de Inscripción - Servicio Social UCA", 105, 15, { align: "center" });
 
       pdf.addImage(
         imgData,
@@ -125,190 +214,171 @@ const HoursForm = () => {
         imgHeight * ratio
       );
 
-      pdf.setFontSize(8);
-      pdf.setTextColor(100);
+      pdf.setFontSize(10);
       pdf.text(
-        `Estudiante: ${formData.name} - Carnet: ${formData.studentId}`,
+        `Generado el: ${new Date().toLocaleString()}`,
         10,
-        1
+        pdfHeight - 10
       );
 
-      pdf.text(
-        `Fecha: ${new Date().toLocaleDateString()} - Hora: ${
-          new Date().toLocaleTimeString
-        }`,
-        10,
-        15
-      );
+      pdf.save(`comprobante-${formData.studentId}.pdf`);
 
-      pdf.save(`comprobante-servicio-social-${formData.studentId}.pdf`);
-
-      alert(
-        "¡Solisitud enviada! Y se ha descargado un comprobante de tu inscripción"
-      );
-
-      //reseteo de formulario T_T
-      setFormData({
-        name: "",
-        email: "",
-        phone: "",
-        studentId: "",
-        motivation: "",
-        socialHour: "",
-        acceptedTerms: false,
-      });
     } catch (error) {
-      console.error("Ha ocurrido un error a generar el PDF:", error);
-      alert(
-        "Error al generar el comprobante de inscripción. Por favor intenta nuevamente."
-      );
+      console.error("Error al generar PDF:", error);
+      alert("La aplicación se guardó, pero hubo un error al generar el PDF.");
     }
   };
 
   return (
     <div className="hours-form-container">
-      <h2>Formulario de aplicación</h2>
-
-      <form onSubmit={handleSubmit} className="hours-form">
-        <div className="form-group">
-          <label htmlFor="name">Ingresa tú nombre completo:</label>
-          <input
-            type="text"
-            id="name"
-            name="name"
-            value={formData.name}
-            onChange={handleChange}
-            placeholder="Nombre completo"
-            required
-          />
+      <h2>Formulario de Aplicación</h2>
+      {errors.general && (
+        <div className="error-banner">
+          {errors.general}
         </div>
+      )}
 
-        <div className="form-group">
-          <label htmlFor="email">Correo electrónico:</label>
-          <input
-            type="email"
-            id="email"
-            name="email"
-            value={formData.email}
-            onChange={handleChange}
-            placeholder="carnet@uca.edu.sv"
-            required
-          />
-        </div>
+      {/* El ref se usa para capturar este div en el PDF */}
+      <div ref={formRef} className="form-content-wrapper">
+        <form onSubmit={handleSubmit} className="hours-form">
+          <div className="form-group">
+            <label htmlFor="name">Nombre completo:</label>
+            <input
+              type="text"
+              id="name"
+              name="name"
+              value={formData.name}
+              readOnly // Campo de solo lectura, viene del perfil
+              className="read-only-input"
+            />
+          </div>
 
-        <div className="form-group">
-          <label htmlFor="phone">Teléfono:</label>
-          <input
-            type="tel"
-            id="phone"
-            name="phone"
-            value={formData.phone}
-            onChange={handleChange}
-            placeholder="0000-0000"
-            required
-          />
-        </div>
+          <div className="form-group">
+            <label htmlFor="email">Correo electrónico:</label>
+            <input
+              type="email"
+              id="email"
+              name="email"
+              value={formData.email}
+              readOnly // Campo de solo lectura
+              className="read-only-input"
+            />
+          </div>
 
-        <div className="form-group">
-          <label htmlFor="studentId">Carnet de estudiante:</label>
-          <input
-            type="text"
-            id="studentId"
-            name="studentId"
-            value={formData.studentId}
-            onChange={handleChange}
-            placeholder="00012345"
-            required
-          />
-        </div>
+          <div className="form-group">
+            <label htmlFor="phone">Teléfono:</label>
+            <input
+              type="tel"
+              id="phone"
+              name="phone"
+              value={formData.phone}
+              onChange={handleChange}
+              placeholder="0000-0000"
+              required
+            />
+            {errors.phone && <span className="error-message">{errors.phone}</span>}
+          </div>
 
-        {/*Aca el backend hara que cuando se seleccione una hora social se auto rellene este campo en el formulario cuando
-            quiera aplicar a la hora social */}
-        <div className="form-group">
-          <label htmlFor="socialHour">Hora social inscrita:</label>
-          <input
-            type="text"
-            id="socialHour"
-            name="socialHour"
-            value={formData.socialHour}
-            onChange={handleChange}
-            placeholder=" "
-            required
-          />
-        </div>
+          <div className="form-group">
+            <label htmlFor="studentId">Carnet de estudiante:</label>
+            <input
+              type="text"
+              id="studentId"
+              name="studentId"
+              value={formData.studentId}
+              onChange={handleChange}
+              placeholder="00012345"
+              required
+            />
+          </div>
 
-        <div className="form-group">
-          <label htmlFor="motivacion">Razón de inscripcion:</label>
-          <textarea
-            id="motivation"
-            name="motivation"
-            value={formData.motivation}
-            onChange={handleChange}
-            rows={4}
-            placeholder="Explica tu motivo de inscripción"
-            required
-          ></textarea>
-        </div>
+          <div className="form-group">
+            <label htmlFor="socialHour">Proyecto a inscribir:</label>
+            <input
+              type="text"
+              id="socialHour"
+              name="socialHour"
+              value={formData.socialHour}
+              readOnly
+              className="project-selected-input"
+            />
+          </div>
 
-        <div className="form-warning">
-          <h2 className="form-title">Importante</h2>
-          <p>
-            Es obligatorio que reportes tú recuento de horas realizadas, y que
-            sean recopiladas en la hoja de horario que se te proporcionara el
-            encargado de la opcion de servicio social que has escogido; al igual
-            que es obligatorio que descargues dicha hoja en caso de perdidas. En
-            caso contrario, sin registro de tus horas sociales, no se contaran
-            en tu registro personal y se dara por hecho como no realizadas.
-          </p>
+          <div className="form-group">
+            <label htmlFor="motivacion">Razón de inscripción:</label>
+            <textarea
+              id="motivation"
+              name="motivation"
+              value={formData.motivation}
+              onChange={handleChange}
+              rows={4}
+              placeholder="Explica brevemente por qué quieres participar en este proyecto..."
+              required
+            ></textarea>
+          </div>
 
-          <p>
-            Es obligatorio que despues de haber reportado tus horas sociales y
-            haber cumplido con el total de seisientas horas deberas crear un
-            informe final de tu servicio social estudiantil, sin este no se
-            tomara como completado tu servicio social, las indicaciones puedes
-            encontrarlas en los siguientes enlaces:
-          </p>
+          <div className="form-warning">
+            <h2 className="form-title">Importante</h2>
+            <p>
+              Es obligatorio que reportes tú recuento de horas realizadas, y que
+              sean recopiladas en la hoja de horario que se te proporcionara el
+              encargado de la opcion de servicio social que has escogido; al igual
+              que es obligatorio que descargues dicha hoja en caso de perdidas. En
+              caso contrario, sin registro de tus horas sociales, no se contaran
+              en tu registro personal y se dara por hecho como no realizadas.
+            </p>
 
-          <ol>
-            <li>
-              <a href="/Guia-informe-final.pdf">
-                Guía de elaboración de reporte final
-              </a>
-            </li>
-            <li>
-              <a href="/Control-de-Asistencia.pdf">Control de asistencia</a>
-            </li>
-          </ol>
-        </div>
+            <p>
+              Es obligatorio que despues de haber reportado tus horas sociales y
+              haber cumplido con el total de seisientas horas deberas crear un
+              informe final de tu servicio social estudiantil, sin este no se
+              tomara como completado tu servicio social, las indicaciones puedes
+              encontrarlas en los siguientes enlaces:
+            </p>
 
-        <div className="form-group checkbox-group">
-          <input
-            className="check-conditions"
-            type="checkbox"
-            id="acceptedTerms"
-            name="acceptedTerms"
-            checked={formData.acceptedTerms}
-            onChange={handleChange}
-          />
-          <label className="check-info" htmlFor="checkbox">
-            He leído y acepto las responsabilidades y condiciones que conyeva
-            realizar mi servicio social
-          </label>
+            <ol>
+              <li>
+                <a href="/Guia-informe-final.pdf" target="_blank" rel="noopener noreferrer">
+                  Guía de elaboración de reporte final
+                </a>
+              </li>
+              <li>
+                <a href="/Control-de-Asistencia.pdf" target="_blank" rel="noopener noreferrer">Control de asistencia</a>
+              </li>
+            </ol>
+          </div>
+
+          <div className="form-group checkbox-group">
+            <input
+              className="check-conditions"
+              type="checkbox"
+              id="acceptedTerms"
+              name="acceptedTerms"
+              checked={formData.acceptedTerms}
+              onChange={handleChange}
+            />
+            <label className="check-info" htmlFor="acceptedTerms">
+              He leído y acepto las responsabilidades y condiciones que conlleva
+              realizar mi servicio social.
+            </label>
+          </div>
           {errors.acceptTerms && (
-            <span className="error-message">{errors.acceptTerms}</span>
+            <div className="terms-error-container">
+              <span className="error-message">{errors.acceptTerms}</span>
+            </div>
           )}
-        </div>
 
-        <div className="form-actions">
-          <button
-            type="submit"
-            className="submit-btn"
-            disabled={!formData.acceptedTerms}
-          >
-            Envia tu solicitud
-          </button>
-        </div>
-      </form>
+          <div className="form-actions">
+            <button
+              type="submit"
+              className="submit-btn"
+              disabled={!formData.acceptedTerms}
+            >
+              Enviar Solicitud
+            </button>
+          </div>
+        </form>
+      </div>
     </div>
   );
 };

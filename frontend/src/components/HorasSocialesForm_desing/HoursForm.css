@@ -1,4 +1,4 @@
-.hours-form-container{
+.hours-form-container {
     max-width: 37.5rem;
     margin: 0 auto;
     padding: 2rem;
@@ -11,12 +11,11 @@
     border-radius: 1rem;
 }
 
-.hours-form-container h2{
+.hours-form-container h2 {
     color: #2A5091;
     text-align: center;
     margin-bottom: 1.5rem;
     font-size: 1.8rem;
-
 }
 
 .hours-form {
@@ -25,12 +24,17 @@
     gap: 1.5rem;
 }
 
-.form-group{
+/* Contenedor principal del formulario para espaciado */
+.form-content-wrapper {
+    padding: 10px;
+}
+
+.form-group {
     display: flex;
     flex-direction: column;
 }
 
-.form-group label{
+.form-group label {
     color: #2A5091;
     font-weight: bold;
     margin-bottom: 0.5rem;
@@ -41,33 +45,68 @@
     border: 0.2rem solid #ddd;
     border-radius: 1rem;   
     font-family: monospace;
-    transition: border-color 0.3s ease ;
+    transition: border-color 0.3s ease;
     color: #2A5091;
     background-color: #EDEDED;
 }
 
-textarea::placeholder, input::placeholder{
+/* Estilos específicos para inputs de solo lectura */
+.read-only-input {
+    background-color: #e0e0e0 !important;
+    cursor: not-allowed;
+}
+
+/* Estilo específico para el input de proyecto seleccionado */
+.project-selected-input {
+    background-color: #e0e0e0 !important;
+    cursor: not-allowed;
+    font-weight: bold;
+}
+
+textarea::placeholder, input::placeholder {
     color: #A1ABCD;    
 }
 
-
-.form-group input:focus, .form-group textarea:focus{
+.form-group input:focus, .form-group textarea:focus {
     outline: none;
     border-color: #2A5091;
 }
 
-.form-group textarea{
+.form-group textarea {
     resize: vertical;
     min-height: 6.25rem;
 }
 
-.form-actions{
+/* Mensajes de error y alertas */
+.error-banner {
+    background-color: #ffebee;
+    color: #c62828;
+    padding: 10px;
+    border-radius: 5px;
+    margin-bottom: 15px;
+    text-align: center;
+    border: 1px solid #ef9a9a;
+}
+
+.error-message {
+    color: #c62828;
+    font-size: 0.8rem;
+    margin-top: 5px;
+    display: block;
+}
+
+.terms-error-container {
+    text-align: center;
+    margin-bottom: 10px;
+}
+
+.form-actions {
     display: flex;
     justify-content: center;
     margin-top: 1rem;
 }
 
-.submit-btn{
+.submit-btn {
     background-color: #2A5091;
     color: #ededed;
     border: none;
@@ -75,7 +114,7 @@ textarea::placeholder, input::placeholder{
     border-radius: 0.5rem;
     font-size: 1.1rem;
     font-weight: bold;
-    cursor:pointer;
+    cursor: pointer;
     transition: background-color 0.3 ease;
 }
 
@@ -88,14 +127,13 @@ textarea::placeholder, input::placeholder{
     cursor: not-allowed;
 }
 
-
-.form-warning{
+.form-warning {
     color: #1a3a7a;
     text-align: justify;
     align-items: center;
     border-radius: 0.5rem;
     border-left: 0.3rem solid #2A5091;
-    background:#FFFFFF80;
+    background: #FFFFFF80;
     padding: 1rem;
 }
 
@@ -105,10 +143,9 @@ textarea::placeholder, input::placeholder{
     color: #2A5091;
 }
 
-.form-warning ol{
+.form-warning ol {
     text-align: left;
     list-style: none;
-    align-items: left;
     padding: 0;
 }
 
@@ -121,15 +158,14 @@ textarea::placeholder, input::placeholder{
     text-decoration: underline;
 }
 
-.checkbox-group{
+.checkbox-group {
     flex-direction: row;
     align-items: flex-start;
     gap: 0.75rem;
     background: #FFFFFF80;
     padding: 1rem;
     border-radius: 0.5rem;
-    border:  2px solid #A1ABCD;
-    
+    border: 2px solid #A1ABCD;
 }
 
 .checkbox-group:focus-within {
