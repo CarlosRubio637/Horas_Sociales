@@ -4,7 +4,6 @@ import html2canvas from "html2canvas";
 import jsPDF from "jspdf";
 import "./HoursForm.css";
 
-// Definimos la interfaz para el estado que viene de la navegación
 interface LocationState {
   projectTitle?: string;
   projectId?: string;
@@ -13,24 +12,23 @@ interface LocationState {
 const HoursForm = () => {
   const location = useLocation();
   const navigate = useNavigate();
-  const state = location.state as LocationState; // Obtenemos el estado
+  const state = location.state as LocationState;
 
-  // Estados para datos del usuario y token
   const [token, setToken] = useState<string | null>(null);
-  // userRole se usa indirectamente en el useEffect para validación, aunque no se renderiza
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const [userRole, setUserRole] = useState<string | null>(null);
 
   const [formData, setFormData] = useState({
     name: "",
     email: "",
     phone: "",
-    studentId: "",
     motivation: "",
-    socialHour: "", // Este será el título para mostrar
-    projectId: "",  // Este será el ID para enviar al backend
+    socialHour: "",
+    projectId: "",
     acceptedTerms: false,
   });
+
+  // Estado local para guardar el carnet (solo para mostrarlo en el PDF si es necesario)
+  // No será editable ni se enviará en el formulario
+  const [userCarnet, setUserCarnet] = useState("");
 
   const [errors, setErrors] = useState({
     acceptTerms: "",
@@ -40,46 +38,66 @@ const HoursForm = () => {
 
   const formRef = useRef<HTMLDivElement>(null);
 
-  // EFECTO 1: Validar Acceso y Cargar Datos Iniciales
+  const fetchUserProfile = async (authToken: string) => {
+    try {
+      const response = await fetch("http://localhost:4000/api/usuarios/perfil", {
+        headers: {
+          Authorization: `Bearer ${authToken}`,
+        },
+      });
+
+      if (response.ok) {
+        const userData = await response.json();
+
+        // Guardamos el carnet para uso interno (PDF)
+        if (userData.carnet) {
+          setUserCarnet(userData.carnet);
+        }
+
+        setFormData(prev => ({
+          ...prev,
+          name: userData.nombre || "",
+          email: userData.correo || "",
+          phone: userData.telefono || prev.phone,
+        }));
+      }
+    } catch (error) {
+      console.error("Error al cargar perfil:", error);
+    }
+  };
+
   useEffect(() => {
     const storedToken = localStorage.getItem("token");
     const storedUser = localStorage.getItem("usuario");
 
-    // 1. Verificar si está logueado
     if (!storedToken || !storedUser) {
       alert("Debes iniciar sesión para acceder a este formulario.");
-      navigate("/"); // Redirigir al home
+      navigate("/");
       return;
     }
 
     const user = JSON.parse(storedUser);
     setToken(storedToken);
-    setUserRole(user.rol);
 
-    // 2. Verificar Rol (Solo estudiantes pueden aplicar)
     if (user.rol !== "usuario" && user.rol !== "estudiante") {
       alert("Solo los estudiantes pueden aplicar a horas sociales.");
       navigate("/");
       return;
     }
 
-    // 3. Verificar si se seleccionó un proyecto desde la página anterior
     if (!state?.projectId) {
       alert("Por favor selecciona un proyecto primero desde la sección CSS.");
       navigate("/css");
       return;
     }
 
-    // 4. Pre-llenar datos del formulario
     setFormData(prev => ({
       ...prev,
-      name: user.nombre || "",
-      email: user.correo || "",
-      studentId: user.carnet || "", // Asumiendo que el objeto usuario tiene 'carnet'
-      phone: user.telefono || "",   // Asumiendo que tiene 'telefono'
       socialHour: state.projectTitle || "Proyecto Seleccionado",
       projectId: state.projectId || ""
     }));
+
+    fetchUserProfile(storedToken);
 
   }, [navigate, state]);
 
@@ -101,12 +119,10 @@ const HoursForm = () => {
     } else {
       setFormData((prev) => ({ ...prev, [name]: value }));
 
-      // Limpiar error de teléfono al escribir
       if (name === "phone") setErrors(prev => ({ ...prev, phone: "" }));
     }
   };
 
-  // Validación simple de teléfono (formato 0000-0000 o 8 dígitos)
   const validatePhone = (phone: string) => {
     const phoneRegex = /^\d{4}-?\d{4}$/;
     return phoneRegex.test(phone);
@@ -116,14 +132,13 @@ const HoursForm = () => {
     e.preventDefault();
     setErrors({ acceptTerms: "", phone: "", general: "" });
 
-    // Validaciones Frontend
     if (!formData.acceptedTerms) {
       setErrors(prev => ({ ...prev, acceptTerms: "Debes aceptar los términos y condiciones." }));
       return;
     }
 
     if (!validatePhone(formData.phone)) {
-      setErrors(prev => ({ ...prev, phone: "Ingresa un teléfono válido (ej: 7777-7777)" }));
+      setErrors(prev => ({ ...prev, phone: "Ingresa un teléfono válido (ej: 7777-7777, 88884444)" }));
       return;
     }
 
@@ -133,7 +148,6 @@ const HoursForm = () => {
     }
 
     try {
-      // Petición al Backend
       const response = await fetch("http://localhost:4000/api/aplicaciones", {
         method: "POST",
         headers: {
@@ -141,13 +155,10 @@ const HoursForm = () => {
           Authorization: `Bearer ${token}`,
         },
         body: JSON.stringify({
-          // Datos para actualizar perfil de usuario (si el backend lo soporta así)
           phone: formData.phone,
-          studentId: formData.studentId,
-
-          // Datos de la aplicación
+          // studentId: formData.studentId, <--- YA NO LO ENVIAMOS
           motivation: formData.motivation,
-          socialHour: formData.projectId, // Enviamos el ID real del proyecto
+          socialHour: formData.projectId,
           acceptedTerms: formData.acceptedTerms,
         }),
       });
@@ -155,17 +166,12 @@ const HoursForm = () => {
       const data = await response.json();
 
       if (response.ok) {
-        // ÉXITO
         console.log("Aplicación creada:", data);
-
-        // Generar el comprobante PDF
         await generatePDF();
-
         alert("¡Aplicación enviada exitosamente!");
-        navigate("/css"); // Redirigir al usuario después del éxito
+        navigate("/css");
 
       } else {
-        // Error del backend (ej: ya aplicaste, proyecto lleno, etc.)
         setErrors(prev => ({ ...prev, general: data.msg || "Error al procesar la solicitud" }));
       }
     } catch (error) {
@@ -178,7 +184,6 @@ const HoursForm = () => {
     if (!formRef.current) return;
 
     try {
-      // Ocultar botones temporalmente para el PDF
       const buttons = formRef.current.querySelectorAll('button');
       buttons.forEach(btn => btn.style.display = 'none');
 
@@ -186,10 +191,9 @@ const HoursForm = () => {
         scale: 2,
         useCORS: true,
         logging: false,
-        backgroundColor: "#ffffff" // Fondo blanco para el PDF
+        backgroundColor: "#ffffff"
       });
 
-      // Restaurar botones
       buttons.forEach(btn => btn.style.display = '');
 
       const pdf = new jsPDF("p", "mm", "a4");
@@ -221,7 +225,8 @@ const HoursForm = () => {
         pdfHeight - 10
       );
 
-      pdf.save(`comprobante-${formData.studentId}.pdf`);
+      // Usamos userCarnet para el nombre del archivo si existe
+      pdf.save(`comprobante-${userCarnet || 'inscripcion'}.pdf`);
 
     } catch (error) {
       console.error("Error al generar PDF:", error);
@@ -238,7 +243,6 @@ const HoursForm = () => {
         </div>
       )}
 
-      {/* El ref se usa para capturar este div en el PDF */}
       <div ref={formRef} className="form-content-wrapper">
         <form onSubmit={handleSubmit} className="hours-form">
           <div className="form-group">
@@ -248,7 +252,7 @@ const HoursForm = () => {
               id="name"
               name="name"
               value={formData.name}
-              readOnly // Campo de solo lectura, viene del perfil
+              readOnly
               className="read-only-input"
             />
           </div>
@@ -260,7 +264,7 @@ const HoursForm = () => {
               id="email"
               name="email"
               value={formData.email}
-              readOnly // Campo de solo lectura
+              readOnly
               className="read-only-input"
             />
           </div>
@@ -277,19 +281,6 @@ const HoursForm = () => {
               required
             />
             {errors.phone && <span className="error-message">{errors.phone}</span>}
-          </div>
-
-          <div className="form-group">
-            <label htmlFor="studentId">Carnet de estudiante:</label>
-            <input
-              type="text"
-              id="studentId"
-              name="studentId"
-              value={formData.studentId}
-              onChange={handleChange}
-              placeholder="00012345"
-              required
-            />
           </div>
 
           <div className="form-group">
@@ -335,7 +326,6 @@ const HoursForm = () => {
               tomara como completado tu servicio social, las indicaciones puedes
               encontrarlas en los siguientes enlaces:
             </p>
-
             <ol>
               <li>
                 <a href="/Guia-informe-final.pdf" target="_blank" rel="noopener noreferrer">
