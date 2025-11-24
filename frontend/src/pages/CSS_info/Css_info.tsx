@@ -1,9 +1,9 @@
 import { useState, useEffect, useCallback } from "react";
-import Body from "@/components/Body_desing/Body";
+import Body from "@/components/Body_design/Body";
 import './Css_info.css';
 import { useNavigate } from "react-router-dom";
 
-// Interfaces para los tipos de datos que vienen del backend
+// Interfaces
 interface Institution {
   _id: string;
   nombre: string;
@@ -13,39 +13,55 @@ interface Project {
   _id: string;
   titulo: string;
   descripcion: string;
-  institucion: Institution;
+  institucion: Institution; 
   activo: boolean;
+}
+
+// Nueva interfaz para una Aplicación (Estudiante inscrito)
+interface Application {
+  _id: string;
+  estudiante: {
+    _id: string;
+    nombre: string;
+    correo: string;
+    carnet?: string;
+  };
+  estado: 'Pendiente' | 'Aprobada' | 'Rechazada';
+  createdAt: string;
 }
 
 const CSS = () => {
   const navigate = useNavigate();
-
-  // Estados de Datos
+  
+  // --- Estados de Datos Principales ---
   const [projects, setProjects] = useState<Project[]>([]);
   const [institutions, setInstitutions] = useState<Institution[]>([]);
   const [loading, setLoading] = useState(true);
 
-  // Estados de Interfaz
+  // --- Estados de Interfaz ---
   const [selectedProjectId, setSelectedProjectId] = useState<string | null>(null);
   const [isButtonExpanded, setIsButtonExpanded] = useState(false);
   const [isAdmin, setIsAdmin] = useState(false);
   const [token, setToken] = useState<string | null>(null);
 
-  // Estados del Formulario (Crear/Editar)
+  // --- Estados del Formulario (Crear/Editar Proyecto) ---
   const [isEditing, setIsEditing] = useState(false);
   const [editId, setEditId] = useState<string | null>(null);
-
   const [formTitle, setFormTitle] = useState("");
   const [formDescription, setFormDescription] = useState("");
   const [formInstitutionId, setFormInstitutionId] = useState("");
+
+  // --- NUEVO: Estados para Gestión de Aplicaciones ---
+  const [showApplicationsModal, setShowApplicationsModal] = useState(false);
+  const [currentProjectApplications, setCurrentProjectApplications] = useState<Application[]>([]);
+  const [currentProjectTitle, setCurrentProjectTitle] = useState("");
+  const [loadingApps, setLoadingApps] = useState(false);
 
   // Funciones de API
   const fetchInstitutions = async (authToken: string) => {
     try {
       const response = await fetch("http://localhost:4000/api/instituciones", {
-        headers: {
-          'Authorization': `Bearer ${authToken}`
-        }
+        headers: { 'Authorization': `Bearer ${authToken}` }
       });
       if (response.ok) {
         const data = await response.json();
@@ -70,43 +86,93 @@ const CSS = () => {
     }
   };
 
-  // Función centralizada para verificar rol y cargar datos de admin
+  // --- NUEVO: Cargar aplicaciones de un proyecto específico ---
+  const fetchApplications = async (projectId: string, projectTitle: string) => {
+    if (!token) return;
+    setLoadingApps(true);
+    setCurrentProjectTitle(projectTitle);
+    setShowApplicationsModal(true); // Abrir modal inmediatamente para mostrar "Cargando..."
+
+    try {
+      const response = await fetch(`http://localhost:4000/api/aplicaciones/proyecto/${projectId}`, {
+        headers: { 'Authorization': `Bearer ${token}` }
+      });
+      
+      if (response.ok) {
+        const data = await response.json();
+        setCurrentProjectApplications(data);
+      } else {
+        alert("Error al cargar las aplicaciones.");
+        setShowApplicationsModal(false);
+      }
+    } catch (error) {
+      console.error("Error:", error);
+      alert("Error de conexión al cargar aplicaciones.");
+      setShowApplicationsModal(false);
+    } finally {
+      setLoadingApps(false);
+    }
+  };
+
+  // --- NUEVO: Actualizar estado de aplicación (Aprobar/Rechazar) ---
+  const handleUpdateStatus = async (applicationId: string, newStatus: 'Aprobada' | 'Rechazada') => {
+    if (!token) return;
+    
+    try {
+      const response = await fetch(`http://localhost:4000/api/aplicaciones/${applicationId}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
+        },
+        body: JSON.stringify({ estado: newStatus })
+      });
+
+      if (response.ok) {
+        // Actualizar la lista localmente para reflejar el cambio sin recargar todo
+        setCurrentProjectApplications(prev => prev.map(app => 
+          app._id === applicationId ? { ...app, estado: newStatus } : app
+        ));
+      } else {
+        const err = await response.json();
+        alert(`Error: ${err.msg}`);
+      }
+    } catch (error) {
+      console.error("Error actualizando estado:", error);
+      alert("Error de conexión.");
+    }
+  };
+
   const checkAuth = useCallback(() => {
     const storedUser = localStorage.getItem('usuario');
     const storedToken = localStorage.getItem('token');
-
+    
     if (storedUser && storedToken) {
       const user = JSON.parse(storedUser);
       if (user.rol === 'admin' || user.rol === 'administrador') {
         setIsAdmin(true);
         setToken(storedToken);
-        // Si acabamos de loguearnos como admin, cargamos las instituciones
         fetchInstitutions(storedToken);
       } else {
-        // Es usuario normal
         setIsAdmin(false);
         setToken(storedToken);
       }
     } else {
-      // No hay sesión
       setIsAdmin(false);
       setToken(null);
     }
   }, []);
 
-  // Listener de Eventos
   useEffect(() => {
     fetchProjects();
     checkAuth();
 
-    // Escuchar evento de login desde el Navbar
     const handleAuthChange = () => {
       console.log("Evento auth-change detectado en CSS Info");
-      checkAuth(); // Re-evaluar permisos
+      checkAuth(); 
     };
 
     window.addEventListener("auth-change", handleAuthChange);
-
     return () => {
       window.removeEventListener("auth-change", handleAuthChange);
     };
@@ -127,10 +193,10 @@ const CSS = () => {
     }
 
     try {
-      const url = isEditing
+      const url = isEditing 
         ? `http://localhost:4000/api/proyectos/${editId}`
         : "http://localhost:4000/api/proyectos";
-
+      
       const method = isEditing ? "PUT" : "POST";
 
       const response = await fetch(url, {
@@ -177,7 +243,7 @@ const CSS = () => {
       });
 
       if (response.ok) {
-        fetchProjects();
+        fetchProjects(); 
       } else {
         alert("Error al eliminar el proyecto");
       }
@@ -205,11 +271,11 @@ const CSS = () => {
 
   const handleRedirect = () => {
     const selectedProject = projects.find(p => p._id === selectedProjectId);
-    navigate("/horas-sociales-form", {
-      state: {
+    navigate("/horas-sociales-form", { 
+      state: { 
         projectTitle: selectedProject?.titulo,
-        projectId: selectedProjectId
-      }
+        projectId: selectedProjectId 
+      } 
     });
   };
 
@@ -240,11 +306,10 @@ const CSS = () => {
       </section>
 
       <section className="rule-content">
+        {/* ... texto estático ... */}
         <h2 className="rule__title">Reglamento y requisitos</h2>
         <div className="rule-desing">
-          <p>
-            Requisitos Clave para Realizar el Servicio Social Estudiantil (UCA)...
-          </p>
+          <p>Requisitos Clave para Realizar el Servicio Social Estudiantil (UCA)...</p>
           <ol className="rule__steps">
             <li>
               <strong>Horas Requeridas:</strong> Estudiantes de Nivel Técnico: 150 horas. Ingeniería/Licenciatura: 600 horas.
@@ -270,7 +335,7 @@ const CSS = () => {
         {isButtonExpanded && (
           <div className="checkbox-container">
             {projects.length === 0 && <p>No hay proyectos activos disponibles por el momento.</p>}
-
+            
             {projects.map((project) => (
               <div className={`checkbox-item ${isAdmin ? 'admin-view' : ''}`} key={project._id}>
                 <label>
@@ -291,6 +356,13 @@ const CSS = () => {
 
                 {isAdmin && (
                   <div className="admin-actions-group">
+                    <button 
+                      className="view-applications-btn"
+                      onClick={() => fetchApplications(project._id, project.titulo)}
+                    >
+                      Ver Inscritos
+                    </button>
+
                     <button
                       className="action-btn edit"
                       onClick={() => handleEditClick(project)}
@@ -308,7 +380,7 @@ const CSS = () => {
               </div>
             ))}
 
-            {/* Funciones de Admin */}
+            {/* --- PANEL DE ADMINISTRADOR --- */}
             {isAdmin && (
               <div className="admin-panel-container">
                 <h3 className="admin-form-title">
@@ -321,8 +393,8 @@ const CSS = () => {
                   onChange={(e) => setFormTitle(e.target.value)}
                   placeholder="Título del Proyecto"
                 />
-
-                <select
+                
+                <select 
                   className="admin-select"
                   value={formInstitutionId}
                   onChange={(e) => setFormInstitutionId(e.target.value)}
@@ -342,14 +414,14 @@ const CSS = () => {
                   placeholder="Descripción del proyecto"
                   rows={3}
                 />
-
+                
                 <div className="admin-form-actions">
                   <button className="add-option-btn" onClick={handleSaveProject}>
                     {isEditing ? "Actualizar" : "Publicar"}
                   </button>
-
+                  
                   {isEditing && (
-                    <button
+                    <button 
                       className="cancel-option-btn"
                       onClick={handleCancelEdit}
                     >
@@ -370,6 +442,86 @@ const CSS = () => {
           </div>
         )}
       </section>
+
+      {/* --- NUEVO: MODAL DE GESTIÓN DE APLICACIONES --- */}
+      {showApplicationsModal && (
+        <div className="modal-overlay">
+          <div className="modal-content">
+            <div className="modal-header">
+              <h3 className="modal-title">Inscritos: {currentProjectTitle}</h3>
+              <button 
+                className="close-modal-btn" 
+                onClick={() => setShowApplicationsModal(false)}
+              >
+                &times;
+              </button>
+            </div>
+            <div className="modal-body">
+              {loadingApps ? (
+                <p>Cargando inscripciones...</p>
+              ) : currentProjectApplications.length === 0 ? (
+                <div className="no-data-message">
+                  <p>No hay estudiantes inscritos en este proyecto todavía.</p>
+                </div>
+              ) : (
+                <table className="applications-table">
+                  <thead>
+                    <tr>
+                      <th>Estudiante</th>
+                      <th>Carnet</th>
+                      <th>Correo</th>
+                      <th>Fecha</th>
+                      <th>Estado</th>
+                      <th>Acciones</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {currentProjectApplications.map((app) => (
+                      <tr key={app._id} className="applications-table-rows">
+                        <td>{app.estudiante.nombre}</td>
+                        <td>{app.estudiante.carnet || "N/A"}</td>
+                        <td>{app.estudiante.correo}</td>
+                        <td>{new Date(app.createdAt).toLocaleDateString()}</td>
+                        <td>
+                          <span className={`status-badge ${app.estado.toLowerCase()}`}>
+                            {app.estado}
+                          </span>
+                        </td>
+                        <td className="action-buttons-cell">
+                          {app.estado === 'Pendiente' && (
+                            <>
+                              <button 
+                                className="approve-btn"
+                                title="Aprobar"
+                                onClick={() => handleUpdateStatus(app._id, 'Aprobada')}
+                              >
+                                ✓
+                              </button>
+                              <button 
+                                className="reject-btn"
+                                title="Rechazar"
+                                onClick={() => handleUpdateStatus(app._id, 'Rechazada')}
+                              >
+                                ✕
+                              </button>
+                            </>
+                          )}
+                          {app.estado !== 'Pendiente' && (
+                            <span style={{fontSize: '0.8rem', color: '#666'}}>
+                              Procesada
+                            </span>
+                          )}
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              )}
+            </div>
+          </div>
+        </div>
+      )}
+
     </Body>
   );
 };

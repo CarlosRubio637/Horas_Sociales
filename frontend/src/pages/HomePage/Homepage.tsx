@@ -1,4 +1,4 @@
-import Body from "../../components/Body_desing/Body";
+import Body from "../../components/Body_design/Body";
 import "./HomePage.css"; 
 
 const HomePage = () => {

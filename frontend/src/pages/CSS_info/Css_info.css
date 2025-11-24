@@ -370,6 +370,198 @@ p {
     background-color: #45a049;
 }
 
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+    padding: 20px;
+}
+
+.modal-content {
+    background-color: white;
+    border-radius: 15px;
+    width: 100%;
+    max-width: 900px;
+    max-height: 90vh;
+    display: flex;
+    flex-direction: column;
+    box-shadow: 0 5px 20px rgba(0,0,0,0.2);
+    overflow: hidden;
+}
+
+.modal-header {
+    padding: 20px;
+    border-bottom: 1px solid #eee;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #2A5091;
+    color: white;
+}
+
+.modal-title {
+    font-size: 1.5rem;
+    font-weight: bold;
+    margin: 0;
+}
+
+.close-modal-btn {
+    background: none;
+    border: none;
+    color: white;
+    font-size: 2rem;
+    cursor: pointer;
+    line-height: 1;
+    padding: 0 10px;
+}
+
+.modal-body {
+    padding: 20px;
+    overflow-y: auto;
+    text-align: center;
+    color: #1e3c7f;
+}
+
+/* Tabla de Aplicaciones */
+.applications-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 10px;
+}
+
+.applications-table th,
+.applications-table td {
+    padding: 12px 15px;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+}
+
+.applications-table th {
+    background-color: #f0f0f0;
+    color: #2A5091;
+    font-weight: bold;
+    font-size: large;
+    position: sticky;
+    top: 0;
+}
+
+.applications-table tr:hover {
+    background-color: #f1f1f1;
+}
+
+.applications-table-rows {
+    color: #3c66ad;
+}
+
+/* Badges de Estado */
+.status-badge {
+    padding: 5px 10px;
+    border-radius: 20px;
+    font-size: 0.85rem;
+    font-weight: bold;
+    text-transform: capitalize;
+    display: inline-block;
+}
+
+.status-badge.pendiente {
+    background-color: #fff3cd;
+    color: #856404;
+}
+
+.status-badge.aprobada {
+    background-color: #d4edda;
+    color: #155724;
+}
+
+.status-badge.rechazada {
+    background-color: #f8d7da;
+    color: #721c24;
+}
+
+/* Botones de Acción en la Tabla */
+.action-buttons-cell {
+    gap: 8px;
+    align-items: center;
+    height: 100%;
+}
+
+.approve-btn {
+    background-color: #28a745;
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 0.9rem;
+    transition: background 0.2s;
+}
+
+.approve-btn:hover {
+    background-color: #218838;
+}
+
+.reject-btn {
+    background-color: #dc3545;
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 0.9rem;
+    transition: background 0.2s;
+}
+
+.reject-btn:hover {
+    background-color: #c82333;
+}
+
+.view-applications-btn {
+    padding: 5px 10px;
+    background-color: #17a2b8; /* Color Info */
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 0.8rem;
+    margin-right: 5px;
+}
+
+.view-applications-btn:hover {
+    background-color: #138496;
+}
+
+/* Mensaje cuando no hay datos */
+.no-data-message {
+    text-align: center;
+    padding: 30px;
+    color: #666;
+    font-style: italic;
+}
+
+/* Responsivo para la tabla */
+@media (max-width: 768px) {
+    .applications-table {
+        font-size: 0.9rem;
+    }
+    
+    .applications-table th, 
+    .applications-table td {
+        padding: 8px;
+    }
+    
+    .action-buttons-cell {
+        flex-direction: column;
+        gap: 5px;
+    }
+}
+
 /*Media Queries*/
 @media (max-width: 64rem) {
     .presentation-container {

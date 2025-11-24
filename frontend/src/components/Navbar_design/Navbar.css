@@ -24,7 +24,7 @@ header {
     justify-content: space-between;
     max-width: 1400px;
     margin: 0 auto;
-    gap: 2rem;
+    gap: 1rem;
 }
 
 .navbar-brand {
@@ -50,7 +50,7 @@ header {
 .navbar-nav {
     display: flex;
     align-items: center;
-    gap: 1.5rem;
+    gap: 1rem;
     flex-wrap: wrap;
 }
 

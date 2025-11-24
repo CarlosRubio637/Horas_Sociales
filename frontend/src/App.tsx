@@ -6,7 +6,8 @@ import Layout from "@/app/routes/Layout";
 const HomePage = lazy(() => import("./pages/HomePage/Homepage"));
 const CSS = lazy(() => import("./pages/CSS_info/Css_info"));
 const Programas = lazy(() => import("./pages/Programas/Programas"));
-const HoursForm = lazy(() => import("./components/HorasSocialesForm_desing/HoursForm")); 
+const HoursForm = lazy(() => import("./components/HorasSocialesForm_design/HoursForm")); 
+const MyApplications = lazy(() => import("./pages/MyApplications/MyApplications"));
 
 function App() {
   return (
@@ -18,6 +19,7 @@ function App() {
             <Route path="/css" element={<CSS />} />
             <Route path="/programas" element={<Programas />} />
             <Route path="/horas-sociales-form" element={<HoursForm />} />
+            <Route path="/mis-solicitudes" element={<MyApplications />} />
           </Route>
         </Routes>
       </Router>
@@ -26,5 +28,3 @@ function App() {
 }
 
 export default App;
-
-

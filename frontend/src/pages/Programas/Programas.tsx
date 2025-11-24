@@ -1,5 +1,5 @@
 import { useState } from "react";
-import Body from "@/components/Body_desing/Body";
+import Body from "@/components/Body_design/Body";
 import './Programas.css';
 
 type ProgramKey = 'RefuerzoAcademico' | 'Voluntariado';
