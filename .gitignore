@@ -34,3 +34,8 @@ coverage/
 .cache/
 tmp/
 temp/
+
+# Credenciales y archivos sensibles
+backend/config/credentials.json
+backend/config/*.json
+*.json
