@@ -1,0 +1,27 @@
+{
+  "name": "horas_sociales",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "concurrently \"npm run server\" \"npm run client\"",
+    "server": "cd backend && npm run dev",
+    "client": "cd frontend && npm run dev",
+    "install-all": "cd backend && npm install && cd ../frontend && npm install"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/CarlosRubio637/Horas_Sociales.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/CarlosRubio637/Horas_Sociales/issues"
+  },
+  "homepage": "https://github.com/CarlosRubio637/Horas_Sociales#readme",
+  "devDependencies": {
+    "concurrently": "^9.2.1"
+  }
+}
