@@ -63,7 +63,7 @@ export const createAplicacion = async (req, res) => {
 
     //se usaran los servicios de google 
     const aplicacionPopulada = await Aplicacion.findById(nuevaAplicacion._id)
-      .populate("estudiante", "nombre correo")
+      .populate("estudiante", "nombre correo carnet")
       .populate("proyecto", "titulo");
 
     try {
@@ -71,10 +71,10 @@ export const createAplicacion = async (req, res) => {
         id: aplicacionPopulada._id.toString(),
         nombreEstudiante: aplicacionPopulada.estudiante.nombre,
         correoEstudiante: aplicacionPopulada.estudiante.correo,
+        carnetEstudiante: aplicacionPopulada.estudiante.carnet || "N/A",
         tituloProyecto: aplicacionPopulada.proyecto.titulo,
         estado: aplicacionPopulada.estado,
         fechaSumision: aplicacionPopulada.createdAt.toISOString(),
-        carnetEstudiante: aplicacionPopulada.estudiante.carnet
       });
     } catch (sheetsError) {
       console.error("Error al registrar en Google Sheets:", sheetsError.message);
