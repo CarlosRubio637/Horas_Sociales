@@ -65,3 +65,48 @@ export const agregarFilaAplicacion = async (aplicacionData) => {
     throw error;
   }
 };
+
+export const actualizarEstadoEnSheet = async (idAplicacion, nuevoEstado) => {
+  try {
+    const sheets = await getGoogleSheetsClient();
+    const spreadsheetId = process.env.GOOGLE_SHEET_ID;
+
+    if (!spreadsheetId) return;
+
+    // Leer la columna A (donde guardamos los IDs) para encontrar la fila
+    const readResponse = await sheets.spreadsheets.values.get({
+      spreadsheetId,
+      range: 'Hoja 1!A:A', // Asumimos que el ID está en la Columna A
+    });
+
+    const rows = readResponse.data.values;
+    if (!rows || rows.length === 0) {
+      console.log('No hay datos en el Sheet para buscar.');
+      return;
+    }
+
+    // Buscar el índice de la fila que coincide con el ID
+    const rowIndex = rows.findIndex(row => row[0] === idAplicacion) + 1;
+
+    if (rowIndex === 0) { 
+      console.warn(`No se encontró la aplicación ID ${idAplicacion} en Google Sheets.`);
+      return; 
+    }
+
+    const range = `Hoja 1!F${rowIndex}`; 
+
+    await sheets.spreadsheets.values.update({
+      spreadsheetId,
+      range: range,
+      valueInputOption: 'RAW',
+      resource: {
+        values: [[nuevoEstado]]
+      }
+    });
+
+    console.log(`Estado actualizado en Google Sheets (Fila ${rowIndex}) a: ${nuevoEstado}`);
+
+  } catch (error) {
+    console.error('Error al actualizar estado en Sheets:', error.message);
+  }
+};
