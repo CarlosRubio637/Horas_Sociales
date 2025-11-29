@@ -12,6 +12,17 @@ const proyectoSchema = new mongoose.Schema(
       required: true,
       trim: true,
     },
+    facultad: {
+      type: [String],
+      required: true,
+      enum: [
+        "Ciencias Sociales y Humanidades",
+        "Ingeniería y Arquitectura",
+        "Ciencias Económicas y Empresariales",
+        "Otras" //Fallback
+      ],
+      default: ["Otras"]
+    },
     institucion: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "Institucion",
