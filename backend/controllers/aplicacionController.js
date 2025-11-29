@@ -73,6 +73,7 @@ export const createAplicacion = async (req, res) => {
         correoEstudiante: aplicacionPopulada.estudiante.correo,
         carnetEstudiante: aplicacionPopulada.estudiante.carnet || "N/A",
         tituloProyecto: aplicacionPopulada.proyecto.titulo,
+        motivacionProyecto: aplicacionPopulada.motivacion || "N/AA",
         estado: aplicacionPopulada.estado,
         fechaSumision: aplicacionPopulada.createdAt.toISOString(),
       });

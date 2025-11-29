@@ -43,6 +43,7 @@ export const agregarFilaAplicacion = async (aplicacionData) => {
       aplicacionData.nombreEstudiante,
       aplicacionData.correoEstudiante,
       aplicacionData.tituloProyecto,
+      aplicacionData.motivacionProyecto,
       aplicacionData.estado,
       aplicacionData.fechaSumision,
       aplicacionData.carnetEstudiante
@@ -52,7 +53,7 @@ export const agregarFilaAplicacion = async (aplicacionData) => {
 
     const response = await sheets.spreadsheets.values.append({
       spreadsheetId,
-      range: 'Hoja 1!A:G',
+      range: 'Hoja 1!A:H',
       valueInputOption: 'RAW',
       resource,
     });
