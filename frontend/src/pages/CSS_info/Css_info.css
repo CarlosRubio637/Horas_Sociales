@@ -192,7 +192,7 @@ p {
     padding: 0.6rem;
     background-color: #ffffff;
     border-radius: 10px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 4px 8px #0000001A;
     cursor: pointer;
     transition: background-color 0.3s ease;
     width: 100%;
@@ -220,10 +220,10 @@ p {
 }
 
 .checkbox-container input {
-    width: 20px; 
+    width: 1rem; 
     height: auto;
     display: inline-block; 
-    margin-right: 10px; 
+    margin-right: 1rem; 
 }
 
 .no-data-message {
@@ -233,15 +233,13 @@ p {
     font-style: italic;
 }
 
-/* Estilos de filtro */
-
-.filters-bar {
+filters-bar {
   display: flex;
   flex-wrap: wrap;
   gap: 1.5rem;
   align-items: center;
   padding: 1rem;
-  background-color: #f8f9fa;
+  background-color: #D3C4FF;
   border-radius: 8px;
   margin-bottom: 1.5rem;
   border: 1px solid #e9ecef;
@@ -264,11 +262,12 @@ p {
   padding: 0.5rem 0.75rem;
   border: 2px solid #e9ecef;
   border-radius: 6px;
-  background-color: white;
+  background-color: #E0E3FF;
+  color:#1e3c7f;
+  font-weight: bold;
   font-size: 0.9rem;
   transition: all 0.3s ease;
   cursor: pointer;
-  color: #2A5091; 
 }
 
 .filter-select:focus {
@@ -278,7 +277,6 @@ p {
 }
 
 /* Botones de ordenamiento */
-
 .filter-group .sort-buttons-container {
   display: flex;
   gap: 0.25rem;
@@ -287,79 +285,66 @@ p {
 .sort-btn {
   padding: 0.5rem 0.75rem;
   border: 2px solid #e9ecef;
-  background-color: white;
+  background-color: #000B73;
   border-radius: 6px;
   cursor: pointer;
   font-size: 0.9rem;
   transition: all 0.3s ease;
   flex: 1;
-
-  color: #2A5091;
 }
 
-.sort-btn:hover {
-  background-color: #f8f9fa;
-  border-color: #2A5091;
-}
-
-.sort-btn.active {
-  background-color: #2A5091;
-  color: white;
-  border-color: #2A5091;
-}
 
 @media (max-width: 768px) {
   .filters-bar {
-    flex-direction: column;
-    align-items: stretch;
-    gap: 1rem;
-    padding: 0.75rem;
-  }
+        flex-direction: column;
+        align-items: stretch;
+        gap: 1rem;
+        padding: 0.75rem;
+    }
 
-  .filter-group {
-    min-width: auto;
-    width: 100%;
-  }
+    .filter-group {
+        min-width: auto;
+        width: 100%;
+    }
 
-  .filter-group .sort-buttons-container {
-    justify-content: stretch;
-  }
+    .filter-group .sort-buttons-container {
+        justify-content: stretch;
+    }
 
-  .sort-btn {
-    flex: 1;
-    text-align: center;
-  }
+    .sort-btn {
+        flex: 1;
+        text-align: center;
+    }
 }
 
 @media (max-width: 480px) {
-  .filters-bar {
-    padding: 0.5rem;
-    gap: 0.75rem;
-  }
+        .filters-bar {
+        padding: 0.5rem;
+        gap: 0.75rem;
+    }
 
-  .filter-group label {
+    .filter-group label {
     font-size: 0.85rem;
-  }
+    }
 
-  .filter-select,
-  .sort-btn {
-    font-size: 0.85rem;
-    padding: 0.4rem 0.6rem;
-  }
+    .filter-select, .sort-btn {
+        font-size: 0.85rem;
+        padding: 0.4rem 0.6rem;
+    }
 }
 
+/* Estados de hover y focus para mejor UX */
 .filter-select:hover {
-  border-color: #2A5091;
+    border-color: #2A5091;
 }
 
 .sort-btn:focus {
-  outline: none;
-  box-shadow: 0 0 0 3px rgba(42, 80, 145, 0.2);
+    outline: none;
+    box-shadow: 0 0 0 3px #2A509133;
 }
 
-.filter-select,
-.sort-btn {
-  transition: all 0.2s ease-in-out;
+.filter-select, .sort-btn {
+    transition: all 0.2s ease-in-out;
 }
 
 /* Responsivo para la tabla */
