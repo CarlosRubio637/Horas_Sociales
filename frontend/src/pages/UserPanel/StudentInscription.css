@@ -14,6 +14,81 @@
     text-align: center;
 }
 
+/* --- BARRA DE FILTROS --- */
+.filters-bar {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1.5rem;
+    align-items: center;
+    padding: 1rem;
+    background-color: #ffffff;
+    border-radius: 8px;
+    margin-bottom: 1.5rem;
+    border: 1px solid #e9ecef;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+}
+  
+.filter-group {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    min-width: 200px;
+    flex: 1;
+}
+  
+.filter-group label {
+    font-weight: 600;
+    color: #2A5091;
+    font-size: 0.9rem;
+}
+  
+.filter-select {
+    padding: 0.6rem 0.75rem;
+    border: 2px solid #e9ecef;
+    border-radius: 6px;
+    background-color: #f8f9fa;
+    color:#1e3c7f;
+    font-weight: bold;
+    font-size: 0.9rem;
+    transition: all 0.3s ease;
+    cursor: pointer;
+    width: 100%;
+}
+  
+.filter-select:focus {
+    outline: none;
+    border-color: #2A5091;
+}
+
+.sort-buttons-container {
+    display: flex;
+    gap: 5px;
+}
+
+.sort-btn {
+    padding: 0.6rem 1rem;
+    border: 1px solid #2A5091;
+    background-color: white;
+    color: #2A5091;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 0.9rem;
+    font-weight: bold;
+    transition: all 0.2s ease;
+    flex: 1;
+    text-align: center;
+}
+
+.sort-btn:hover {
+    background-color: #f0f4ff;
+}
+
+.sort-btn.active {
+    background-color: #2A5091;
+    color: white;
+}
+
+/* --- GRID DE PROYECTOS --- */
 .project-grid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
@@ -41,6 +116,18 @@
     font-size: 1.2rem;
 }
 
+.facultad-badge {
+    display: inline-block;
+    background-color: #e3f2fd;
+    color: #1565c0;
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-size: 0.75rem;
+    font-weight: bold;
+    margin-bottom: 8px;
+    margin-right: 5px;
+}
+
 .project-card-inst {
     font-size: 0.9rem;
     color: #666;
@@ -54,7 +141,7 @@
     color: #444;
     line-height: 1.5;
     margin-bottom: 15px;
-    flex-grow: 1;
+    flex-grow: 1; /* Empuja el botón hacia abajo */
 }
 
 .inscription-btn {
@@ -73,9 +160,19 @@
     background-color: #218838;
 }
 
-.loading-text {
+.loading-text, .no-results-text {
     text-align: center;
     padding: 20px;
     color: #666;
     font-style: italic;
+    background: white;
+    border-radius: 8px;
+}
+
+/* Responsive */
+@media (max-width: 600px) {
+    .filters-bar {
+        flex-direction: column;
+        align-items: stretch;
+    }
 }

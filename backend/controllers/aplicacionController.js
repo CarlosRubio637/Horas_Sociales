@@ -1,14 +1,14 @@
 import Aplicacion from "../models/Aplicacion.js";
 import Proyecto from "../models/Proyecto.js";
-import Usuario from "../models/Usuario.js"; // Importar el modelo de Usuario
-import { agregarFilaAplicacion } from "../service/googleSheetsService.js";
+import Usuario from "../models/Usuario.js"; 
+import { agregarFilaAplicacion, actualizarEstadoEnSheet } from "../service/googleSheetsService.js";
 
 export const createAplicacion = async (req, res) => {
   try {
     const {
       phone,
       motivation, 
-      socialHour, // ID del Proyecto
+      socialHour, 
       acceptedTerms
     } = req.body;
 
@@ -61,9 +61,9 @@ export const createAplicacion = async (req, res) => {
 
     await nuevaAplicacion.save();
 
-    //se usaran los servicios de google 
+    // Google Sheets
     const aplicacionPopulada = await Aplicacion.findById(nuevaAplicacion._id)
-      .populate("estudiante", "nombre correo")
+      .populate("estudiante", "nombre correo carnet")
       .populate("proyecto", "titulo");
 
     try {
@@ -71,15 +71,15 @@ export const createAplicacion = async (req, res) => {
         id: aplicacionPopulada._id.toString(),
         nombreEstudiante: aplicacionPopulada.estudiante.nombre,
         correoEstudiante: aplicacionPopulada.estudiante.correo,
+        carnetEstudiante: aplicacionPopulada.estudiante.carnet || "N/A",
         tituloProyecto: aplicacionPopulada.proyecto.titulo,
+        motivacionProyecto: aplicacionPopulada.motivacion || "N/A",
         estado: aplicacionPopulada.estado,
         fechaSumision: aplicacionPopulada.createdAt.toISOString(),
-        carnetEstudiante: aplicacionPopulada.estudiante.carnet
       });
     } catch (sheetsError) {
       console.error("Error al registrar en Google Sheets:", sheetsError.message);
     }
-
 
     res.status(201).json({
       msg: "Aplicación enviada exitosamente.",
@@ -138,8 +138,16 @@ export const updateEstadoAplicacion = async (req, res) => {
         });
     }
 
+    // Actualizar en BD
     aplicacion.estado = estado;
     await aplicacion.save();
+
+    // Actualizar en Google Sheets
+    try {
+        await actualizarEstadoEnSheet(id, estado);
+    } catch (errSheet) {
+        console.error("No se pudo actualizar el estado en Google Sheets:", errSheet);
+    }
 
     res
       .status(200)

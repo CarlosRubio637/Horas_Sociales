@@ -3,31 +3,51 @@ import Institucion from "../models/Institucion.js";
 
 export const createProyecto = async (req, res) => {
   try {
-    const { titulo, descripcion, institucionId } = req.body;
+    console.log("--- DEBUG: Intentando crear proyecto ---");
+    console.log("Body recibido:", req.body);
 
-    // Verificar que la institución exista
-    const institucion = await Institucion.findById(institucionId);
-    if (!institucion) {
-      return res
-        .status(404)
-        .json({ msg: "La institución especificada no existe." });
+    const { titulo, descripcion, facultad, activo, institucion, institucionId } = req.body;
+
+    const idInstitucionFinal = institucion || institucionId;
+
+    console.log("ID Institución detectado:", idInstitucionFinal);
+
+    if (!idInstitucionFinal) {
+      return res.status(400).json({ 
+        msg: "El campo de Institución es obligatorio (envíe 'institucion' o 'institucionId')." 
+      });
     }
 
-    // Se crea el proyecto
+    //Verificar que la institución exista
+    const instEncontrada = await Institucion.findById(idInstitucionFinal);
+    
+    if (!instEncontrada) {
+      console.error(`Institución con ID ${idInstitucionFinal} no encontrada en BD.`);
+      return res
+        .status(404)
+        .json({ msg: `La institución especificada no existe (ID: ${idInstitucionFinal})` });
+    }
+
+    //Se crea el proyecto
     const proyecto = new Proyecto({
       titulo,
       descripcion,
-      institucion: institucionId,
-      publicadoPor: req.usuario.id, // lo obtenemos del token
+      facultad: Array.isArray(facultad) ? facultad : [facultad || "Otras"],
+      institucion: idInstitucionFinal, 
+      activo: activo !== undefined ? activo : true,
+      publicadoPor: req.usuario.id, 
     });
 
     await proyecto.save();
 
+    console.log("Proyecto guardado con éxito:", proyecto._id);
+
     res
       .status(201)
       .json({ msg: "Proyecto creado exitosamente", data: proyecto });
+
   } catch (error) {
-    console.error(error);
+    console.error("Error CRÍTICO en createProyecto:", error);
     res.status(500).json({ msg: "Error en el servidor al crear el proyecto." });
   }
 };
@@ -44,7 +64,8 @@ export const getProyectos = async (req, res) => {
     res.status(500).json({ msg: "Error al obtener los proyectos." });
   }
 };
-// gwt para obtener un proyecto por ID 
+
+// Get para obtener un proyecto por ID 
 export const getProyectoById = async (req, res) => {
   try {
     const { id } = req.params;
@@ -64,7 +85,9 @@ export const getProyectoById = async (req, res) => {
 export const updateProyecto = async (req, res) => {
   try {
     const { id } = req.params;
-    const { titulo, descripcion, institucionId, activo } = req.body;
+    const { titulo, descripcion, facultad, activo, institucion, institucionId } = req.body;
+
+    const idInstitucionNueva = institucion || institucionId;
 
     // Verificar si el proyecto existe
     let proyecto = await Proyecto.findById(id);
@@ -72,23 +95,25 @@ export const updateProyecto = async (req, res) => {
       return res.status(404).json({ msg: "Proyecto no encontrado." });
     }
 
-    // Actualizar campos si vienen en el body
     proyecto.titulo = titulo || proyecto.titulo;
     proyecto.descripcion = descripcion || proyecto.descripcion;
-    // Marca como activo/inactivo
+
+    if (facultad) {
+        proyecto.facultad = Array.isArray(facultad) ? facultad : [facultad];
+    }
+
     if (activo !== undefined) {
       proyecto.activo = activo;
     }
 
-    // Verificar que existe la institución si se proporciona una nueva
-    if (institucionId) {
-      const institucion = await Institucion.findById(institucionId);
-      if (!institucion) {
+    if (idInstitucionNueva) {
+      const instExiste = await Institucion.findById(idInstitucionNueva);
+      if (!instExiste) {
         return res
           .status(404)
           .json({ msg: "La institución especificada no existe." });
       }
-      proyecto.institucion = institucionId;
+      proyecto.institucion = idInstitucionNueva;
     }
 
     const proyectoActualizado = await proyecto.save();
@@ -105,13 +130,11 @@ export const deleteProyecto = async (req, res) => {
   try {
     const { id } = req.params;
 
-    // Verificar si el proyecto existe
     const proyecto = await Proyecto.findById(id);
     if (!proyecto) {
       return res.status(404).json({ msg: "Proyecto no encontrado." });
     }
 
-    // Marcar como inactivo en vez de borrarlo completamente
     proyecto.activo = false;
     await proyecto.save();
 
