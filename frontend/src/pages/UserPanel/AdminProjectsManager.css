@@ -30,6 +30,26 @@
     border: 1px solid #e0e0e0;
 }
 
+/* Estilos de las checkboxes de facultad */
+
+.faculty-label-title {
+    font-size: 1.2rem;
+    font-weight: bold;
+    color: #2A5091; 
+    margin-bottom: 5px;
+    display: block;
+}
+
+.faculty-option {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    font-size: 1rem;
+    color: rgba(0,0,0); 
+    cursor: pointer;
+    
+}
+
 .admin-form-subtitle {
     color: #2A5091;
     margin-top: 0;

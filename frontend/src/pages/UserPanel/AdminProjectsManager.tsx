@@ -1,7 +1,14 @@
 import { useState, useEffect } from "react";
 import "./AdminProjectsManager.css";
 
-// Interfaces
+const FACULTADES = [
+  "Ciencias Sociales y Humanidades",
+  "Ingeniería y Arquitectura",
+  "Ciencias Económicas y Empresariales",
+  "Otras"
+];
+
+// --- INTERFACES ---
 interface Institution {
   _id: string;
   nombre: string;
@@ -11,6 +18,7 @@ interface Project {
   _id: string;
   titulo: string;
   descripcion: string;
+  facultad: string[];
   institucion: Institution;
   activo: boolean;
 }
@@ -41,6 +49,8 @@ const AdminProjectsManager = () => {
   const [formDescription, setFormDescription] = useState("");
   const [formInstitutionId, setFormInstitutionId] = useState("");
 
+  const [formFacultades, setFormFacultades] = useState<string[]>([]);
+
   // Estados de Modal de Inscritos
   const [showModal, setShowModal] = useState(false);
   const [currentApps, setCurrentApps] = useState<Application[]>([]);
@@ -62,7 +72,14 @@ const AdminProjectsManager = () => {
       const res = await fetch("http://localhost:4000/api/proyectos");
       if (res.ok) {
         const data = await res.json();
-        setProjects(data);
+        const lista = Array.isArray(data) ? data : data.proyectos || [];
+        
+        const listaNormalizada = lista.map((p: any) => ({
+            ...p,
+            facultad: Array.isArray(p.facultad) ? p.facultad : [p.facultad || "Otras"]
+        }));
+        
+        setProjects(listaNormalizada);
       }
     } catch (error) {
       console.error("Error cargando proyectos:", error);
@@ -82,6 +99,18 @@ const AdminProjectsManager = () => {
       console.error("Error cargando instituciones:", error);
     }
   };
+
+    // Manejo de checkboxes
+  const handleFacultadChange = (facultad: string) => {
+    setFormFacultades(prev => {
+        if (prev.includes(facultad)) {
+            return prev.filter(f => f !== facultad); // Quitar si ya existe
+        } else {
+            return [...prev, facultad]; // Agregar si no existe
+        }
+    });
+  };
+
 
   const handleSaveProject = async () => {
     if (!formTitle || !formDescription || !formInstitutionId || !token) {
@@ -104,7 +133,8 @@ const AdminProjectsManager = () => {
         body: JSON.stringify({
           titulo: formTitle,
           descripcion: formDescription,
-          institucionId: formInstitutionId
+          institucionId: formInstitutionId,
+          facultad: formFacultades
         })
       });
 
@@ -138,11 +168,11 @@ const AdminProjectsManager = () => {
     }
   };
 
-  // Formulario
   const handleEditClick = (project: Project) => {
     setFormTitle(project.titulo);
     setFormDescription(project.descripcion);
     setFormInstitutionId(project.institucion?._id || "");
+    setFormFacultades(project.facultad); // Cargamos el array existente
     setIsEditing(true);
     setEditId(project._id);
     window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -152,6 +182,7 @@ const AdminProjectsManager = () => {
     setFormTitle("");
     setFormDescription("");
     setFormInstitutionId("");
+    setFormFacultades([]); // Limpiar selección
     setIsEditing(false);
     setEditId(null);
   };
@@ -236,6 +267,23 @@ const AdminProjectsManager = () => {
             ))}
           </select>
         </div>
+
+        {/* SELECCIÓN MÚLTIPLE DE FACULTADES */}
+          <div>
+            <span className="faculty-label-title">Seleccione Facultades asociadas:</span>
+            <div className="faculty-checkbox-group">
+                {FACULTADES.map(f => (
+                    <label key={f} className="faculty-option">
+                        <input 
+                            type="checkbox" 
+                            checked={formFacultades.includes(f)}
+                            onChange={() => handleFacultadChange(f)}
+                        />
+                        {f}
+                    </label>
+                ))}
+            </div>
+          </div>
         
         <textarea 
           className="admin-textarea"
@@ -246,11 +294,11 @@ const AdminProjectsManager = () => {
         />
 
         <div className="admin-actions-row">
-          <button className="save-btn" onClick={handleSaveProject}>
+          <button className="save-btn" onClick={handleSaveProject} type="button">
             {isEditing ? "Actualizar Proyecto" : "Publicar Proyecto"}
           </button>
           {isEditing && (
-            <button className="cancel-btn" onClick={resetForm}>
+            <button className="cancel-btn" onClick={resetForm} type="button">
               Cancelar
             </button>
           )}

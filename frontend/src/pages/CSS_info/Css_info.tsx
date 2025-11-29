@@ -30,11 +30,7 @@ const CSS = () => {
     fetch("http://localhost:4000/api/proyectos")
       .then((res) => res.json())
       .then((data) => {
-        // Aseguramos que data sea un array
         const lista = Array.isArray(data) ? data : data.proyectos || [];
-
-        // NORMALIZACIÓN: Aseguramos que 'facultad' sea un array siempre
-        // Esto evita que el filtro .includes() falle si vienen datos antiguos (string)
         const listaSegura = lista.map((p: any) => ({
           ...p,
           facultad: Array.isArray(p.facultad)
@@ -52,12 +48,12 @@ const CSS = () => {
   const getFilteredProjects = () => {
     let result = [...projects];
 
-    // 1. Filtro por Facultad
+    //Filtro por Facultad
     if (filterFacultad !== "Todas") {
       result = result.filter((p) => p.facultad.includes(filterFacultad));
     }
 
-    // 2. Orden Alfabético
+    //Orden Alfabético
     result.sort((a, b) => {
       if (sortOrder === "asc") {
         return a.titulo.localeCompare(b.titulo);
@@ -145,11 +141,11 @@ const CSS = () => {
                   onChange={(e) => setFilterFacultad(e.target.value)}
                 >
                   <option value="Todas">Todas las Facultades</option>
-                  {FACULTADES.map((f) => (
-                    <option key={f} value={f}>
-                      {f}
-                    </option>
-                  ))}
+                  {FACULTADES
+                      .filter(f => f !== "Otras") 
+                      .map((f) => (
+                        <option key={f} value={f}>{f}</option>
+                    ))}
                 </select>
               </div>
 
@@ -190,7 +186,6 @@ const CSS = () => {
                 <label style={{ cursor: "default" }}>
                   <strong>{project.titulo}</strong>
 
-                  {/* Renderizamos las etiquetas de facultad */}
                   <div>
                     {project.facultad.map((fac, idx) => (
                       <span key={idx} className="facultad-badge">
