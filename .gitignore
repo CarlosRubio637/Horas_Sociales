@@ -26,6 +26,7 @@ Desktop.ini
 
 .idea/
 .vscode/
+.vite/
 
 coverage/
 .nyc_output/
